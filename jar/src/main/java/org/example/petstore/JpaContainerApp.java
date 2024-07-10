@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-@SpringBootApplication
-@Configuration
+//@SpringBootApplication
+//@Configuration
 public class JpaContainerApp {
 
 	public static void main(String[] args) {

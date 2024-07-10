@@ -14,13 +14,18 @@ public class JpaApp {
 	}
 
 	private void demo1() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("petstore");
-		EntityManager em = emf.createEntityManager();
-		em.getTransaction().begin();
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("petstore");//SessionFactory
+		
+		
+		EntityManager em = emf.createEntityManager(); //Session
+		
+		
 		Account acc = new Account();
 		acc.setFirstName("John");
 		acc.setLastName("Doe");
 		acc.setEmail("user@usa.net");
+		
+		em.getTransaction().begin();
 		em.persist(acc);
 		em.getTransaction().commit();
 		
