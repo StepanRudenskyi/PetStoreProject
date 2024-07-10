@@ -1,16 +1,15 @@
 package org.example.petstore.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "ACCOUNT")
+@NoArgsConstructor
 @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a")
 public class Account {
 	
@@ -20,5 +19,8 @@ public class Account {
     private String firstName;
     private String lastName;
     private String email;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
 
 }
