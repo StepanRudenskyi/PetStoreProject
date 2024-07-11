@@ -31,11 +31,11 @@ public class JpaContainerApp {
 		public void run(ApplicationReadyEvent evt) {
 
 			// em.getTransaction().begin();
-			Account acc = new Account();
+			/*Account acc = new Account();
 			acc.setFirstName("John");
 			acc.setLastName("Doe");
 			acc.setEmail("user@usa.net");
-			em.persist(acc);
+			em.persist(acc);*/
 			// em.getTransaction().commit();
 
 		}
