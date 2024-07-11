@@ -3,11 +3,13 @@ package org.example.petstore.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "OrderLine")
 @Data
 @NoArgsConstructor
+@ToString(exclude = {"order", "product"})
 public class OrderLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

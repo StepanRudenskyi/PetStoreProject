@@ -3,6 +3,7 @@ package org.example.petstore.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Table(name = "`ORDER`")
+@ToString(exclude = {"customer", "orderLineList"})
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
