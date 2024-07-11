@@ -44,65 +44,123 @@ public class JpaIT {
         assertEquals("Doe", account.getLastName());
         assertEquals("user@usa.net", account.getEmail());
 
+        // retrieve and check orders for the acc
         List<Order> orders = account.getOrders();
         assertNotNull(orders);
         assertFalse(orders.isEmpty());
-        Order order = orders.get(0);
 
+        Order order = orders.get(0);
         assertNotNull(order);
-        assertEquals(2.99, order.getTotalAmount());
+
+        assertEquals(25.44, order.getTotalAmount());
         assertEquals("Credit card", order.getPaymentMethod());
         assertEquals("Completed", order.getStatus());
 
+        // get orderLines in order
         List<OrderLine> orderLines = order.getOrderLineList();
         assertNotNull(orderLines);
         assertFalse(orderLines.isEmpty());
-        OrderLine orderLine = orderLines.get(0);
 
-        assertNotNull(orderLine);
-        assertEquals(1, orderLine.getQuantity());
-        assertEquals("Milk", orderLine.getProduct().getName());
+        // check the first orderLine
+        OrderLine orderLine1 = orderLines.get(0);
+        assertNotNull(orderLine1);
+        assertEquals(1, orderLine1.getQuantity());
+        assertEquals("Milk", orderLine1.getProduct().getName());
 
-        Product product = orderLine.getProduct();
-        assertNotNull(product);
-        assertEquals("Milk", product.getName());
-        assertEquals("a carton of fresh milk", product.getDescription());
-        assertEquals(2.99, product.getRetailPrice());
+        Product milkProduct = orderLine1.getProduct();
+        assertNotNull(milkProduct);
+        assertEquals("Milk", milkProduct.getName());
+        assertEquals("a carton of fresh milk", milkProduct.getDescription());
+        assertEquals(2.99, milkProduct.getRetailPrice());
 
-        List<Inventory> inventories = product.getInventories();
+        // check inventories for milk
+        List<Inventory> inventories = milkProduct.getInventories();
         assertNotNull(inventories);
         assertFalse(inventories.isEmpty());
-        Inventory inventory = inventories.get(0);
 
+        Inventory inventory = inventories.get(0);
         assertNotNull(inventory);
         assertEquals(100, inventory.getQuantity());
         assertEquals(2.50, inventory.getWholeSalePrice());
 
-        ProductCategory category = product.getCategory();
+        // check category for milk
+        ProductCategory category = milkProduct.getCategory();
         assertNotNull(category);
         assertEquals("Dairy", category.getCategoryName());
         assertEquals("Fridge", category.getStorageCondition());
         assertEquals("None", category.getSaleLimitation());
 
-        Department department = em.find(Department.class, 1);
-        assertEquals("Diary department", department.getName());
+        // find the "milk" dep
+        Department department1 = em.find(Department.class, 1);
+        assertEquals("Diary department", department1.getName());
 
-        List<Product> productsInDepartment = department.getProducts();
-        assertNotNull(productsInDepartment);
-        assertFalse(productsInDepartment.isEmpty());
-        Product productInDepartment = productsInDepartment.get(0);
+        // check products in the department "diary"
+        List<Product> productsInDepartment1 = department1.getProducts();
+        assertNotNull(productsInDepartment1);
+        assertFalse(productsInDepartment1.isEmpty());
 
-        assertNotNull(productInDepartment);
-        assertEquals("Milk", productInDepartment.getName());
+        Product productInDepartment1 = productsInDepartment1.get(0);
+        assertNotNull(productInDepartment1);
+        assertEquals("Milk", productInDepartment1.getName());
 
-        List<Department> departmentsOfProduct = productInDepartment.getDepartments();
+        List<Department> departmentsOfProduct = productInDepartment1.getDepartments();
         assertNotNull(departmentsOfProduct);
         assertFalse(departmentsOfProduct.isEmpty());
-        Department departmentOfProduct = departmentsOfProduct.get(0);
 
+        Department departmentOfProduct = departmentsOfProduct.get(0);
         assertNotNull(departmentOfProduct);
         assertEquals("Diary department", departmentOfProduct.getName());
 
+        // find the "tea and coffee" dep
+        Department department2 = em.find(Department.class, 2);
+        assertEquals("Tea and Coffee", department2.getName());
+
+        // check products in the department "tea and coffee"
+        List<Product> productsInDepartment2 = department2.getProducts();
+        assertNotNull(productsInDepartment2);
+        assertFalse(productsInDepartment2.isEmpty());
+
+        // check for coffee in "tea and coffee" department
+        Product coffeeProduct = productsInDepartment2.stream()
+                .filter(p -> p.getName().equals("Coffee"))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(coffeeProduct);
+        assertEquals("Coffee", coffeeProduct.getName());
+        assertEquals("Roasted coffee beans", coffeeProduct.getDescription());
+        assertEquals(5.99, coffeeProduct.getRetailPrice());
+
+        // check inventories for Coffee product
+        List<Inventory> coffeeInventories = coffeeProduct.getInventories();
+        assertNotNull(coffeeInventories);
+        assertFalse(coffeeInventories.isEmpty());
+
+        Inventory coffeeInventory = coffeeInventories.get(0);
+        assertNotNull(coffeeInventory);
+        assertEquals(50, coffeeInventory.getQuantity());
+        assertEquals(5.50, coffeeInventory.getWholeSalePrice());
+
+        // check for Tea product in "Tea and Coffee" department
+        Product teaProduct = productsInDepartment2.stream()
+                .filter(p -> p.getName().equals("Tea"))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(teaProduct);
+        assertEquals("Tea", teaProduct.getName());
+        assertEquals("High-quality tea leaves", teaProduct.getDescription());
+        assertEquals(3.49, teaProduct.getRetailPrice());
+
+        // check inventories for Tea product
+        List<Inventory> teaInventories = teaProduct.getInventories();
+        assertNotNull(teaInventories);
+        assertFalse(teaInventories.isEmpty());
+
+        Inventory teaInventory = teaInventories.get(0);
+        assertNotNull(teaInventory);
+        assertEquals(100, teaInventory.getQuantity());
+        assertEquals(3.00, teaInventory.getWholeSalePrice());
     }
 
 }
