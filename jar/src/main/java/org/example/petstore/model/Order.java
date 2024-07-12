@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "`ORDER`")
+@Table(name = "`ORDER`")//NOTE:  ORDER is a reserved word in sql, avoid using reserver words in your names.  
 @ToString(exclude = {"customer", "orderLineList"})
 public class Order {
     @Id
@@ -35,6 +35,6 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private Account customer;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)//play with FetchType
     private List<OrderLine> orderLineList;
 }

@@ -1,6 +1,8 @@
 package org.example.petstore;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 import org.example.petstore.model.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +14,12 @@ import java.util.Date;
 public class TestDataUtil {
 
 
+	@PersistenceContext
+	EntityManager em;
+	
     @Transactional
-    public void createTestData(EntityManager em) {
+    //public void createTestData(EntityManager em) {
+    public void createTestData() {
 
         // create categories
         ProductCategory dairy = new ProductCategory();
