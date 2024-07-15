@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "ProductCategory")
+@Table(name = "PRODUCT_CATEGORY")
 @ToString(exclude = "products")
 public class ProductCategory {
     @Id
@@ -27,7 +27,7 @@ public class ProductCategory {
     @Column(name = "sale_limitation")
     private String saleLimitation;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Product> products;
 
 }

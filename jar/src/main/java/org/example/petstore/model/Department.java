@@ -21,6 +21,6 @@ public class Department {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "departments")
+    @ManyToMany(mappedBy = "departments", fetch = FetchType.LAZY)
     private List<Product> products;
 }

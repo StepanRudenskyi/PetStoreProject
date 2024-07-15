@@ -30,7 +30,7 @@ public class Inventory {
     @Column(name = "best_before")
     private Date bestBefore;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
 }

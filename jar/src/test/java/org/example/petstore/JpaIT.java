@@ -24,7 +24,7 @@ public class JpaIT {
 
     @BeforeEach
     public void setUp() {
-        testDataUtil.createTestData(em);
+        testDataUtil.createTestData();
     }
 
     @Test

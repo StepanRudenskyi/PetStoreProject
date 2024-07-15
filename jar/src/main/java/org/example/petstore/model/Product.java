@@ -27,11 +27,11 @@ public class Product {
     @Column(name = "retail_price")
     private Double retailPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private ProductCategory category;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "productallocation",
             joinColumns = {@JoinColumn(name = "product_id")},
@@ -39,9 +39,9 @@ public class Product {
     )
     private List<Department> departments;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Inventory> inventories;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<OrderLine> orderLines;
 }

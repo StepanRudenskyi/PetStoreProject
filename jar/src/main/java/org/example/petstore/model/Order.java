@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "`ORDER`")//NOTE:  ORDER is a reserved word in sql, avoid using reserver words in your names.  
+@Table(name = "CUSTOMER_ORDER")
 @ToString(exclude = {"customer", "orderLineList"})
 public class Order {
     @Id
@@ -31,7 +31,7 @@ public class Order {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     private Account customer;
 
