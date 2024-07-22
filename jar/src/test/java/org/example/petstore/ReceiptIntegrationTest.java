@@ -6,14 +6,20 @@ import jakarta.persistence.TypedQuery;
 import org.example.petstore.model.Account;
 import org.example.petstore.model.Order;
 import org.example.petstore.model.OrderLine;
+import org.example.petstore.service.OrderService;
+import org.example.petstore.service.OrderServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Proxy;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(classes = {PetstoreTestConfig.class})
 @Sql(scripts = {"/import-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
@@ -34,15 +40,26 @@ public class ReceiptIntegrationTest {
     //see also: https://jpa-buddy.com/guides/writing-integration-tests-in-spring-boot-app-with-jpa/
     ///@Autowired  
     private TestDataUtil testDataUtil;
+    private OrderService orderServiceProxy;
 
-    ///@BeforeEach
+    @BeforeEach
     public void setUp() {
     	/// you should not pass EntityManager anywhere but get it when you need it and where you need it.
     	//EntityManager is context specific and *container* managed. Container knows when to create a new instance and when to use existsing  
         //testDataUtil.createTestData(em);
-    	testDataUtil.createTestData();
+        OrderService orderServiceImpl = new OrderServiceImpl();
+        orderServiceProxy = (OrderService) Proxy.newProxyInstance(
+                OrderService.class.getClassLoader(),
+                new Class[]{OrderService.class},
+                new TimingDynamicInvocationHandler(orderServiceImpl));
+
+//    	testDataUtil.createTestData();
     }
-    
+
+    @Test
+    public void testOrderProcessing() {
+        orderServiceProxy.processOrder(1);
+    }
     
     @Test
     public void testNoOp() {
@@ -56,7 +73,7 @@ public class ReceiptIntegrationTest {
      *  see difference if you change FetchType 
      * 
      */
-    
+
     
     @Test
     @Transactional
@@ -68,6 +85,14 @@ public class ReceiptIntegrationTest {
     @Transactional
     public void testGenerateReceiptHQL() {
         generateReceiptHQL(1, 1);
+    }
+
+    @Test
+    @Transactional
+    public void testGenerateOrderHistoryWithinDateRange() {
+        LocalDateTime startDate = LocalDateTime.of(2024, 7, 1, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(2024, 7, 31, 23, 59);
+        generateOrderHistoryWithinDateRange(startDate, endDate);
     }
 
     @Transactional
@@ -99,6 +124,7 @@ public class ReceiptIntegrationTest {
     public void generateReceiptHQL(int accountId, int orderId) {
         TypedQuery<Order> query = em.createQuery(
                 "SELECT o FROM Order o " +
+                        "JOIN FETCH o.customer a " +
                         "JOIN FETCH o.orderLineList ol " +
                         "JOIN FETCH ol.product " +
                         "WHERE o.customer.id = :accountId AND o.id = :orderId", Order.class
@@ -110,6 +136,38 @@ public class ReceiptIntegrationTest {
         assertNotNull(order);
 
         String receipt = generateReceipt(order);
+        System.out.println(receipt);
+    }
+
+
+    @Transactional
+    public void generateOrderHistoryWithinDateRange(LocalDateTime startDate, LocalDateTime endDate) {
+
+        TypedQuery<Order> query = em.createQuery(
+                "SELECT o FROM Order o " +
+                        "JOIN FETCH o.customer a " +
+                        "JOIN FETCH o.orderLineList oll " +
+                        "JOIN FETCH oll.product p " +
+                        "WHERE o.orderDate " +
+                        "BETWEEN :startDate AND :endDate", Order.class
+        );
+
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+
+        List<Order> orders = query.getResultList();
+
+
+        assertNotNull(orders);
+        assertFalse(orders.isEmpty());
+
+        StringBuilder receipt = new StringBuilder();
+        receipt.append("\n----- Receipts History for Date Range -----").append("\n\n");
+
+        for (Order order : orders) {
+            receipt.append(generateReceipt(order)).append("\n");
+        }
+
         System.out.println(receipt);
     }
 

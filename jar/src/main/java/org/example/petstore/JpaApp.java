@@ -1,10 +1,14 @@
 package org.example.petstore;
 
 import org.example.petstore.model.Account;
+import org.example.petstore.service.AccountService;
+import org.example.petstore.service.AccountServiceImpl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+
+import java.lang.reflect.Proxy;
 
 public class JpaApp {
 
@@ -14,20 +18,21 @@ public class JpaApp {
 	}
 
 	private void demo1() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("petstore");//SessionFactory
-		
-		
-		EntityManager em = emf.createEntityManager(); //Session
-		
-		
+
+		AccountService accountServiceImpl = new AccountServiceImpl();
+
+		AccountService accountServiceProxy = (AccountService) Proxy.newProxyInstance(
+				AccountService.class.getClassLoader(),
+				new Class[]{AccountService.class},
+                new TimingDynamicInvocationHandler(accountServiceImpl));
+
+
 		Account acc = new Account();
 		acc.setFirstName("John");
 		acc.setLastName("Doe");
 		acc.setEmail("user@usa.net");
-		
-		em.getTransaction().begin();
-		em.persist(acc);
-		em.getTransaction().commit();
+
+		accountServiceProxy.saveAccount(acc);
 		
 		
 		
