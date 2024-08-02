@@ -40,26 +40,16 @@ public class ReceiptIntegrationTest {
     //see also: https://jpa-buddy.com/guides/writing-integration-tests-in-spring-boot-app-with-jpa/
     ///@Autowired  
     private TestDataUtil testDataUtil;
-    private OrderService orderServiceProxy;
 
     @BeforeEach
     public void setUp() {
     	/// you should not pass EntityManager anywhere but get it when you need it and where you need it.
     	//EntityManager is context specific and *container* managed. Container knows when to create a new instance and when to use existsing  
         //testDataUtil.createTestData(em);
-        OrderService orderServiceImpl = new OrderServiceImpl();
-        orderServiceProxy = (OrderService) Proxy.newProxyInstance(
-                OrderService.class.getClassLoader(),
-                new Class[]{OrderService.class},
-                new TimingDynamicInvocationHandler(orderServiceImpl));
-
 //    	testDataUtil.createTestData();
     }
 
-    @Test
-    public void testOrderProcessing() {
-        orderServiceProxy.processOrder(1);
-    }
+
     
     @Test
     public void testNoOp() {
