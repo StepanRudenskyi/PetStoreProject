@@ -6,15 +6,12 @@ import jakarta.persistence.TypedQuery;
 import org.example.petstore.model.Account;
 import org.example.petstore.model.Order;
 import org.example.petstore.model.OrderLine;
-import org.example.petstore.service.OrderService;
-import org.example.petstore.service.OrderServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Proxy;
 import java.time.LocalDateTime;
 import java.util.List;
 
