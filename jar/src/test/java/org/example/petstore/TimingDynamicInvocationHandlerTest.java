@@ -1,6 +1,7 @@
 package org.example.petstore;
 
 import org.example.petstore.service.OrderService;
+import org.example.petstore.service.OrderServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,11 +20,11 @@ public class TimingDynamicInvocationHandlerTest {
 
     @BeforeEach
     public void setUp() {
-        OrderService orderServiceImpl = new OrderService();
+        OrderService orderService = new OrderServiceImpl();
         orderServiceProxy = (OrderService) Proxy.newProxyInstance(
                 OrderService.class.getClassLoader(),
                 new Class[]{OrderService.class},
-                new TimingDynamicInvocationHandler(orderServiceImpl));
+                new TimingDynamicInvocationHandler(orderService));
     }
     @Test
     public void testOrderProcessing() {
