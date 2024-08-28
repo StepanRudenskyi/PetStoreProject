@@ -18,11 +18,3 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     Optional<Order> findReceipt(@Param("accountId") int accountId,
                                 @Param("orderId") int orderId);
 }
-
-
-
-
-
-
-
-
