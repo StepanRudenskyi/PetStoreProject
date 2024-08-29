@@ -1,6 +1,5 @@
 package org.example.petstore.config;
 
-import org.example.petstore.context.OrderProcessingContext;
 import org.example.petstore.context.OrderProcessingContextFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,10 +10,4 @@ public class FactoryBeanAppConfig {
     public OrderProcessingContextFactoryBean orderProcessingContextFactoryBean() {
         return new OrderProcessingContextFactoryBean();
     }
-
-    @Bean
-    public OrderProcessingContext orderProcessingContext() {
-        return orderProcessingContextFactoryBean().getObject();
-    }
-
 }
