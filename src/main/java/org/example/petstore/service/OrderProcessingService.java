@@ -1,12 +1,14 @@
-package org.example.petstore.context;
+package org.example.petstore.service;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.example.petstore.model.Order;
+import org.springframework.stereotype.Service;
 
+@Service
 @Getter
 @Setter
-public class OrderProcessingContext {
+public class OrderProcessingService {
     private boolean isDiscountApplied;
     private String validationMessage;
 

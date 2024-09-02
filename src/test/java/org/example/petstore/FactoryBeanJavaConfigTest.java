@@ -1,7 +1,7 @@
 package org.example.petstore;
 
 import org.example.petstore.config.FactoryBeanAppConfig;
-import org.example.petstore.context.OrderProcessingContext;
+import org.example.petstore.service.OrderProcessingService;
 import org.example.petstore.model.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,24 +13,24 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FactoryBeanJavaConfigTest {
 
     @Autowired
-    private OrderProcessingContext orderProcessingContext;
+    private OrderProcessingService orderProcessingService;
 
     @Test
     public void testProcessingContext() {
         Order order = new Order();
         order.setTotalAmount(150.0);
 
-        orderProcessingContext.applyDiscountLogic(order);
+        orderProcessingService.applyDiscountLogic(order);
 
-        assertTrue(orderProcessingContext.isDiscountApplied());
-        assertEquals("Discount applied for orders over $100", orderProcessingContext.getValidationMessage());
+        assertTrue(orderProcessingService.isDiscountApplied());
+        assertEquals("Discount applied for orders over $100", orderProcessingService.getValidationMessage());
 
 
         order.setTotalAmount(90.0);
 
-        orderProcessingContext.applyDiscountLogic(order);
-        assertFalse(orderProcessingContext.isDiscountApplied());
-        assertEquals("No discount applied", orderProcessingContext.getValidationMessage());
+        orderProcessingService.applyDiscountLogic(order);
+        assertFalse(orderProcessingService.isDiscountApplied());
+        assertEquals("No discount applied", orderProcessingService.getValidationMessage());
 
     }
 }

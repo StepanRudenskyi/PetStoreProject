@@ -3,8 +3,7 @@ package org.example.petstore.controller;
 import jakarta.persistence.NoResultException;
 import org.example.petstore.dto.ReceiptDto;
 import org.example.petstore.model.Order;
-import org.example.petstore.repository.OrderRepository;
-import org.example.petstore.service.OrderServiceImpl;
+import org.example.petstore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ReceiptController {
 
     @Autowired
-    private OrderServiceImpl orderService;
+    private OrderService orderService;
 
     @GetMapping("/receipt")
     public String getReceipt(@RequestParam("accountId") int accountId,
@@ -36,8 +35,8 @@ public class ReceiptController {
             Order order = orderService.getOrderById(orderId);
 
             model.addAttribute("order", order);
-            model.addAttribute("discountApplied", orderService.getOrderProcessingContext().isDiscountApplied());
-            model.addAttribute("validationMessage", orderService.getOrderProcessingContext().getValidationMessage());
+            model.addAttribute("discountApplied", orderService.getOrderProcessingService().isDiscountApplied());
+            model.addAttribute("validationMessage", orderService.getOrderProcessingService().getValidationMessage());
 
             return "processedOrder";
         } catch (NoResultException e) {

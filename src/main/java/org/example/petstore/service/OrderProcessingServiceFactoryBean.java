@@ -1,5 +1,6 @@
-package org.example.petstore.context;
+package org.example.petstore.service;
 
+import org.example.petstore.service.OrderProcessingService;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -7,15 +8,15 @@ import org.springframework.web.context.WebApplicationContext;
 
 @Component
 @Scope(WebApplicationContext.SCOPE_REQUEST)
-public class OrderProcessingContextFactoryBean implements FactoryBean<OrderProcessingContext> {
+public class OrderProcessingServiceFactoryBean implements FactoryBean<OrderProcessingService> {
     @Override
-    public OrderProcessingContext getObject() {
-        return new OrderProcessingContext();
+    public OrderProcessingService getObject() {
+        return new OrderProcessingService();
     }
 
     @Override
     public Class<?> getObjectType() {
-        return OrderProcessingContext.class;
+        return OrderProcessingService.class;
     }
 
     @Override
