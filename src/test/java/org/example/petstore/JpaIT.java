@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = {PetstoreTestConfig.class})
+@SpringBootTest
 @Sql(scripts = "/reset.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 public class JpaIT {
 
@@ -55,8 +55,8 @@ public class JpaIT {
         assertNotNull(order);
 
         assertEquals(25.44, order.getTotalAmount());
-        assertEquals("Credit card", order.getPaymentMethod());
-        assertEquals("Completed", order.getStatus());
+        assertEquals("CREDIT_CARD", order.getPaymentMethod().toString());
+        assertEquals("COMPLETED", order.getStatus().toString());
 
         // get orderLines in order
         List<OrderLine> orderLines = order.getOrderLineList();

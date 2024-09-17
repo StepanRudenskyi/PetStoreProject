@@ -18,7 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(classes = {PetstoreTestConfig.class})
+@SpringBootTest
 @Sql(scripts = {"/import-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = "/reset.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 public class ReceiptIntegrationTest {

@@ -3,6 +3,8 @@ package org.example.petstore;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+import org.example.petstore.enums.OrderStatus;
+import org.example.petstore.enums.PaymentMethod;
 import org.example.petstore.model.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,8 +88,8 @@ public class TestDataUtil {
         Order order = new Order();
         order.setOrderDate(new Date());
         order.setTotalAmount(totalAmount);
-        order.setPaymentMethod("Credit card");
-        order.setStatus("Completed");
+        order.setPaymentMethod(PaymentMethod.CREDIT_CARD);
+        order.setStatus(OrderStatus.COMPLETED);
         order.setCustomer(acc);
 
         orderLine1.setOrder(order);
