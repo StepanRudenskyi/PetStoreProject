@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pomodorio</title>
+    <link th:href="@{/css/receipt.css}" rel="stylesheet">
+    <link rel="icon" th:href="@{/images/pomodorio-icon.png}" type="image/png">
+</head>
+
+<body>
+<h1 th:text="'Receipt for ' + ${receipt.accountFirstName} + ' ' + ${receipt.accountLastName}">Receipt for Firstname Lastname</h1>
+
+<p>Order ID: <span th:text="${receipt.orderId}">Order Id</span></p>
+<p>Order Date: <span th:text="${receipt.orderDate}">2024-09-15</span></p>
+<p>Status: <span th:text="${receipt.status}">Completed</span></p>
+<p>Total Amount: $<span th:text="${receipt.totalAmount}">$</span></p>
+
+<h2>Order Lines:</h2>
+<ul>
+    <li th:each="line : ${receipt.orderLines}">
+        <span th:text="${line.productName}">Product Name</span>:
+        <span th:text="${line.quantity}">1</span> x $<span th:text="${#numbers.formatDecimal(line.price, 2, 2)}"></span>
+    </li>
+</ul>
+<a th:href="@{/}" class="back-to-shopping-btn">Back to shopping</a>
+</body>
+</html>

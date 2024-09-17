@@ -1,0 +1,225 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: 'Krona One', sans-serif;
+}
+
+/* container for the background image */
+.background-image {
+    position: relative;
+    background: url('../images/landing-background.png') center;
+    background-size: cover;
+    height: 100vh;
+}
+
+.header nav a:hover {
+    color: #85BAA1;
+}
+
+.header {
+    position: absolute;
+    width: 90%;
+    color: #D6D6D6;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header .logo {
+    flex: 1;
+}
+
+.header .nav-container {
+    display: flex;
+    justify-content: center;
+    flex: 2;
+}
+
+.header nav {
+    padding-left: 100px;
+    display: flex;
+    gap: 20px;
+}
+
+.header .cart-button {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header .logo h1 {
+    font-family: 'Krona One', sans-serif;
+    font-size: 40px;
+    margin: 0;
+}
+
+.header nav a {
+    color: #D6D6D6;
+    text-decoration: none;
+    margin: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+
+}
+
+
+/*Pomodorio link*/
+.logo:link,
+.logo:visited {
+    color: #D6D6D6;
+    text-decoration: none;
+}
+
+.logo:active {
+    color: #D6D6D6;
+    text-decoration: none;
+}
+
+
+
+
+.cart-button {
+    fill: #D6D6D6;
+    width: 24px;
+    height: 24px;
+    transition: 0.3s;
+
+}
+
+.cart-button:hover {
+    fill: #85BAA1;
+}
+
+/* Style for Section 1 */
+.section1 {
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: end;
+    text-align: left;
+    height: 100%;
+    padding: 0 20px;
+}
+
+.section1-content {
+    max-width: 250px;
+    margin-bottom: 60px;
+    margin-left: 20px;
+}
+
+.section1 p {
+    color: #D6D6D6;
+    font-size: 20px;
+    line-height: 1.5;
+
+}
+
+
+.btn-view-products {
+    display: block;
+    text-align: center;
+    background-color: #CCE3DE;;
+    color: #1E1E24;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: 0.3s;
+
+}
+
+.btn-view-products:hover {
+    background-color: #85BAA1;
+    color: #1E1E24;
+}
+
+/* Style for Section 2 */
+.section2 {
+    display: initial;
+    background-color: #85BAA1;
+
+}
+
+.section2-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+
+}
+
+.section2 h2 {
+    text-align: center;
+    font-size: 40px;
+}
+
+.section2-text {
+    margin-left: 40px;
+    font-size: 25px;
+    max-width: 40%;
+}
+
+.section2-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-right: 30px;
+}
+
+/* Style for Product Section */
+
+.products-section {
+    text-align: center;
+    height: auto;
+    background-color: #CCE3DE;
+}
+.products-section h2 {
+    padding-top: 50px;
+    font-size: 40px;
+}
+
+.category-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding-bottom: 100px;
+}
+
+.category-item {
+    width: calc(33.33% - 20px);
+    max-width: 350px;
+    padding-top: 100px;
+    text-align: center;
+}
+
+.category-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.category-item p {
+    margin: 10px 0 0;
+    font-weight: bold;
+}
+
+.category-item a {
+    text-decoration: none;
+    color: inherit;
+}
+
+@media (max-width: 1512px) {
+    .category-item {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .category-item {
+        width: calc(100% - 20px);
+    }
+}

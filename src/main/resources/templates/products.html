@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Landing Page</title>
+    <link th:href="@{/css/products.css}" rel="stylesheet">
+    <link rel="icon" th:href="@{/images/pomodorio-icon.png}" type="image/png">
+</head>
+<body>
+<header>
+    <h1>Product Store</h1>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/cart}">Cart</a>
+    </nav>
+</header>
+
+<h1>Products by Category</h1>
+
+<div th:if="${not #lists.isEmpty(successMessage)}" class="alert-success" th:text="${successMessage}"></div>
+
+<div th:each="category : ${categories}">
+    <h2 class="category-title" th:text="${category.categoryName}"></h2>
+    <ul class="product-list">
+        <li th:each="product : ${category.products}" class="product-item">
+            <p class="product-name" th:text="${product.name} + ' - $' + ${product.retailPrice}"></p>
+            <p class="product-description" th:text="${product.description}"></p>
+            <form action="#" th:action="@{/cart/add}" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}"/>
+                <label th:for="'quantity-' + ${product.id}">Quantity:</label>
+                <input type="number" th:id="'quantity-' + ${product.id}" name="quantity" value="0" min="1"/>
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
