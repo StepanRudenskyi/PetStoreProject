@@ -22,8 +22,8 @@ public class OrderMapper {
         dto.setAccountFirstName(account.getFirstName());
         dto.setAccountLastName(account.getLastName());
         dto.setOrderId(order.getOrderId());
-        dto.setPaymentMethod(order.getPaymentMethod());
-        dto.setStatus(order.getStatus());
+        dto.setPaymentMethod(order.getPaymentMethod().name());
+        dto.setStatus(order.getStatus().name());
         dto.setOrderDate(order.getOrderDate());
         dto.setTotalAmount(order.getTotalAmount());
 
