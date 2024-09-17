@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.example.petstore.enums.OrderStatus;
+import org.example.petstore.enums.PaymentMethod;
 
 import java.util.Date;
 import java.util.List;
@@ -25,11 +27,13 @@ public class Order {
     @Column(name = "total_amount")
     private Double totalAmount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "payment_method")
-    private String paymentMethod;
+    private PaymentMethod paymentMethod;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
