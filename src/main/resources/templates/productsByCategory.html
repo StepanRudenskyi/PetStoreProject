@@ -71,53 +71,9 @@
 
 
 <script>
-/*
-
-    // success message
-    document.addEventListener("DOMContentLoaded", function () {
-        function showAlert(productId) {
-            const successMessage = document.getElementById(`success-message-${productId}`);
-            if (successMessage) {
-                successMessage.style.display = 'block'; // Показати повідомлення
-                setTimeout(() => {
-                    console.log('Setting opacity to 1');  // Дебаг: повідомлення стало видимим
-                    successMessage.style.opacity = '1'; // Додати плавний перехід
-                    setTimeout(() => {
-                        console.log('Setting opacity to 0'); // Дебаг: повідомлення починає зникати
-                        successMessage.style.opacity = '0'; // Почати анімацію зникнення
-                        setTimeout(() => {
-                            console.log('Hiding element'); // Дебаг: повідомлення повністю зникло
-                            successMessage.style.display = 'none'; // Приховати елемент після анімації
-                        }, 1000); // час, який відповідає тривалості переходу opacity (1 секунда)
-                    }, 3000); // час показу повідомлення (3 секунди)
-                }, 0); // Почати анімацію одразу
-            }
-        }
-
-        // AJAX
-        window.addToCart = function (productId) {
-            showAlert(productId);
-            const form = document.querySelector(`form[data-product-id="${productId}"]`);
-            const formData = new FormData(form);
-
-            fetch('/cart/add', { method: 'POST', body: formData })
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(error => console.error('Error:', error));
-
-            return false;
-        };
-    });
-
-*/
-
-
-
-
-
 
     (function () {
-        // знайти всі quantity-selectors
+        // find all quantity-selectors
         document.querySelectorAll(".quantity").forEach(function (quantityContainer) {
             const minusBtn = quantityContainer.querySelector(".minus");
             const plusBtn = quantityContainer.querySelector(".plus");
@@ -125,7 +81,6 @@
 
             updateButtonStates();
 
-            // слухаємо кліки на кнопки
             quantityContainer.addEventListener("click", handleButtonClick);
             inputBox.addEventListener("input", handleQuantityChange);
 
@@ -158,7 +113,7 @@
             }
 
             function handleQuantityChange() {
-                let value = parseInt(inputBox.value) || 1;  // Якщо value NaN, встановити 1
+                let value = parseInt(inputBox.value) || 1;
                 updateButtonStates();
                 console.log("Quantity changed:", value);
             }
