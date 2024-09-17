@@ -17,10 +17,10 @@ INSERT INTO inventory (product_id,quantity,whole_sale_price,best_before,inventor
                                                                                             (4,500,0.79,'2026-01-01 16:39:40.112000','2024-07-11 17:39:40.112000');
 INSERT INTO productallocation (department_id,product_id) VALUES (1,1), (2,2), (2,3), (3,4);
 -- orders
-INSERT INTO customer_order (customer_id,total_amount,order_date,payment_method,status) VALUES (1,25.44,'2024-07-11 17:39:40.112000','Credit card','Completed'),
-                                                                                       (1,7.97,'2024-07-03 11:30:10.010000','Credit card','Completed'),
-                                                                                       (1,20.41,'2024-07-14 09:18:32.107324','Cash','Completed'),
-                                                                                        (2,9.99,'2024-07-15 19:18:32.107324','Credit Card','Completed');
+INSERT INTO customer_order (customer_id,total_amount,order_date,payment_method,status) VALUES (1,25.44,'2024-07-11 17:39:40.112000','CREDIT_CARD','Completed'),
+                                                                                       (1,7.97,'2024-07-03 11:30:10.010000','CREDIT_CARD','Completed'),
+                                                                                       (1,20.41,'2024-07-14 09:18:32.107324','CASH','Completed'),
+                                                                                        (2,9.99,'2024-07-15 19:18:32.107324','CREDIT_CARD','Completed');
 INSERT INTO order_line (allocation_id,order_id,quantity) VALUES (1,1,1), (2,1,2), (3,1,3),
                                                                 (4,2,2), (2,2,1),
                                                                 (1,3,2), (2,3,1), (3,3,1), (4,3,5),
