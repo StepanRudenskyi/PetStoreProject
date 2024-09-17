@@ -4,6 +4,7 @@ import jakarta.persistence.NoResultException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.petstore.dto.ReceiptDto;
+import org.example.petstore.enums.OrderStatus;
 import org.example.petstore.mapper.OrderMapper;
 import org.example.petstore.model.Order;
 import org.example.petstore.repository.OrderRepository;
@@ -15,10 +16,10 @@ import java.util.Optional;
 @Service
 @NoArgsConstructor
 public class OrderService {
-
     private OrderRepository orderRepository;
     @Getter
     private OrderProcessingService orderProcessingService;
+
     @Autowired
     public OrderService(OrderRepository orderRepository, OrderProcessingService orderProcessingService) {
         this.orderRepository = orderRepository;
@@ -41,6 +42,7 @@ public class OrderService {
 
         if (orderOptional.isPresent()) {
             Order existingOrder = orderOptional.get();
+            existingOrder.setStatus(OrderStatus.COMPLETED);
             return OrderMapper.toDto(existingOrder);
         } else {
             throw new NoResultException("Order with ID: " + orderId + " not found");
@@ -51,4 +53,15 @@ public class OrderService {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new NoResultException("Order with ID: " + orderId + " not found"));
     }
+
+    public void updateOrderStatus(int orderId, OrderStatus status) {
+        Order order = getOrderById(orderId);
+        order.setStatus(status);
+        orderRepository.save(order);
+    }
+
+    public Order saveOrder(Order order) {
+        return orderRepository.save(order);
+    }
+
 }

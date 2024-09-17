@@ -1,5 +1,6 @@
 package org.example.petstore.service;
 
+import jakarta.persistence.NoResultException;
 import org.example.petstore.model.Product;
 import org.example.petstore.model.ProductCategory;
 import org.example.petstore.repository.ProductCategoryRepository;
@@ -21,7 +22,8 @@ public class ProductService {
     }
 
     public List<Product> getProductsByCategory(Integer categoryId) {
-        return productRepository.findByCategory_CategoryId(categoryId);
+        return productRepository.findByCategory_CategoryId(categoryId)
+                .orElseThrow(() -> new NoResultException("Products with ID: " + categoryId + " not found"));
     }
 
 }
