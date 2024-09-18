@@ -16,12 +16,16 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 public class CartServiceTest {
 
     @Mock
     private ProductRepository productRepository;
+
+    @Mock
+    private ProductValidator productValidator;
 
     @Mock
     private ProductCategoryRepository productCategoryRepository;
@@ -42,11 +46,13 @@ public class CartServiceTest {
         int productId = 1;
         double price = 2.99;
         int quantity = 2;
+
         Product product = new Product();
         product.setId(productId);
         product.setRetailPrice(price);
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        doNothing().when(productValidator).validateQuantity(productId, quantity);
 
         cartService.addProductToCart(cart, productId, quantity);
 
