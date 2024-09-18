@@ -139,9 +139,18 @@ body {
 }
 
 .alert-success {
-    margin: 0 600px 0 200px;
+    margin: 0 600px 0 0;
     background-color: #d4edda;
     color: #155724;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    margin: 0 1000px 0 0;
+    background-color: #b00000;
+    color: #ffffff;
     padding: 15px;
     border-radius: 5px;
     border: 1px solid #c3e6cb;

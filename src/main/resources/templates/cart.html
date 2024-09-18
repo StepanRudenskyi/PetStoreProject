@@ -27,6 +27,7 @@
 <div class="cart-container">
   <h1>Your Cart</h1>
 
+  <div th:if="${errorMessage != null}" class="alert-error" th:text="${errorMessage}"></div>
   <div th:if="${successMessage != null}" class="alert-success" th:text="${successMessage}"></div>
 
   <div th:each="item : ${cart.productQuantityMap}" class="cart-item">

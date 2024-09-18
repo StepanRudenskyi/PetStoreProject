@@ -27,6 +27,9 @@ public class CartService {
     @Autowired
     private ProductValidator productValidator;
 
+    @Autowired
+    private CartValidator cartValidator;
+
     public void addProductToCart(Cart cart, int productId, int quantity) {
         Optional<Product> productOptional = productRepository.findById(productId);
 
@@ -65,6 +68,12 @@ public class CartService {
 
     public List<ProductCategory> getAllCategoriesWithProducts() {
         return productCategoryRepository.findAllWithProducts();
+    }
+
+    public void validateCartForCheckout(Cart cart) {
+        if (cartValidator.isCartEmpty(cart)) {
+            throw new IllegalArgumentException("Your cart is empty");
+        }
     }
 
 }
