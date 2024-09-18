@@ -35,7 +35,10 @@ public class Cart {
         calculateTotalPrice();
     }
 
-    //TODO: add clear cart
+    public void clear() {
+        productQuantityMap.clear();
+        totalPrice = 0.0;
+    }
 
     private void calculateTotalPrice() {
         totalPrice = productQuantityMap.entrySet().stream()

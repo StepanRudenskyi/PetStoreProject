@@ -37,7 +37,7 @@ public class CheckoutService {
             // create order line
             List<OrderLine> orderLines = createOrderLines(cart, savedOrder);
             orderLineRepository.saveAll(orderLines);
-            // TODO: clear cart
+            cart.clear();
             return savedOrder;
         } catch (Exception e) {
             throw new RuntimeException("Failed to process checkout", e);

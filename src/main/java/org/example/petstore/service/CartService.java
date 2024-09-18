@@ -21,11 +21,23 @@ public class CartService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private InventoryService inventoryService;
+
+    @Autowired
+    private ProductValidator productValidator;
+
     public void addProductToCart(Cart cart, int productId, int quantity) {
         Optional<Product> productOptional = productRepository.findById(productId);
 
         if (productOptional.isPresent()) {
             Product existingProduct = productOptional.get();
+            // quantity validation
+            productValidator.validateQuantity(productId, quantity);
+
+            // decrease quantity value in the inventory table
+            inventoryService.reduceStock(productId, quantity);
+
             cart.addItem(existingProduct, quantity);
         } else {
             throw new NoResultException("Product with ID: " + productId + " not found");
@@ -40,6 +52,11 @@ public class CartService {
 
         if (productOptional.isPresent()) {
             Product existingProduct = productOptional.get();
+
+            // restore stock quantity
+            int quantity = cart.getProductQuantityMap().get(existingProduct);
+            inventoryService.restoreStock(productId, quantity);
+
             cart.removeItem(existingProduct);
         } else {
             throw new NoResultException("Product with ID: " + productId + " not found in the cart");

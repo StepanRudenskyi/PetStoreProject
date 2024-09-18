@@ -42,7 +42,10 @@ public class OrderService {
 
         if (orderOptional.isPresent()) {
             Order existingOrder = orderOptional.get();
-            existingOrder.setStatus(OrderStatus.COMPLETED);
+
+            // update status to completed
+            updateOrderStatus(orderId, OrderStatus.COMPLETED);
+
             return OrderMapper.toDto(existingOrder);
         } else {
             throw new NoResultException("Order with ID: " + orderId + " not found");

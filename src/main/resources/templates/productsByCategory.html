@@ -54,7 +54,9 @@
                                 <button class="minus" type="button" aria-label="Decrease">&minus;</button>
                                 <input type="number" class="input-box" name="quantity"
                                        th:id="'quantity-' + ${product.id}"
-                                       value="0" min="0" max="99999">
+                                       value="0" min="0"
+                                       th:max="${productStockMap[product.id]}"
+                                       oninvalid="setCustomValidity('Sorry, we only have ' + this.max + ' items in stock')">
                                 <button class="plus" type="button" aria-label="Increase">&plus;</button>
                             </div>
 
