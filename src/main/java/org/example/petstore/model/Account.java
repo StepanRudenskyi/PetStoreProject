@@ -24,7 +24,13 @@ public class Account {
 
     @Column(name = "last_name")
     private String lastName;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Order> orders;
