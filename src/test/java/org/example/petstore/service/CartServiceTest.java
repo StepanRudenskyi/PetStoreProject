@@ -6,6 +6,8 @@ import org.example.petstore.model.Product;
 import org.example.petstore.model.ProductCategory;
 import org.example.petstore.repository.ProductCategoryRepository;
 import org.example.petstore.repository.ProductRepository;
+import org.example.petstore.service.cart.CartService;
+import org.example.petstore.service.product.ProductValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

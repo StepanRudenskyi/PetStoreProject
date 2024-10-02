@@ -1,7 +1,7 @@
 package org.example.petstore.controller;
 
 import org.example.petstore.model.Cart;
-import org.example.petstore.service.CartService;
+import org.example.petstore.service.cart.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

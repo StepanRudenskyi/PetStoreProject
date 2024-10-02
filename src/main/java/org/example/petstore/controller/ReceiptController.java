@@ -3,7 +3,7 @@ package org.example.petstore.controller;
 import jakarta.persistence.NoResultException;
 import org.example.petstore.dto.ReceiptDto;
 import org.example.petstore.model.Order;
-import org.example.petstore.service.OrderService;
+import org.example.petstore.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

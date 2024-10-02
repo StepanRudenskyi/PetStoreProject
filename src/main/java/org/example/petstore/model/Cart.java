@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +43,8 @@ public class Cart {
 
     private void calculateTotalPrice() {
         totalPrice = productQuantityMap.entrySet().stream()
-                .mapToDouble(item -> item.getKey().getRetailPrice() * item.getValue())
+                .mapToDouble(item -> item.getKey().getRetailPrice().multiply(BigDecimal.valueOf(item.getValue()))
+                        .doubleValue())
                 .sum();
     }
 

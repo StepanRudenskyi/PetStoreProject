@@ -1,7 +1,7 @@
 package org.example.petstore;
 
 import org.example.petstore.config.FactoryBeanAppConfig;
-import org.example.petstore.service.OrderProcessingService;
+import org.example.petstore.service.order.OrderProcessingService;
 import org.example.petstore.model.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

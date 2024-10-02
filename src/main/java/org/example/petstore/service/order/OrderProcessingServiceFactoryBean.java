@@ -1,6 +1,5 @@
-package org.example.petstore.service;
+package org.example.petstore.service.order;
 
-import org.example.petstore.service.OrderProcessingService;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

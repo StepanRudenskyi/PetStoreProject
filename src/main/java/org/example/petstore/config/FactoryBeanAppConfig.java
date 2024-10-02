@@ -1,6 +1,6 @@
 package org.example.petstore.config;
 
-import org.example.petstore.service.OrderProcessingServiceFactoryBean;
+import org.example.petstore.service.order.OrderProcessingServiceFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

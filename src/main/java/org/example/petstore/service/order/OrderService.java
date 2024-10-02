@@ -1,4 +1,4 @@
-package org.example.petstore.service;
+package org.example.petstore.service.order;
 
 import jakarta.persistence.NoResultException;
 import lombok.Getter;

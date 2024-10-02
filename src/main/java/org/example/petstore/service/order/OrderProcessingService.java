@@ -1,4 +1,4 @@
-package org.example.petstore.service;
+package org.example.petstore.service.order;
 
 import lombok.Getter;
 import lombok.Setter;

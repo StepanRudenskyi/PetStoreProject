@@ -1,4 +1,4 @@
-package org.example.petstore.service;
+package org.example.petstore.service.product;
 
 import jakarta.persistence.NoResultException;
 import org.example.petstore.model.Product;

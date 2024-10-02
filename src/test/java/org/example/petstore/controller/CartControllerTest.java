@@ -1,7 +1,7 @@
 package org.example.petstore.controller;
 
 import org.example.petstore.model.Cart;
-import org.example.petstore.service.CartService;
+import org.example.petstore.service.cart.CartService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

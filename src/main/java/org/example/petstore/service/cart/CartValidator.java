@@ -1,4 +1,4 @@
-package org.example.petstore.service;
+package org.example.petstore.service.cart;
 
 import org.example.petstore.model.Cart;
 import org.springframework.stereotype.Service;

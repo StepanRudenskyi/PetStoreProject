@@ -1,4 +1,4 @@
-package org.example.petstore.service;
+package org.example.petstore.service.cart;
 
 import jakarta.persistence.NoResultException;
 import org.example.petstore.model.Cart;
@@ -6,6 +6,8 @@ import org.example.petstore.model.Product;
 import org.example.petstore.model.ProductCategory;
 import org.example.petstore.repository.ProductCategoryRepository;
 import org.example.petstore.repository.ProductRepository;
+import org.example.petstore.service.InventoryService;
+import org.example.petstore.service.product.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

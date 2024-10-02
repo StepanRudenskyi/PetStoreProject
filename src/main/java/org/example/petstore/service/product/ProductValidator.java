@@ -1,5 +1,6 @@
-package org.example.petstore.service;
+package org.example.petstore.service.product;
 
+import org.example.petstore.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
