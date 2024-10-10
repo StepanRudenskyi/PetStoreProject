@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,7 +55,7 @@ public class JpaIT {
         Order order = orders.get(0);
         assertNotNull(order);
 
-        assertEquals(25.44, order.getTotalAmount());
+        assertEquals(BigDecimal.valueOf(25.44), order.getTotalAmount());
         assertEquals("CREDIT_CARD", order.getPaymentMethod().toString());
         assertEquals("COMPLETED", order.getStatus().toString());
 
@@ -73,7 +74,7 @@ public class JpaIT {
         assertNotNull(milkProduct);
         assertEquals("Milk", milkProduct.getName());
         assertEquals("a carton of fresh milk", milkProduct.getDescription());
-        assertEquals(2.99, milkProduct.getRetailPrice());
+        assertEquals(BigDecimal.valueOf(2.99), milkProduct.getRetailPrice());
 
         // check inventories for milk
         List<Inventory> inventories = milkProduct.getInventories();
@@ -83,7 +84,7 @@ public class JpaIT {
         Inventory inventory = inventories.get(0);
         assertNotNull(inventory);
         assertEquals(100, inventory.getQuantity());
-        assertEquals(2.50, inventory.getWholeSalePrice());
+        assertEquals(BigDecimal.valueOf(2.50), inventory.getWholeSalePrice());
 
         // check category for milk
         ProductCategory category = milkProduct.getCategory();
@@ -131,7 +132,7 @@ public class JpaIT {
         assertNotNull(coffeeProduct);
         assertEquals("Coffee", coffeeProduct.getName());
         assertEquals("Roasted coffee beans", coffeeProduct.getDescription());
-        assertEquals(5.99, coffeeProduct.getRetailPrice());
+        assertEquals(BigDecimal.valueOf(5.99), coffeeProduct.getRetailPrice());
 
         // check inventories for Coffee product
         List<Inventory> coffeeInventories = coffeeProduct.getInventories();
@@ -141,7 +142,7 @@ public class JpaIT {
         Inventory coffeeInventory = coffeeInventories.get(0);
         assertNotNull(coffeeInventory);
         assertEquals(50, coffeeInventory.getQuantity());
-        assertEquals(5.50, coffeeInventory.getWholeSalePrice());
+        assertEquals(BigDecimal.valueOf(5.50), coffeeInventory.getWholeSalePrice());
 
         // check for Tea product in "Tea and Coffee" department
         Product teaProduct = productsInDepartment2.stream()
@@ -152,7 +153,7 @@ public class JpaIT {
         assertNotNull(teaProduct);
         assertEquals("Tea", teaProduct.getName());
         assertEquals("High-quality tea leaves", teaProduct.getDescription());
-        assertEquals(3.49, teaProduct.getRetailPrice());
+        assertEquals(BigDecimal.valueOf(3.49), teaProduct.getRetailPrice());
 
         // check inventories for Tea product
         List<Inventory> teaInventories = teaProduct.getInventories();
@@ -162,7 +163,7 @@ public class JpaIT {
         Inventory teaInventory = teaInventories.get(0);
         assertNotNull(teaInventory);
         assertEquals(100, teaInventory.getQuantity());
-        assertEquals(3.00, teaInventory.getWholeSalePrice());
+        assertEquals(BigDecimal.valueOf(3.00), teaInventory.getWholeSalePrice());
     }
 
 }

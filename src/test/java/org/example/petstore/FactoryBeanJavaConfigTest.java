@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = FactoryBeanAppConfig.class)
@@ -18,7 +20,7 @@ public class FactoryBeanJavaConfigTest {
     @Test
     public void testProcessingContext() {
         Order order = new Order();
-        order.setTotalAmount(150.0);
+        order.setTotalAmount(BigDecimal.valueOf(150.0));
 
         orderProcessingService.applyDiscountLogic(order);
 
@@ -26,7 +28,7 @@ public class FactoryBeanJavaConfigTest {
         assertEquals("Discount applied for orders over $100", orderProcessingService.getValidationMessage());
 
 
-        order.setTotalAmount(90.0);
+        order.setTotalAmount(BigDecimal.valueOf(90.0));
 
         orderProcessingService.applyDiscountLogic(order);
         assertFalse(orderProcessingService.isDiscountApplied());

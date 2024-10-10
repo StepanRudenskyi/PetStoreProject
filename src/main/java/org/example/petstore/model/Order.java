@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.example.petstore.enums.OrderStatus;
 import org.example.petstore.enums.PaymentMethod;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class Order {
     private Date orderDate;
 
     @Column(name = "total_amount")
-    private Double totalAmount;
+    private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_method")

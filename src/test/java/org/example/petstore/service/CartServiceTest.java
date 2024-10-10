@@ -7,19 +7,25 @@ import org.example.petstore.model.ProductCategory;
 import org.example.petstore.repository.ProductCategoryRepository;
 import org.example.petstore.repository.ProductRepository;
 import org.example.petstore.service.cart.CartService;
+import org.example.petstore.service.cart.CartValidator;
 import org.example.petstore.service.product.ProductValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 
 public class CartServiceTest {
 
@@ -28,6 +34,12 @@ public class CartServiceTest {
 
     @Mock
     private ProductValidator productValidator;
+
+    @Mock
+    private InventoryService inventoryService;
+
+    @Mock
+    private CartValidator cartValidator;
 
     @Mock
     private ProductCategoryRepository productCategoryRepository;
@@ -46,7 +58,7 @@ public class CartServiceTest {
     @Test
     void addProductToCart_ProductExists_ShouldAddProduct() {
         int productId = 1;
-        double price = 2.99;
+        BigDecimal price = BigDecimal.valueOf(2.99);
         int quantity = 2;
 
         Product product = new Product();
@@ -76,7 +88,7 @@ public class CartServiceTest {
     @Test
     void removeProductFromCart_ProductExists_ShouldRemoveProduct() {
         int productId = 1;
-        double price = 2.99;
+        BigDecimal price = BigDecimal.valueOf(2.99);
         Product product = new Product();
         product.setId(productId);
         product.setRetailPrice(price);

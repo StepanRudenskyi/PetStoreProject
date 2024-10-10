@@ -17,7 +17,7 @@ import java.util.Map;
 @Setter
 public class Cart {
     private Map<Product, Integer> productQuantityMap = new HashMap<>();
-    private Double totalPrice;
+    private BigDecimal totalPrice;
 
     public void addItem(Product product, int quantity) {
 
@@ -38,14 +38,14 @@ public class Cart {
 
     public void clear() {
         productQuantityMap.clear();
-        totalPrice = 0.0;
+        totalPrice = BigDecimal.ZERO;
     }
 
     private void calculateTotalPrice() {
         totalPrice = productQuantityMap.entrySet().stream()
-                .mapToDouble(item -> item.getKey().getRetailPrice().multiply(BigDecimal.valueOf(item.getValue()))
-                        .doubleValue())
-                .sum();
+                .map(item -> item.getKey().getRetailPrice().multiply(BigDecimal.valueOf(item.getValue())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
     }
 
 }

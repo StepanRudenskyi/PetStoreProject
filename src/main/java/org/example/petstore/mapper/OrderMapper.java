@@ -36,7 +36,7 @@ public class OrderMapper {
         return dto;
     }
 
-    private static OrderLineDto toOrderLineDto(OrderLine orderLine) {
+    public static OrderLineDto toOrderLineDto(OrderLine orderLine) {
         if (orderLine == null) {
             return null;
         }

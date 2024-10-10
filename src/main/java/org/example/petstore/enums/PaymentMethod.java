@@ -2,5 +2,6 @@ package org.example.petstore.enums;
 
 public enum PaymentMethod {
     CASH,
-    CREDIT_CARD
+    CREDIT_CARD,
+    PAY_PAL
 }

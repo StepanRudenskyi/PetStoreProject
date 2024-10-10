@@ -15,7 +15,7 @@ public class ReceiptDto {
     private String paymentMethod;
     private String status;
     private List<OrderLineDto> orderLines;
-    private double totalAmount;
+    private BigDecimal totalAmount;
 
     @Data
     public static class OrderLineDto {

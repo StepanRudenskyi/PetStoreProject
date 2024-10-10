@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -22,7 +23,7 @@ public class Inventory {
     private Integer quantity;
 
     @Column(name = "whole_sale_price")
-    private Double wholeSalePrice;
+    private BigDecimal wholeSalePrice;
 
     @Column(name = "inventory_date")
     private Date inventoryDate;
@@ -33,4 +34,8 @@ public class Inventory {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public void updateQuantity(int quantity) {
+        this.quantity += quantity;
+    }
 }

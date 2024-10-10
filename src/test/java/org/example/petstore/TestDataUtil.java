@@ -9,6 +9,7 @@ import org.example.petstore.model.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -38,19 +39,19 @@ public class TestDataUtil {
         Product product1 = new Product();
         product1.setName("Milk");
         product1.setDescription("a carton of fresh milk");
-        product1.setRetailPrice(2.99);
+        product1.setRetailPrice(BigDecimal.valueOf(2.99));
         product1.setCategory(dairy);
 
         Product product2 = new Product();
         product2.setName("Coffee");
         product2.setDescription("Roasted coffee beans");
-        product2.setRetailPrice(5.99);
+        product2.setRetailPrice(BigDecimal.valueOf(5.99));
         product2.setCategory(beverages);
 
         Product product3 = new Product();
         product3.setName("Tea");
         product3.setDescription("High-quality tea leaves");
-        product3.setRetailPrice(3.49);
+        product3.setRetailPrice(BigDecimal.valueOf(3.49));
         product3.setCategory(beverages);
 
         // create departments
@@ -80,9 +81,14 @@ public class TestDataUtil {
         orderLine3.setProduct(product3);
 
         // calculate total price
-        Double totalAmount = (orderLine1.getQuantity() * orderLine1.getProduct().getRetailPrice()) +
+        /*Double totalAmount = (orderLine1.getQuantity() * orderLine1.getProduct().getRetailPrice()) +
                 (orderLine2.getQuantity() * orderLine2.getProduct().getRetailPrice()) +
-                (orderLine3.getQuantity() * orderLine3.getProduct().getRetailPrice());
+                (orderLine3.getQuantity() * orderLine3.getProduct().getRetailPrice());*/
+
+        BigDecimal totalAmount = orderLine1.getProduct().getRetailPrice()
+                .multiply(BigDecimal.valueOf(orderLine1.getQuantity()))
+                .add(orderLine2.getProduct().getRetailPrice().multiply(BigDecimal.valueOf(orderLine2.getQuantity())))
+                .add(orderLine3.getProduct().getRetailPrice().multiply(BigDecimal.valueOf(orderLine3.getQuantity())));
 
         // create order
         Order order = new Order();
@@ -100,21 +106,21 @@ public class TestDataUtil {
         // create inventories
         Inventory milkInventory = new Inventory();
         milkInventory.setQuantity(100);
-        milkInventory.setWholeSalePrice(2.50);
+        milkInventory.setWholeSalePrice(BigDecimal.valueOf(2.50));
         milkInventory.setProduct(product1);
         milkInventory.setInventoryDate(new Date());
         milkInventory.setBestBefore(new Date(System.currentTimeMillis() + 7L * 24 * 3600 * 1000)); // one week from now
 
         Inventory teaInventory = new Inventory();
         teaInventory.setQuantity(100);
-        teaInventory.setWholeSalePrice(3.00);
+        teaInventory.setWholeSalePrice(BigDecimal.valueOf(3.00));
         teaInventory.setProduct(product2);
         teaInventory.setInventoryDate(new Date());
         teaInventory.setBestBefore(new Date(System.currentTimeMillis() + 365L * 24 * 3600 * 1000));
 
         Inventory coffeeInventory = new Inventory();
         coffeeInventory.setQuantity(50);
-        coffeeInventory.setWholeSalePrice(5.50);
+        coffeeInventory.setWholeSalePrice(BigDecimal.valueOf(5.50));
         coffeeInventory.setProduct(product3);
         coffeeInventory.setInventoryDate(new Date());
         coffeeInventory.setBestBefore(new Date(System.currentTimeMillis() + 182L * 24 * 3600 * 1000));
