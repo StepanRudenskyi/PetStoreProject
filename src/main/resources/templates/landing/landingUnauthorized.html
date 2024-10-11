@@ -14,8 +14,10 @@
             <nav>
                 <a th:href="@{/#products}">Products</a>
                 <a th:href="@{/#about-us}">About Us</a>
-                <a th:href="@{/cart}">Cart</a>
-                <a th:href="@{/account}">Account</a>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('login-form').submit();">Login</a>
+                <form id="login-form" th:action="@{/login}" method="post" style="display:none;">
+                    <input type="submit" value="Login">
+                </form>
             </nav>
         </div>
         <a th:href="@{/cart}" class="cart-button">

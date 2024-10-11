@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <link th:href="@{/css/adminPages.css}" rel="stylesheet">
+    <link rel="icon" th:href="@{/images/pomodorio-icon.png}" type="image/png">
+</head>
+
+
+<header class="header">
+    <a th:href="@{/back-to-landing}" class="logo"><h1>Pomodorio</h1></a>
+    <div class="nav-container">
+        <nav>
+            <a th:href="@{/admin#products}">Products</a>
+            <a th:href="@{/admin/statistics}">Statistics</a>
+            <a th:href="@{/admin/users}">Manage Users</a>
+            <a th:href="@{/admin/orders}">Manage Orders</a>
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+            <form id="logout-form" th:action="@{/logout}" method="post" style="display:none;">
+                <input type="submit" value="Logout">
+            </form>
+        </nav>
+    </div>
+</header>
+<body>
+<section class="admin-orders-section">
+    <h1>Order History</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer Name</th>
+            <th>Status</th>
+            <th>Total Amount</th>
+            <th>Order Lines</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orderHistory}">
+            <td th:text="${order.id}">1</td>
+            <td th:text="${order.customerName}">John Doe</td>
+            <td th:text="${order.status}">Processing</td>
+            <td th:text="${order.totalAmount}">$100.00</td>
+            <td>
+                <ul>
+                    <li th:each="line : ${order.orderLines}">
+                        <span th:text="${line.productName}">Product Name</span>
+                        - <span th:text="${line.quantity}">Quantity</span>
+                        - <span th:text="${line.price}">$Price</span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

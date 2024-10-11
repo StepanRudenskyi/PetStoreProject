@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Logout Successful</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="icon" th:href="@{/images/pomodorio-icon.png}" type="image/png">
+</head>
+<body>
+
+<header>
+    <h1><a th:href="@{/}" class="logo">Pomodorio</a></h1>
+</header>
+
+<div class="logout-wrapper">
+    <div class="logout-container">
+        <h2>Logout Successful</h2>
+        <p>You have been logged out successfully!</p>
+        <p><a th:href="@{/}" class="home-link">Return to Home Page</a></p>
+    </div>
+</div>
+</body>
+</html>

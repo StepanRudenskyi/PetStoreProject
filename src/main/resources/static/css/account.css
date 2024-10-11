@@ -1,0 +1,133 @@
+
+body {
+    margin: 0;
+    font-family: 'Krona One', sans-serif;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header styles */
+.header {
+    position: absolute;
+    width: 90%;
+    color: #000000;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header .logo {
+    flex: 1;
+}
+
+.header .nav-container {
+    display: flex;
+    justify-content: center;
+    flex: 2;
+}
+
+.header nav {
+    padding-left: 100px;
+    display: flex;
+    gap: 20px;
+}
+
+.header .cart-button {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header .logo h1 {
+    font-family: 'Krona One', sans-serif;
+    font-size: 40px;
+    margin: 0;
+}
+
+.header nav a {
+    color: #000000;
+    text-decoration: none;
+    margin: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.header nav a:hover {
+    color: #a2a2a2;
+}
+
+.logo:link, .logo:visited {
+    color: black;
+    text-decoration: none;
+}
+
+.logo:active {
+    color: black;
+    text-decoration: none;
+}
+
+.cart-button {
+    fill: #000000;
+    width: 24px;
+    height: 24px;
+    transition: 0.3s;
+}
+
+.cart-button:hover {
+    fill: #8c8c8c;
+}
+
+.account-section {
+    padding: 150px 0 0 20px;
+}
+
+
+/* Account Information Styles */
+.account-info {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.account-info p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+/* Order History Styles */
+.order-history {
+    list-style-type: none;
+    padding: 0;
+}
+
+.order-history .order-item {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-history p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .account-info,
+    .order-history .order-item {
+        padding: 10px;
+    }
+    .account-info p,
+    .order-history p {
+        font-size: 14px;
+    }
+}

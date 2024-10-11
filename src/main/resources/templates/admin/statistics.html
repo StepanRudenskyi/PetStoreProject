@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Statistics</title>
+    <link rel="icon" th:href="@{/images/pomodorio-icon.png}" type="image/png">
+    <link rel="stylesheet" th:href="@{/css/statistics.css}">
+    <link rel="stylesheet" th:href="@{/css/adminPages.css}">
+</head>
+<body>
+
+<header class="header">
+    <a th:href="@{/back-to-landing}" class="logo"><h1>Pomodorio</h1></a>
+    <div class="nav-container">
+        <nav>
+            <a th:href="@{/admin#products}">Products</a>
+            <a th:href="@{/admin/statistics}">Statistics</a>
+            <a th:href="@{/admin/users}">Manage Users</a>
+            <a th:href="@{/admin/orders}">Manage Orders</a>
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+            <form id="logout-form" th:action="@{/logout}" method="post" style="display:none;">
+                <input type="submit" value="Logout">
+            </form>
+        </nav>
+    </div>
+</header>
+
+<div class="admin-content">
+    <h1>Admin Statistics</h1>
+
+    <div class="stats-container">
+        <h3>Total Orders: <span th:text="${stats.totalOrders}"></span></h3>
+        <h3>Total Revenue: $<span th:text="${stats.totalRevenue}"></span></h3>
+        <h3>Total Users: <span th:text="${stats.totalUsers}"></span></h3>
+        <h3>Average Order Value: $<span th:text="${stats.averageOrderValue}"></span></h3>
+        <h3>Total Products Sold: <span th:text="${stats.totalProductsSold}"></span></h3>
+
+        <h3>Most Popular Product:</h3>
+        <ul>
+            <li th:each="product : ${stats.mostPopularProducts}">
+                <span th:text="${product.productName}">Product name</span>:
+                <span th:text="${product.salesCount}">Sales Count</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

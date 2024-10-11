@@ -1,0 +1,134 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: 'Krona One', sans-serif;
+}
+
+.header {
+    margin-top: 20px;
+    position: relative;
+    width: 90%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header .logo h1 {
+    font-family: 'Krona One', sans-serif;
+    font-size: 40px;
+    margin: 0;
+}
+
+
+.header .nav-container {
+    display: flex;
+    justify-content: center;
+    flex: 2;
+}
+
+.header nav a {
+    color: black;
+    text-decoration: none;
+    margin: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+
+}
+.logo:link,
+.logo:visited {
+    color: #000000;
+    text-decoration: none;
+}
+
+.logo:active {
+    color: #000000;
+    text-decoration: none;
+}
+
+.header nav a:hover {
+    color: #3f3f3f;
+}
+
+.admin-orders-section h1{
+    margin-left: 20px;
+}
+
+
+/* Admin Content Styles */
+.admin-content {
+    max-width: 1200px;
+    margin: 10px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-content h1 {
+    text-align: center;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th {
+    padding: 12px;
+}
+
+table td {
+    padding-left: 60px;
+}
+
+table th {
+    background-color: #85BAA1;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #e0e0e0;
+}
+
+/* Button styles */
+.btn-action {
+    background-color: #85BAA1;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-action:hover {
+    background-color: #669f87;
+}
+
+button {
+    background-color: #85BAA1;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    font-size: 14px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-left: 320px;
+}

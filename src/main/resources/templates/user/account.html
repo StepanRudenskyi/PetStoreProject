@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Pomodorio</title>
-    <link th:href="@{/css/checkout.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link th:href="@{/css/account.css}" rel="stylesheet">
     <link rel="icon" th:href="@{/images/pomodorio-icon.png}" type="image/png">
 </head>
 <body>
 <header class="header">
-    <a th:href="@{/}" class="logo"><h1>Pomodorio</h1></a>
+    <a th:href="@{/back-to-landing}" class="logo"><h1>Pomodorio</h1></a>
     <div class="nav-container">
         <nav>
-            <a th:href="@{/#products}">Products</a>
-            <a th:href="@{/#about-us}">About Us</a>
+            <a th:href="@{/user#products}">Products</a>
+            <a th:href="@{/user#about-us}">About Us</a>
             <a th:href="@{/cart}">Cart</a>
             <a th:href="@{/account}">Account</a>
         </nav>
@@ -23,26 +25,25 @@
         </svg>
     </a>
 </header>
-
-<div class="checkout-container">
-    <h1>Checkout</h1>
-    <form th:action="@{/checkout/process}" method="post">
-        <p class="total-price">Total: $<span th:text="${cart.totalPrice}">0.00</span></p><!-- round price-->
-
-        <div class="form-group">
-            <label for="paymentMethod">Payment Method:</label>
-            <select id="paymentMethod" name="paymentMethod" required>
-                <option value="CREDIT_CARD">Credit Card</option>
-                <option value="CASH">Cash</option>
-            </select>
-        </div>
-
-        <button type="submit" class="checkout-btn">Place Order</button>
-    </form>
-
-    <div th:if="${errorMessage}">
-        <p class="error-message" th:text="${errorMessage}"></p>
+<section class="account-section">
+    <h2>Account Information</h2>
+    <div class="account-info">
+        <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+        <p><strong>First Name:</strong> <span th:text="${account.firstName}"></span></p>
+        <p><strong>Last Name:</strong> <span th:text="${account.lastName}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${account.email}"></span></p>
     </div>
-</div>
+
+    <h3>Order History</h3>
+    <ul class="order-history">
+        <li th:each="order : ${account.orders}">
+            <div class="order-item">
+                <p><strong>Order ID:</strong> <span th:text="${order.orderId}"></span></p>
+                <p><strong>Date:</strong> <span th:text="${order.orderDate}"></span></p>
+                <p><strong>Total Amount:</strong> <span th:text="${order.totalAmount}"></span></p>
+            </div>
+        </li>
+    </ul>
+</section>
 </body>
 </html>

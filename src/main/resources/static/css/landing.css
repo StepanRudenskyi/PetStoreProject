@@ -212,6 +212,44 @@ body {
     color: inherit;
 }
 
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    right: 0; /* Align sidebar to the right */
+    width: 200px;
+    height: 100%;
+    background-color: rgba(34, 34, 34, 0.8);
+    color: #D6D6D6;
+    padding: 0 20px 0 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0; /* Spacing between links */
+}
+
+.sidebar nav ul li a {
+    color: #D6D6D6;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.sidebar nav ul li a:hover {
+    color: #85BAA1; /* Change color on hover */
+}
+
+/* Adjust header to accommodate sidebar */
+.header {
+    margin-right: 220px; /* Shift header to the left of the sidebar */
+}
+
 @media (max-width: 1512px) {
     .category-item {
         width: calc(50% - 20px);

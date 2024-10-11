@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Pomodorio</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+
+<header>
+    <h1><a th:href="@{/back-to-landing}" class="logo">Pomodorio</a></h1>
+</header>
+
+<div class="login-wrapper">
+    <div class="login-container">
+        <h2>Log in now</h2>
+
+        <form th:action="@{/login}" method="post">
+            <div class="input-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Log in</button>
+        </form>
+        <p>Not registered? <a th:href="@{/register}">Register here</a></p>
+    </div>
+</div>
+</body>
+</html>

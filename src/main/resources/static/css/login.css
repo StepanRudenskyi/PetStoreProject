@@ -1,0 +1,112 @@
+/* General Styles */
+body {
+    background-color: #85BAA1;
+    font-family: Arial, sans-serif;
+    color: #1E1E24;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Header Styles */
+header {
+    position: absolute;
+    margin-top: 15px;
+    text-align: left;
+    top: 20px;
+    left: 20px;
+    width: 100%;
+}
+
+.logo:link,
+.logo:visited {
+    color: #f6f5f5;
+    text-decoration: none;
+}
+
+.logo:active {
+    color: #f6f5f5;
+    text-decoration: none;
+}
+
+header h1 {
+    font-family: 'Krona One', sans-serif;
+    font-size: 40px;
+    margin: 0;
+    color: #f6f5f5;
+}
+
+/* Centered Login Form Container */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Login Container */
+.login-container {
+    width: 100%;
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #1E1E24;
+    font-size: 24px;
+}
+
+/* Input Styles */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Button Styles */
+.login-btn {
+    background-color: #85BAA1;
+    color: #1E1E24;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.login-btn:hover {
+    background-color: #CCE3DE;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .login-wrapper {
+        padding: 20px;
+    }
+}
