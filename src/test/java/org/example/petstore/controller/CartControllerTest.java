@@ -71,7 +71,7 @@ public class CartControllerTest {
                         .param("productId", String.valueOf(productId))
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("cart"))
+                .andExpect(view().name("cart/cart"))
                 .andExpect(model().attributeExists("categories", "cart", "successMessage"))
                 .andExpect(model().attribute("successMessage", "Product removed form cart successfully"));
 
@@ -84,7 +84,7 @@ public class CartControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/cart")
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("cart"))
+                .andExpect(view().name("cart/cart"))
                 .andExpect(model().attribute("cart", cart));
     }
 }
