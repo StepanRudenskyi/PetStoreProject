@@ -76,3 +76,9 @@ CREATE TABLE product_images (
                                 product_name VARCHAR(255) PRIMARY KEY,
                                 image_url VARCHAR(255)
 );
+
+CREATE TABLE USER_ROLES (
+                            user_id INT NOT NULL,
+                            role VARCHAR(255) NOT NULL,
+                            FOREIGN KEY (user_id) REFERENCES USER(id)
+);

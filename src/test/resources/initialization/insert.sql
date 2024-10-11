@@ -320,3 +320,14 @@ UPDATE product p
 SET p.image_url = REPLACE(p.image_url, '/static/', '/');
 
 DROP TABLE product_images;
+
+
+INSERT INTO user (password, username) # add admin with password 1234
+values ('$2a$10$M2yzYkziVXElZKNmlgkgAuCxA.FfZJn7wNvH7ZL7BlmTja0jRjVMW', 'admin');
+
+INSERT INTO user_roles (user_id, role)
+value ('8', 'ADMIN');
+
+UPDATE account a
+SET a.user_id = 8
+where a.id = 2;
