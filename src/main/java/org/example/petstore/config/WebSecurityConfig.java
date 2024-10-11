@@ -13,7 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
+/**
+ * WebSecurityConfig is a configuration class that sets up the security mechanisms for the application.
+ * It defines the security policies such as URL access rules, authentication providers,
+ * and password encoding mechanisms.
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -21,6 +25,15 @@ public class WebSecurityConfig {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    /**
+     * Configures the HTTP security settings such as which URLs require authentication
+     * and which roles have access to specific pages. It also configures the login
+     * and logout behaviors.
+     *
+     * @param http the HttpSecurity object used to configure the security filter chain
+     * @return a SecurityFilterChain object that defines the security rules
+     * @throws Exception if there is a configuration error
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(registry -> {
@@ -42,11 +55,22 @@ public class WebSecurityConfig {
                 .build();
     }
 
+    /**
+     * Provides the CustomUserDetailsService bean, which is responsible for loading user-specific data during authentication.
+     *
+     * @return a UserDetailsService implementation that retrieves user details from the custom service
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return userDetailsService;
     }
 
+    /**
+     * Configures the authentication provider with a custom UserDetailsService and a password encoder.
+     * This provider is responsible for authenticating users based on their credentials.
+     *
+     * @return an AuthenticationProvider configured with a DAO-based authentication method
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -55,6 +79,12 @@ public class WebSecurityConfig {
         return provider;
     }
 
+    /**
+     * Configures the password encoder bean to use BCrypt, which is a password-hashing function.
+     * BCrypt is used to encode passwords before storing them and to verify passwords during authentication.
+     *
+     * @return a PasswordEncoder using the BCrypt algorithm
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
