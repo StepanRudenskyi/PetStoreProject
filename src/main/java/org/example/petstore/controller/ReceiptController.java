@@ -22,9 +22,9 @@ public class ReceiptController {
         try {
             ReceiptDto receipt = orderService.getReceipt(accountId, orderId);
             model.addAttribute("receipt", receipt);
-            return "receipt";
+            return "common/receipt";
         } catch (NoResultException e) {
-            return "404";
+            return "error/404";
         }
     }
 
@@ -38,12 +38,12 @@ public class ReceiptController {
             model.addAttribute("discountApplied", orderService.getOrderProcessingService().isDiscountApplied());
             model.addAttribute("validationMessage", orderService.getOrderProcessingService().getValidationMessage());
 
-            return "processedOrder";
+            return "order/processedOrder";
         } catch (NoResultException e) {
-            return "404";
+            return "error/404";
         } catch (Exception e) {
             model.addAttribute("message", "An error occurred while processing the order");
-            return "error";
+            return "error/error";
         }
     }
 

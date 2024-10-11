@@ -43,12 +43,12 @@ public class CartController {
         model.addAttribute("successMessage", "Product removed form cart successfully");
         model.addAttribute("cart", cart);
 
-        return "cart";
+        return "cart/cart";
     }
 
     @GetMapping
     public String viewCart(Model model) {
         model.addAttribute("cart", cart);
-        return "cart";
+        return "cart/cart";
     }
 }
