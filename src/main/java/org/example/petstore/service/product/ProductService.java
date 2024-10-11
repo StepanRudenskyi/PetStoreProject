@@ -3,6 +3,7 @@ package org.example.petstore.service.product;
 import jakarta.persistence.NoResultException;
 import org.example.petstore.model.Product;
 import org.example.petstore.model.ProductCategory;
+import org.example.petstore.repository.OrderLineRepository;
 import org.example.petstore.repository.ProductCategoryRepository;
 import org.example.petstore.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class ProductService {
     ProductRepository productRepository;
     @Autowired
     ProductCategoryRepository productCategoryRepository;
+    @Autowired
+    OrderLineRepository orderLineRepository;
 
     public List<ProductCategory> getAllCategories() {
         return productCategoryRepository.findAll();
@@ -26,4 +29,7 @@ public class ProductService {
                 .orElseThrow(() -> new NoResultException("Products with ID: " + categoryId + " not found"));
     }
 
+    public void addProduct(Product product) {
+        productRepository.save(product);
+    }
 }
