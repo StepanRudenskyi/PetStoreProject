@@ -33,6 +33,7 @@
             </div>
 
             <div class="input-group">
+                <div th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></div>
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
             </div>

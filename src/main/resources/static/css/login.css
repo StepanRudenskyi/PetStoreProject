@@ -86,6 +86,23 @@ header h1 {
     font-size: 16px;
 }
 
+.error-message {
+    color: #D9534F; 
+    background-color: #FDECEA;
+    padding: 10px;
+    border: 1px solid #D43F3A;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.error-message strong {
+    font-weight: bold;
+}
+
+
 /* Button Styles */
 .login-btn {
     background-color: #85BAA1;

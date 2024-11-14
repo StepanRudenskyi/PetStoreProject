@@ -7,6 +7,7 @@ import org.example.petstore.model.User;
 import org.example.petstore.repository.AccountRepository;
 import org.example.petstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,16 +28,22 @@ public class RegistrationService {
 
     /**
      * Registers a new user by encoding their password and saving the user and account information.
+     * If the username already exists, an error message is triggered.
      *
      * @param registrationDto the data transfer object containing user registration details
+     * @throws IllegalArgumentException if the username already exists in the system
      */
     public void registerUser(UserRegistrationDto registrationDto) {
-        String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
-        User user = UserMapper.toEntity(registrationDto, encodedPassword);
-        userRepository.save(user);
+        try {
+            String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
+            User user = UserMapper.toEntity(registrationDto, encodedPassword);
+            userRepository.save(user);
 
-        Account account = UserMapper.toAccountEntity(registrationDto, user);
-        accountRepository.save(account);
+            Account account = UserMapper.toAccountEntity(registrationDto, user);
+            accountRepository.save(account);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("Username is already taken.");
+        }
     }
 
     /**

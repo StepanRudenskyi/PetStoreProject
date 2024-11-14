@@ -27,10 +27,15 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") UserRegistrationDto registrationDto) {
-        registrationService.registerUser(registrationDto);
+    public String registerUser(@ModelAttribute("user") UserRegistrationDto registrationDto, Model model) {
+        try {
+            registrationService.registerUser(registrationDto);
+            return "redirect:/login?success";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "user/register";
+        }
 
-        return "redirect:/login?success";
     }
 
     @GetMapping("/logout-success")
