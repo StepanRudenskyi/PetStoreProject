@@ -1,10 +1,12 @@
 package org.example.petstore.controller;
 
+import jakarta.validation.Valid;
 import org.example.petstore.dto.UserRegistrationDto;
 import org.example.petstore.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +29,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") UserRegistrationDto registrationDto, Model model) {
+    public String registerUser(@ModelAttribute("user") @Valid UserRegistrationDto registrationDto,
+                               BindingResult result, Model model) {
+
+        // check validation errors
+        if (result.hasErrors()) {
+            return "user/register";
+        }
         try {
             registrationService.registerUser(registrationDto);
             return "redirect:/login?success";

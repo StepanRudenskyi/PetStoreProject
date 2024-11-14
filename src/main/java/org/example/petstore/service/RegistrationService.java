@@ -42,6 +42,7 @@ public class RegistrationService {
             Account account = UserMapper.toAccountEntity(registrationDto, user);
             accountRepository.save(account);
         } catch (DataIntegrityViolationException e) {
+            // throw exception if username is already in use
             throw new IllegalArgumentException("Username is already taken.");
         }
     }
