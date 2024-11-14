@@ -3,6 +3,7 @@ package org.example.petstore.controller;
 import jakarta.persistence.NoResultException;
 import org.example.petstore.dto.ReceiptDto;
 import org.example.petstore.model.Order;
+import org.example.petstore.service.UserValidator;
 import org.example.petstore.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,10 @@ public class ReceiptController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/receipt")
+    @Autowired
+    private UserValidator userValidator;
+
+ /*   @GetMapping("/receipt")
     public String getReceipt(@RequestParam("accountId") int accountId,
                              @RequestParam("orderId") int orderId, Model model) {
         try {
@@ -26,6 +30,23 @@ public class ReceiptController {
         } catch (NoResultException e) {
             return "error/404";
         }
+    }*/
+
+    @GetMapping("/secure_receipt")
+    public String getSecureReceipt(@RequestParam("orderId") int orderId, Model model){
+        // retrieve the currently authenticated user
+        if (!userValidator.canAccessOrder(orderId)) {
+            return "error/403";
+        }
+
+        try {
+            ReceiptDto receipt = orderService.getSecureReceipt(orderId);
+            model.addAttribute("receipt", receipt);
+            return "common/receipt";
+        } catch (NoResultException e) {
+            return "error/404";
+        }
+
     }
 
     @GetMapping("/processOrder")

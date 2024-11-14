@@ -54,13 +54,27 @@ public class OrderService {
     /**
      * Retrieves the receipt details for an order and marks it as completed.
      *
-     * @param accountId the account ID related to the order
      * @param orderId   the ID of the order
      * @return a {@link ReceiptDto} containing order receipt details
      * @throws NoResultException if the order is not found
      */
-    public ReceiptDto getReceipt(int accountId, int orderId) {
+ /*   public ReceiptDto getReceipt(int accountId, int orderId) {
         Optional<Order> orderOptional = orderRepository.findReceipt(accountId, orderId);
+
+        if (orderOptional.isPresent()) {
+            Order existingOrder = orderOptional.get();
+
+            // update status to completed
+            updateOrderStatus(orderId, OrderStatus.COMPLETED);
+
+            return OrderMapper.toDto(existingOrder);
+        } else {
+            throw new NoResultException("Order with ID: " + orderId + " not found");
+        }
+    }
+*/
+    public ReceiptDto getSecureReceipt(int orderId) {
+        Optional<Order> orderOptional = orderRepository.findReceipt(orderId);
 
         if (orderOptional.isPresent()) {
             Order existingOrder = orderOptional.get();

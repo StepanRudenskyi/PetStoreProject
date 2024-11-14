@@ -15,9 +15,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             "JOIN FETCH o.customer a " +
             "JOIN FETCH o.orderLineList ol " +
             "JOIN FETCH ol.product " +
-            "WHERE o.customer.id = :accountId AND o.orderId = :orderId")
-    Optional<Order> findReceipt(@Param("accountId") int accountId,
-                                @Param("orderId") int orderId);
+            "WHERE o.orderId = :orderId")
+    Optional<Order> findReceipt(@Param("orderId") int orderId);
 
     @Query("SELECT SUM(o.totalAmount) FROM Order o")
     BigDecimal calculateTotalRevenue();
