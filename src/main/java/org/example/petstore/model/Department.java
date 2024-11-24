@@ -23,4 +23,7 @@ public class Department {
 
     @ManyToMany(mappedBy = "departments", fetch = FetchType.LAZY)
     private List<Product> products;
+
+    @Column(name = "image_path")
+    private String imagePath;
 }
