@@ -37,7 +37,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/", "/register", "/images/**", "/css/**", "/js/**").permitAll();
+                    registry.requestMatchers("/", "/products/**", "/register", "/images/**", "/css/**", "/js/**").permitAll();
                     registry.requestMatchers("/cart/**", "/checkout/**").hasAnyRole("USER", "ADMIN");
                     registry.requestMatchers("/admin/**").hasRole("ADMIN");
                     registry.anyRequest().authenticated();
