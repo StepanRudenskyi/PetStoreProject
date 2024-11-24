@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account</title>
-    <link th:href="@{/css/account.css}" rel="stylesheet">
+    <title>Pomodorio</title>
+    <link th:href="@{/css/productCategories.css}" rel="stylesheet">
+    <link href="../../static/css/productCategories.css" rel="stylesheet">
     <link rel="icon" th:href="@{/images/pomodorio-icon.png}" type="image/png">
 </head>
 <body>
@@ -25,25 +25,21 @@
         </svg>
     </a>
 </header>
-<section class="account-section">
-    <h2>Account Information</h2>
-    <div class="account-info">
-        <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
-        <p><strong>First Name:</strong> <span th:text="${account.firstName}"></span></p>
-        <p><strong>Last Name:</strong> <span th:text="${account.lastName}"></span></p>
-        <p><strong>Email:</strong> <span th:text="${account.email}"></span></p>
-    </div>
 
-    <h3>Order History</h3>
-    <ul class="order-history">
-        <li th:each="order : ${account.orders}">
-            <div class="order-item">
-                <p><strong>Order ID:</strong> <span th:text="${order.orderId}"></span></p>
-                <p><strong>Date:</strong> <span th:text="${order.orderDate}"></span></p>
-                <p><strong>Total Amount:</strong> <span th:text="${order.totalAmount}"></span></p>
-            </div>
-        </li>
-    </ul>
+<section id="products" class="products-section">
+    <h1 class="category-title" >Departments</h1>
+    <div class="category-grid">
+        <div th:each="department : ${departments}" class="category-item">
+            <a th:href="@{'/products/categories/' + ${department.departmentId}}">
+                <img th:src="@{${department.imagePath}}" th:alt="${department.name}" />
+                <p th:text="${department.name}"></p>
+            </a>
+        </div>
+    </div>
 </section>
+
+
+
+
 </body>
 </html>

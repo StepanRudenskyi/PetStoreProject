@@ -12,7 +12,7 @@
         <a th:href="@{/}" class="logo"><h1>Pomodorio</h1></a>
         <div class="nav-container">
             <nav>
-                <a th:href="@{/#products}">Products</a>
+                <a th:href="@{/products/categories}">Departments</a>
                 <a th:href="@{/#about-us}">About Us</a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('login-form').submit();">Login</a>
                 <form id="login-form" th:action="@{/login}" method="post" style="display:none;">
@@ -31,7 +31,7 @@
     <div class="section1">
         <div class="section1-content">
             <p>Immerse yourself in the world of fresh products, take care of your health and beauty with us.</p>
-            <a th:href="@{/#products}" class="btn-view-products">View all products</a>
+            <a th:href="@{/products/categories}" class="btn-view-products">View all departments</a>
         </div>
     </div>
 </section>
@@ -56,72 +56,6 @@
         <div class="section2-image">
             <img th:src="@{/images/section2.png}">
         </div>
-    </div>
-</section>
-
-<section id="products" class="products-section">
-    <h2>Products</h2>
-    <div class="category-grid">
-        <!--1st row-->
-        <div class="category-item">
-            <a th:href="@{/products(categoryId=1)}">
-                <img th:src="@{/images/categories/fruits-and-veggies.png}" alt="Fruits & Veggies">
-                <p>Fruits & Veggies</p>
-            </a>
-        </div>
-        <div class="category-item">
-            <a th:href="@{/products(categoryId=2)}">
-                <img th:src="@{/images/categories/meat-fish.png}" alt="Meat & Fish">
-                <p>Meat & Fish</p>
-            </a>
-        </div>
-        <div class="category-item">
-            <a th:href="@{/products(categoryId=3)}">
-                <img th:src="@{/images/categories/diary-eggs.png}" alt="Fruits & Veggies">
-                <p>Diary & Eggs</p>
-            </a>
-        </div>
-
-        <!--2nd row-->
-        <div class="category-item">
-            <a th:href="@{/products(categoryId=4)}">
-                <img th:src="@{/images/categories/bakery.png}" alt="Bakery">
-                <p>Bakery</p>
-            </a>
-        </div>
-        <div class="category-item">
-            <a th:href="@{/products(categoryId=5)}">
-                <img th:src="@{/images/categories/pantry-staples.png}" alt="Pantry Staples">
-                <p>Pantry Staples</p>
-            </a>
-        </div>
-        <div class="category-item">
-            <a th:href="@{/products(categoryId=6)}">
-                <img th:src="@{/images/categories/sweets-snacks.png}" alt="Sweets & Snacks">
-                <p>Sweets & Snacks</p>
-            </a>
-        </div>
-
-        <!--3rd row-->
-        <div class="category-item">
-            <a th:href="@{/products(categoryId=7)}">
-                <img th:src="@{/images/categories/beverages.png}" alt="Beverages">
-                <p>Beverages</p>
-            </a>
-        </div>
-        <div class="category-item">
-            <a th:href="@{/products(categoryId=8)}">
-                <img th:src="@{/images/categories/organic-dietary.png}" alt="Organic & Dietary Products">
-                <p>Organic & Dietary Products</p>
-            </a>
-        </div>
-        <div class="category-item">
-            <a th:href="@{/products(categoryId=9)}">
-                <img th:src="@{/images/categories/health-beauty.png}" alt="Health & Beauty">
-                <p>Health & Beauty</p>
-            </a>
-        </div>
-
     </div>
 </section>
 

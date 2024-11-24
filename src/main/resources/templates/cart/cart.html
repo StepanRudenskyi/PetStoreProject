@@ -10,7 +10,7 @@
   <a th:href="@{/back-to-landing}" class="logo"><h1>Pomodorio</h1></a>
   <div class="nav-container">
     <nav>
-      <a th:href="@{/user#products}">Products</a>
+      <a th:href="@{/products/categories}">Departments</a>
       <a th:href="@{/user#about-us}">About Us</a>
       <a th:href="@{/cart}">Cart</a>
       <a th:href="@{/account}">Account</a>
@@ -32,8 +32,7 @@
 
   <div th:each="item : ${cart.productQuantityMap}" class="cart-item">
     <p th:text="${item.getKey().getName()} + ' - $' + ${item.getKey().getRetailPrice()} + ' x ' + ${item.getValue()}"></p>
-    <form th:action="@{/cart/remove}" method="post">
-      <input type="hidden" name="productId" th:value="${item.getKey().getId()}" />
+    <form th:action="@{'/cart/remove/' + ${item.getKey().getId()}}" method="post">
       <button type="submit" class="remove-btn">Remove</button>
     </form>
   </div>
