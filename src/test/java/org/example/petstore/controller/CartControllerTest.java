@@ -54,7 +54,7 @@ public class CartControllerTest {
                         .param("categoryId", String.valueOf(categoryId))
                         .with(csrf()))
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/products?categoryId=1"));
+                .andExpect(redirectedUrl("/products/categories/1"));
 
         verify(cartService).addProductToCart(cart, productId, quantity);
     }
