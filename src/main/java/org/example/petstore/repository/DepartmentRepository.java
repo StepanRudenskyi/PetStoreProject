@@ -1,0 +1,8 @@
+package org.example.petstore.repository;
+
+import org.example.petstore.model.Department;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DepartmentRepository extends JpaRepository<Department, Integer> {
+
+}

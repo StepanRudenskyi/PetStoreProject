@@ -1,8 +1,10 @@
 package org.example.petstore.service.product;
 
 import jakarta.persistence.NoResultException;
+import org.example.petstore.model.Department;
 import org.example.petstore.model.Product;
 import org.example.petstore.model.ProductCategory;
+import org.example.petstore.repository.DepartmentRepository;
 import org.example.petstore.repository.OrderLineRepository;
 import org.example.petstore.repository.ProductCategoryRepository;
 import org.example.petstore.repository.ProductRepository;
@@ -19,9 +21,15 @@ public class ProductService {
     ProductCategoryRepository productCategoryRepository;
     @Autowired
     OrderLineRepository orderLineRepository;
+    @Autowired
+    DepartmentRepository departmentRepository;
 
     public List<ProductCategory> getAllCategories() {
         return productCategoryRepository.findAll();
+    }
+
+    public List<Department> findAllDepartments() {
+        return departmentRepository.findAll();
     }
 
     public List<Product> getProductsByCategory(Integer categoryId) {
