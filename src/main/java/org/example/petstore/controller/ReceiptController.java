@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -20,20 +21,9 @@ public class ReceiptController {
     @Autowired
     private UserValidator userValidator;
 
- /*   @GetMapping("/receipt")
-    public String getReceipt(@RequestParam("accountId") int accountId,
-                             @RequestParam("orderId") int orderId, Model model) {
-        try {
-            ReceiptDto receipt = orderService.getReceipt(accountId, orderId);
-            model.addAttribute("receipt", receipt);
-            return "common/receipt";
-        } catch (NoResultException e) {
-            return "error/404";
-        }
-    }*/
 
-    @GetMapping("/secure_receipt")
-    public String getSecureReceipt(@RequestParam("orderId") int orderId, Model model){
+    @GetMapping("/receipt/{orderId}")
+    public String getSecureReceipt(@PathVariable("orderId") Integer orderId, Model model){
         // retrieve the currently authenticated user
         if (!userValidator.canAccessOrder(orderId)) {
             return "error/403";
@@ -49,8 +39,8 @@ public class ReceiptController {
 
     }
 
-    @GetMapping("/processOrder")
-    public String processOrder(@RequestParam("orderId") int orderId, Model model) {
+    @GetMapping("/processOrder/{orderId}")
+    public String processOrder(@PathVariable("orderId") Integer orderId, Model model) {
         try {
             orderService.processOrder(orderId);
             Order order = orderService.getOrderById(orderId);

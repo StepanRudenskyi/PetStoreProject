@@ -67,8 +67,7 @@ public class CartControllerTest {
 
         when(cartService.getAllCategoriesWithProducts()).thenReturn(List.of());
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/cart/remove")
-                        .param("productId", String.valueOf(productId))
+        mockMvc.perform(MockMvcRequestBuilders.post("/cart/remove/{productId}", productId)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("cart/cart"))

@@ -1,5 +1,6 @@
 package org.example.petstore.controller;
 
+import org.example.petstore.model.Department;
 import org.example.petstore.model.Product;
 import org.example.petstore.model.ProductCategory;
 import org.example.petstore.service.InventoryService;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -76,8 +77,8 @@ public class ProductController {
      * @param model the Model object to pass attributes to the view
      * @return the view displaying products by category
      */
-    @GetMapping("/products")
-    public String getProductsByCategory(@RequestParam("categoryId") int categoryId, Model model) {
+    @GetMapping("/products/categories/{categoryId}")
+    public String getProductsByCategory(@PathVariable("categoryId") Integer categoryId, Model model) {
         List<Product> products = productService.getProductsByCategory(categoryId);
 
         // check quantity
@@ -98,6 +99,13 @@ public class ProductController {
         }
 
         return "products/productsByCategory";
+    }
+
+    @GetMapping("/products/categories")
+    public String getCategories(Model model) {
+        List<Department> departments = productService.findAllDepartments();
+        model.addAttribute("departments", departments);
+        return "products/productCategories";
     }
 
 }
