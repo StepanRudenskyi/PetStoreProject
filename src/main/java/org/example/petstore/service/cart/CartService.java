@@ -49,7 +49,7 @@ public class CartService {
         }
     }
 
-    public void removeProductFromCart(Cart cart, int productId) {
+    public void removeProductFromCart(Cart cart, Integer productId) {
         // find product from map
         Optional<Product> productOptional = cart.getProductQuantityMap().keySet().stream()
                 .filter(product -> product.getId().equals(productId))

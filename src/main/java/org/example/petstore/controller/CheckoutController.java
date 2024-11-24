@@ -68,7 +68,7 @@ public class CheckoutController {
             PaymentMethod selectedPaymentMethod = PaymentMethod.valueOf(paymentMethod.toUpperCase());
             Order order = checkoutService.processCheckout(cart, selectedPaymentMethod);
             model.addAttribute("receipt", order);
-            return "redirect:/secure_receipt?&orderId=" + order.getOrderId();
+            return "redirect:/receipt/" + order.getOrderId();
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Checkout failed: " + e.getMessage());
             return "cart/checkout";

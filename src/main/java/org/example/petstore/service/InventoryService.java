@@ -57,7 +57,7 @@ public class InventoryService {
      * @param quantity the amount to add to the stock
      * @throws IllegalArgumentException if the product ID is invalid
      */
-    public void restoreStock(int productId, int quantity) {
+    public void restoreStock(Integer productId, Integer quantity) {
         Inventory inventory = inventoryRepository.findByProduct_Id(productId)
                 .orElseThrow(() -> new IllegalArgumentException(""));
 
