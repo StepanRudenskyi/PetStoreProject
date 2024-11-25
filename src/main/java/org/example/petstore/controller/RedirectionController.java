@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class RedirectionController {
+    private static final String LANDING_USER = "redirect:/user";
+    private static final String LANDING_ADMIN = "redirect:/user";
+    private static final String LANDING_UNAUTHORIZED = "redirect:/";
 
     /**
      * Handles the action of returning to landing page. Depending on the user's role (Admin or User),
@@ -17,6 +20,11 @@ public class RedirectionController {
      */
     @GetMapping("/back-to-landing")
     public String backToLanding(Authentication authentication) {
+
+        if (authentication == null) {
+            return LANDING_UNAUTHORIZED;
+        }
+
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(Role.ADMIN.getRoleName()));
 
@@ -24,11 +32,11 @@ public class RedirectionController {
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(Role.USER.getRoleName()));
 
         if (isAdmin) {
-            return "redirect:/admin";
+            return LANDING_ADMIN;
         } else if (isUser) {
-            return "redirect:/user";
+            return LANDING_USER;
         } else {
-            return "redirect:/";
+            return LANDING_UNAUTHORIZED;
         }
     }
 }
