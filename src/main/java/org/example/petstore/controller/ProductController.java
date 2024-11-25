@@ -2,7 +2,6 @@ package org.example.petstore.controller;
 
 import org.example.petstore.model.Department;
 import org.example.petstore.model.Product;
-import org.example.petstore.model.ProductCategory;
 import org.example.petstore.service.InventoryService;
 import org.example.petstore.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
