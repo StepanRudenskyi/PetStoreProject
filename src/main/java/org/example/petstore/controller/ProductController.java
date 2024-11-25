@@ -30,44 +30,6 @@ public class ProductController {
         this.inventoryService = inventoryService;
     }
 
-    /**
-     * Displays the landing page for authenticated users (USER role).
-     *
-     * @param model the Model object to pass attributes to the view
-     * @return the landing page view for users
-     */
-    @GetMapping("/user")
-    public String getLandingUser(Model model) {
-        List<ProductCategory> categories = productService.getAllCategories();
-        model.addAttribute("categories", categories);
-        return "landing/landingUSER";
-    }
-
-    /**
-     * Displays the landing page for admin users (ADMIN role).
-     *
-     * @param model the Model object to pass attributes to the view
-     * @return the landing page view for admins
-     */
-    @GetMapping("/admin")
-    public String getLandingAdmin(Model model) {
-        List<ProductCategory> categories = productService.getAllCategories();
-        model.addAttribute("categories", categories);
-        return "landing/landingADMIN";
-    }
-
-    /**
-     * Displays the landing page for unauthorized (guest) users.
-     *
-     * @param model the Model object to pass attributes to the view
-     * @return the landing page view for unauthorized users
-     */
-    @GetMapping("/")
-    public String getLandingUnauthorized(Model model) {
-        List<ProductCategory> categories = productService.getAllCategories();
-        model.addAttribute("categories", categories);
-        return "landing/landingUnauthorized";
-    }
 
     /**
      * Displays the products based on the selected category.
