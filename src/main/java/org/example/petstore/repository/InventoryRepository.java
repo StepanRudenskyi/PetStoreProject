@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
     @Query("SELECT i.quantity FROM Inventory i" +
             " WHERE i.product.id = :productId")
-    Optional<Integer> findStockByProductId(@Param("productId") int productId);
+    Optional<Integer> findStockByProductId(@Param("productId") Long productId);
 
-    Optional<Inventory> findByProduct_Id(Integer productId);
+    Optional<Inventory> findByProduct_Id(Long productId);
 }

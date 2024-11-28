@@ -9,7 +9,7 @@ public class ProductValidator {
 
     @Autowired
     private InventoryService inventoryService;
-    public void validateQuantity(int productId, int requestedQuantity) {
+    public void validateQuantity(Long productId, int requestedQuantity) {
         int availableQuantity = inventoryService.getStockByProduct(productId);
 
         if (requestedQuantity > availableQuantity) {

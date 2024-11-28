@@ -43,7 +43,7 @@ public class ProductController {
         List<Product> products = productService.getProductsByCategory(categoryId);
 
         // check quantity
-        Map<Integer, Integer> productStockMap = new HashMap<>();
+        Map<Long, Integer> productStockMap = new HashMap<>();
 
         for (Product product : products) {
             int stock = inventoryService.getStockByProduct(product.getId());

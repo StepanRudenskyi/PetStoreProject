@@ -23,7 +23,7 @@ public class InventoryService {
      * @return the stock quantity for the given product
      * @throws NoResultException if no stock record is found for the given product
      */
-    public int getStockByProduct(int productId) {
+    public int getStockByProduct(Long productId) {
         return inventoryRepository.findStockByProductId(productId)
                 .orElseThrow(() -> new NoResultException("No stock found for product with ID: " + productId));
     }
@@ -36,7 +36,7 @@ public class InventoryService {
      * @param quantity the amount to reduce from the stock
      * @throws IllegalArgumentException if there is insufficient stock or the product ID is invalid
      */
-    public void reduceStock(int productId, int quantity) {
+    public void reduceStock(Long productId, int quantity) {
         Inventory inventory = inventoryRepository.findByProduct_Id(productId)
                 .orElseThrow(() -> new IllegalArgumentException(""));
 
@@ -57,9 +57,9 @@ public class InventoryService {
      * @param quantity the amount to add to the stock
      * @throws IllegalArgumentException if the product ID is invalid
      */
-    public void restoreStock(Integer productId, Integer quantity) {
+    public void restoreStock(Long productId, Integer quantity) {
         Inventory inventory = inventoryRepository.findByProduct_Id(productId)
-                .orElseThrow(() -> new IllegalArgumentException(""));
+                .orElseThrow(() -> new IllegalArgumentException("Product not found in inventory"));
 
         int newQuantity = inventory.getQuantity() + quantity;
         inventory.setQuantity(newQuantity);

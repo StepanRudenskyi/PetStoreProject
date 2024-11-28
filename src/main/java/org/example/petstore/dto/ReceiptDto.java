@@ -13,7 +13,7 @@ import java.util.List;
 public class ReceiptDto {
     private String accountFirstName;
     private String accountLastName;
-    private int orderId;
+    private Long orderId;
     private Date orderDate;
     private String paymentMethod;
     private String status;

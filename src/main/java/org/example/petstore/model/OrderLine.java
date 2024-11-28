@@ -14,7 +14,7 @@ public class OrderLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_Line_id")
-    private Integer orderLineId;
+    private Long orderLineId;
 
     @Column(name = "quantity")
     private Integer quantity;

@@ -1,4 +1,4 @@
-package org.example.petstore.service;
+package org.example.petstore.service.user;
 
 import jakarta.persistence.NoResultException;
 import org.example.petstore.model.Account;
@@ -30,8 +30,8 @@ public class UserValidator {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
 
         if (orderOptional.isPresent()) {
-            int receiptId = orderOptional.get().getCustomer().getId();
-            int authorizedUserId = currentAccount.getId();
+            Long receiptId = orderOptional.get().getCustomer().getId();
+            Long authorizedUserId = currentAccount.getId();
 
             return receiptId == authorizedUserId;
         }

@@ -17,7 +17,7 @@ public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "inventory_id")
-    private Integer inventoryId;
+    private Long inventoryId;
 
     @Column(name = "quantity")
     private Integer quantity;
