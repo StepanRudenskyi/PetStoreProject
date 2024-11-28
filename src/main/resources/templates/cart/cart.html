@@ -30,15 +30,15 @@
   <div th:if="${errorMessage != null}" class="alert-error" th:text="${errorMessage}"></div>
   <div th:if="${successMessage != null}" class="alert-success" th:text="${successMessage}"></div>
 
-  <div th:each="item : ${cart.productQuantityMap}" class="cart-item">
-    <p th:text="${item.getKey().getName()} + ' - $' + ${item.getKey().getRetailPrice()} + ' x ' + ${item.getValue()}"></p>
-    <form th:action="@{'/cart/remove/' + ${item.getKey().getId()}}" method="post">
+  <div th:each="cartItem : ${cartItems}" class="cart-item">
+    <p th:text="${cartItem.product.name} + ' - $' + ${cartItem.product.retailPrice} + ' x ' + ${cartItem.quantity}"></p>
+    <form th:action="@{'/cart/remove/' + ${cartItem.product.id}}" method="post">
       <button type="submit" class="remove-btn">Remove</button>
     </form>
   </div>
 
   <p class="total-price">
-    Total: <span th:text="${#numbers.formatDecimal(cart.totalPrice, 2, 2)}"></span>
+    Total: <span th:text="${#numbers.formatDecimal(totalPrice, 2, 2)}"></span>
   </p>
 
   <a th:href="@{/checkout}" class="checkout-btn">Proceed to Checkout</a>

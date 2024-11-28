@@ -27,7 +27,13 @@
 <div class="checkout-container">
     <h1>Checkout</h1>
     <form th:action="@{/checkout/process}" method="post">
-        <p class="total-price">Total: $<span th:text="${cart.totalPrice}">0.00</span></p><!-- round price-->
+        <div th:each="item : ${cartItems}" class="cart-item">
+            <p th:text="${item.product.name} + ' - $' + ${item.product.retailPrice} + ' x ' + ${item.quantity}"></p>
+        </div>
+
+        <p class="total-price">
+            Total: $<span th:text="${#numbers.formatDecimal(totalPrice, 2, 2)}">0.00</span>
+        </p>
 
         <div class="form-group">
             <label for="paymentMethod">Payment Method:</label>
