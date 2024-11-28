@@ -1,51 +1,48 @@
 package org.example.petstore.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
 
-@Component
-@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-@Getter
-@Setter
+@Data
+@Entity
+@Table(name = "cart")
+@ToString(exclude = "product")
 public class Cart {
-    private Map<Product, Integer> productQuantityMap = new HashMap<>();
-    private BigDecimal totalPrice;
 
-    public void addItem(Product product, int quantity) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_id")
+    private Long id;
 
-        if (productQuantityMap.containsKey(product)) {
-            int currentQuantity = productQuantityMap.get(product);
-            productQuantityMap.put(product, currentQuantity + quantity);
-        } else {
-            productQuantityMap.put(product, quantity);
-        }
-        calculateTotalPrice();
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+
+    @Column(name = "addition_date", nullable = false)
+    private LocalDateTime additionTime;
+
+    public Cart() {
+        this.additionTime = LocalDateTime.now();
+    }
+    public Cart(User user, Product product, int quantity) {
+        this.user = user;
+        this.product = product;
+        this.quantity = quantity;
+        this.additionTime = LocalDateTime.now();
     }
 
-
-    public void removeItem(Product product) {
-        productQuantityMap.remove(product);
-        calculateTotalPrice();
+    public BigDecimal calculateTotalPrice() {
+        return product.getRetailPrice().multiply(BigDecimal.valueOf(quantity));
     }
-
-    public void clear() {
-        productQuantityMap.clear();
-        totalPrice = BigDecimal.ZERO;
-    }
-
-    private void calculateTotalPrice() {
-        totalPrice = productQuantityMap.entrySet().stream()
-                .map(item -> item.getKey().getRetailPrice().multiply(BigDecimal.valueOf(item.getValue())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-    }
-
 }

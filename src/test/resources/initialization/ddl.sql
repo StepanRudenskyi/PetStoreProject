@@ -1,96 +1,135 @@
 -- Create table for product categories
-CREATE TABLE product_category
+create table product_category
 (
-    id                 INT AUTO_INCREMENT PRIMARY KEY,
-    category_name      VARCHAR(255) NOT NULL,
-    sale_limitation    VARCHAR(255),
-    storage_conditions VARCHAR(255)
+    category_id        bigint auto_increment
+        primary key,
+    category_name      varchar(255) null,
+    sale_limitation    varchar(255) null,
+    storage_conditions varchar(255) null
 );
 
 -- Create table for departments
-CREATE TABLE department
+create table department
 (
-    id         INT AUTO_INCREMENT PRIMARY KEY,
-    name       VARCHAR(255) NOT NULL,
-    image_path VARCHAR(255) NOT NULL
-
+    department_id bigint auto_increment
+        primary key,
+    name          varchar(255) null,
+    image_path    varchar(255) null
 );
 
 -- Create table for products
-CREATE TABLE product
+create table product
 (
-    id           INT AUTO_INCREMENT PRIMARY KEY,
-    category_id  INT,
-    retail_price DECIMAL(10, 2),
-    description  TEXT,
-    name         VARCHAR(255) NOT NULL,
-    image_url    VARCHAR(255),
-    FOREIGN KEY (category_id) REFERENCES product_category (id)
+    category_id  bigint         null,
+    product_id   bigint auto_increment
+        primary key,
+    retail_price decimal(38, 2) null,
+    description  varchar(255)   null,
+    name         varchar(255)   null,
+    image_url    varchar(255)   null,
+    constraint FK5cypb0k23bovo3rn1a5jqs6j4
+        foreign key (category_id) references product_category (category_id)
 );
 
 -- Create table for inventory
-CREATE TABLE inventory
+create table inventory
 (
-    id               INT AUTO_INCREMENT PRIMARY KEY,
-    product_id       INT,
-    quantity         INT,
-    whole_sale_price DECIMAL(10, 2),
-    best_before      DATETIME,
-    inventory_date   DATETIME,
-    FOREIGN KEY (product_id) REFERENCES product (id)
+    inventory_id     bigint auto_increment
+        primary key,
+    product_id       bigint         null,
+    quantity         int            null,
+    whole_sale_price decimal(38, 2) null,
+    best_before      datetime(6)    null,
+    inventory_date   datetime(6)    null,
+    constraint FKp7gj4l80fx8v0uap3b2crjwp5
+        foreign key (product_id) references product (product_id)
 );
 
 -- Create table for accounts
-CREATE TABLE account
+create table account
 (
-    id         INT AUTO_INCREMENT PRIMARY KEY,
-    email      VARCHAR(255) UNIQUE NOT NULL,
-    first_name VARCHAR(255)        NOT NULL,
-    last_name  VARCHAR(255)        NOT NULL
+    id         bigint auto_increment
+        primary key,
+    email      varchar(255) null,
+    first_name varchar(255) null,
+    last_name  varchar(255) null,
+    user_id    bigint       null,
+    constraint UKh6dr47em6vg85yuwt4e2roca4
+        unique (user_id),
+    constraint FK7m8ru44m93ukyb61dfxw0apf6
+        foreign key (user_id) references user (id)
 );
 
 -- Create table for customer orders
-CREATE TABLE customer_order
+create table customer_order
 (
-    id             INT AUTO_INCREMENT PRIMARY KEY,
-    customer_id    INT,
-    total_amount   DECIMAL(10, 2),
-    order_date     DATETIME,
-    payment_method ENUM ('CASH', 'CREDIT_CARD'),
-    status         VARCHAR(255),
-    FOREIGN KEY (customer_id) REFERENCES account (id)
+    customer_id    bigint         null,
+    order_id       bigint auto_increment
+        primary key,
+    total_amount   decimal(38, 2) null,
+    order_date     datetime(6)    null,
+    payment_method varchar(255)   null,
+    status         varchar(255)   null,
+    constraint FK25ujycrbmy7l2trixj9pd212f
+        foreign key (customer_id) references account (id)
 );
 
 -- Create table for order lines
-CREATE TABLE order_line
+create table order_line
 (
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    allocation_id INT,
-    order_id      INT,
-    quantity      INT,
-    FOREIGN KEY (order_id) REFERENCES customer_order (id)
+    allocation_id bigint null,
+    order_id      bigint null,
+    order_line_id bigint auto_increment
+        primary key,
+    quantity      int    null,
+    constraint FKhx2sh9w4yimwp265ak68pa7i5
+        foreign key (order_id) references customer_order (order_id),
+    constraint FKmbf4cfqqobti54xy1wpl6hr16
+        foreign key (allocation_id) references product (product_id)
 );
 
 -- Create table for product allocations
-CREATE TABLE productallocation
+create table productallocation
 (
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    department_id INT,
-    product_id    INT,
-    FOREIGN KEY (department_id) REFERENCES department (id),
-    FOREIGN KEY (product_id) REFERENCES product (id)
+    department_id bigint not null,
+    product_id    bigint not null,
+    constraint FK2rpc9835k15t1h0xxffxixxt
+        foreign key (product_id) references product (product_id),
+    constraint FKa876f02x8k420w5ha4jj5shmy
+        foreign key (department_id) references department (department_id)
 );
 
--- Create table for product images
-CREATE TABLE product_images
+-- Create table for users
+create table user
 (
-    product_name VARCHAR(255) PRIMARY KEY,
-    image_url    VARCHAR(255)
+    id       bigint auto_increment
+        primary key,
+    password varchar(255) not null,
+    username varchar(255) not null,
+    constraint UKsb8bbouer5wak8vyiiy4pf2bx
+        unique (username)
 );
 
-CREATE TABLE USER_ROLES
+-- Create table for user roles
+create table user_roles
 (
-    user_id INT          NOT NULL,
-    role    VARCHAR(255) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES USER (id)
+    user_id bigint       not null,
+    role    varchar(255) null,
+    constraint FK55itppkw3i07do3h7qoclqd4k
+        foreign key (user_id) references user (id)
+);
+
+-- Create table for cart
+create table cart
+(
+    cart_id       bigint auto_increment
+        primary key,
+    user_id       bigint      not null,
+    product_id    bigint      not null,
+    quantity      int         not null,
+    addition_date datetime(6) not null,
+    constraint FK3d704slv66tw6x5hmbm6p2x3u
+        foreign key (product_id) references product (product_id),
+    constraint FKl70asp4l4w0jmbm1tqyofho4o
+        foreign key (user_id) references user (id)
 );
