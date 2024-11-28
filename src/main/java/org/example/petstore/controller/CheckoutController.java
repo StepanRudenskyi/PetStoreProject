@@ -1,10 +1,11 @@
 package org.example.petstore.controller;
 
+import org.example.petstore.dto.CheckoutDto;
 import org.example.petstore.enums.PaymentMethod;
-import org.example.petstore.model.Cart;
 import org.example.petstore.model.Order;
-import org.example.petstore.service.cart.CartService;
+import org.example.petstore.model.User;
 import org.example.petstore.service.order.CheckoutService;
+import org.example.petstore.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +24,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/checkout")
 public class CheckoutController {
     private final CheckoutService checkoutService;
-    private final CartService cartService;
-    private final Cart cart;
+    private final UserService userService;
 
     @Autowired
-    public CheckoutController(CheckoutService checkoutService, CartService cartService, Cart cart) {
+    public CheckoutController(CheckoutService checkoutService, UserService userService) {
         this.checkoutService = checkoutService;
-        this.cartService = cartService;
-        this.cart = cart;
+        this.userService = userService;
     }
 
     /**
@@ -44,8 +43,13 @@ public class CheckoutController {
     @GetMapping
     public String showCheckoutPage(Model model, RedirectAttributes redirectAttributes) {
         try {
-            cartService.validateCartForCheckout(cart);
-            model.addAttribute("cart", cart);
+            User currentUser = userService.getCurrentUser();
+            CheckoutDto checkoutData = checkoutService.prepareCheckoutPage(currentUser);
+
+            // Add cart and total price to the model
+            model.addAttribute("cartItems", checkoutData.getCartItems());
+            model.addAttribute("totalPrice", checkoutData.getTotalPrice());
+
             return "cart/checkout";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
@@ -66,7 +70,7 @@ public class CheckoutController {
     public String processCheckout(@RequestParam("paymentMethod") String paymentMethod, Model model) {
         try {
             PaymentMethod selectedPaymentMethod = PaymentMethod.valueOf(paymentMethod.toUpperCase());
-            Order order = checkoutService.processCheckout(cart, selectedPaymentMethod);
+            Order order = checkoutService.processCheckout(selectedPaymentMethod);
             model.addAttribute("receipt", order);
             return "redirect:/receipt/" + order.getOrderId();
         } catch (Exception e) {
