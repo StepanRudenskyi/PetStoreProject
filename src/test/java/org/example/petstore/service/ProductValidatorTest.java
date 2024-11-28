@@ -21,7 +21,7 @@ class ProductValidatorTest {
 
     @Test
     void validateQuantity_ValidQuantity_ShouldPass() {
-        int productId = 1;
+        Long productId = 1L;
         int requestedQuantity = 5;
         int availableStock = 10;
 
@@ -32,7 +32,7 @@ class ProductValidatorTest {
 
     @Test
     void validateQuantity_ExceedsAvailableStock_ShouldThrowException() {
-        int productId = 1;
+        Long productId = 1L;
         int requestedQuantity = 15;
         int availableStock = 10;
 
@@ -46,8 +46,7 @@ class ProductValidatorTest {
 
     @Test
     void validateQuantity_ZeroOrNegativeQuantity_ShouldThrowException() {
-        int productId = 1;
-
+        Long productId = 1L;
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 productValidator.validateQuantity(productId, 0));
 
