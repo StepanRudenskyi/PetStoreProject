@@ -1,118 +1,118 @@
 package org.example.petstore.service;
 
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 import jakarta.persistence.NoResultException;
 import org.example.petstore.model.Cart;
 import org.example.petstore.model.Product;
-import org.example.petstore.model.ProductCategory;
+import org.example.petstore.model.User;
+import org.example.petstore.repository.CartRepository;
 import org.example.petstore.repository.ProductCategoryRepository;
 import org.example.petstore.repository.ProductRepository;
 import org.example.petstore.service.cart.CartService;
 import org.example.petstore.service.cart.CartValidator;
 import org.example.petstore.service.product.ProductValidator;
+import org.example.petstore.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+class CartServiceTest {
 
-@ExtendWith(MockitoExtension.class)
+    @Mock private CartRepository cartRepository;
+    @Mock private ProductRepository productRepository;
+    @Mock private ProductCategoryRepository productCategoryRepository;
+    @Mock private InventoryService inventoryService;
+    @Mock private ProductValidator productValidator;
+    @Mock private UserService userService;
+    @Mock private CartValidator cartValidator;
+    @Mock private Cart cartMock;
+    @Mock private Product productMock;
+    @Mock private User userMock;
 
-public class CartServiceTest {
-
-    @Mock
-    private ProductRepository productRepository;
-
-    @Mock
-    private ProductValidator productValidator;
-
-    @Mock
-    private InventoryService inventoryService;
-
-    @Mock
-    private CartValidator cartValidator;
-
-    @Mock
-    private ProductCategoryRepository productCategoryRepository;
-
-    @InjectMocks
     private CartService cartService;
-
-    private Cart cart;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        cart = new Cart();
+        cartService = new CartService(
+                productCategoryRepository, productRepository, inventoryService,
+                productValidator, userService, cartValidator, cartRepository);
     }
 
     @Test
-    void addProductToCart_ProductExists_ShouldAddProduct() {
-        int productId = 1;
-        BigDecimal price = BigDecimal.valueOf(2.99);
+    void testAddProductToCart_ValidProduct() {
+        Long productId = 1L;
         int quantity = 2;
 
-        Product product = new Product();
-        product.setId(productId);
-        product.setRetailPrice(price);
+        // Mocking the product
+        when(productRepository.findById(productId.intValue())).thenReturn(Optional.of(productMock));
+        when(userService.getCurrentUser()).thenReturn(userMock);
 
-        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        // Mocking the behavior of the product validator and inventory service
         doNothing().when(productValidator).validateQuantity(productId, quantity);
+        doNothing().when(inventoryService).reduceStock(productId, quantity);
 
-        cartService.addProductToCart(cart, productId, quantity);
+        // Mock the cart repository behavior
+        when(cartRepository.findByUserAndProduct(userMock, productMock)).thenReturn(Optional.empty());
 
-        assertEquals(1, cart.getProductQuantityMap().size());
-        assertTrue(cart.getProductQuantityMap().containsKey(product));
-        assertEquals(quantity, cart.getProductQuantityMap().get(product));
+        // Call the method under test
+        cartService.addProductToCart(productId, quantity);
+
+        // Verify that the cart repository save method was called
+        verify(cartRepository).save(any(Cart.class));
+
+        // Verify that the inventory service reduced the stock
+        verify(inventoryService).reduceStock(productId, quantity);
     }
 
     @Test
-    void addProductToCart_ProductDoesNotExist_ShouldThrowNoResultException() {
-        int productId = 1;
-        int quantity = 2;
+    void testRemoveProductFromCart_ProductNotFound() {
+        Long productId = 999L;
 
-        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+        // Mock userService
+        when(userService.getCurrentUser()).thenReturn(userMock);
 
-        assertThrows(NoResultException.class, () -> cartService.addProductToCart(cart, productId, quantity));
+        // Mock the cartRepository returning an empty optional (product not found)
+        when(cartRepository.findByUserIdAndProductId(userMock.getId(), productId))
+                .thenReturn(Optional.empty());
+
+        // Call the method and expect an exception
+        NoResultException exception = assertThrows(NoResultException.class, () -> {
+            cartService.removeProductFromCart(productId);
+        });
+
+        assertEquals("Product with ID: " + productId + " not found", exception.getMessage());
     }
 
     @Test
-    void removeProductFromCart_ProductExists_ShouldRemoveProduct() {
-        int productId = 1;
-        BigDecimal price = BigDecimal.valueOf(2.99);
-        Product product = new Product();
-        product.setId(productId);
-        product.setRetailPrice(price);
-        cart.addItem(product, 1);
+    void testCalculateTotalPrice() {
+        // Mock cart items
+        when(cartMock.calculateTotalPrice()).thenReturn(BigDecimal.valueOf(100));
 
-        cartService.removeProductFromCart(cart, productId);
+        // Call the method under test
+        BigDecimal totalPrice = cartService.calculateTotalPrice(List.of(cartMock));
 
-        assertFalse(cart.getProductQuantityMap().containsKey(product));
+        // Assert that the total price is as expected
+        assertEquals(BigDecimal.valueOf(100), totalPrice);
     }
 
     @Test
-    void removeProductFromCart_ProductDoesNotExist_ShouldThrowNoResultException() {
-        int productId = 1;
+    void testValidateCartForCheckout_CartIsEmpty() {
+        // Mock userService and cartValidator
+        when(userService.getCurrentUser()).thenReturn(userMock);
+        when(cartValidator.isCartEmpty(userMock)).thenReturn(true);
 
-        assertThrows(NoResultException.class, () -> cartService.removeProductFromCart(cart, productId));
-    }
+        // Call the method and expect an IllegalArgumentException
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cartService.validateCartForCheckout(userMock);
+        });
 
-    @Test
-    void getAllCategoriesWithProducts_ShouldReturnCategories() {
-        List<ProductCategory> categories = List.of(new ProductCategory(), new ProductCategory());
-        when(productCategoryRepository.findAllWithProducts()).thenReturn(categories);
-
-        List<ProductCategory> result = cartService.getAllCategoriesWithProducts();
-
-        assertEquals(categories, result);
+        assertEquals("Your cart is empty", exception.getMessage());
     }
 }
