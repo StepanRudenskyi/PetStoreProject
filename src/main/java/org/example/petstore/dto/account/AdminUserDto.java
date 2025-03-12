@@ -1,4 +1,4 @@
-package org.example.petstore.dto;
+package org.example.petstore.dto.account;
 
 import lombok.Data;
 import org.example.petstore.enums.Role;

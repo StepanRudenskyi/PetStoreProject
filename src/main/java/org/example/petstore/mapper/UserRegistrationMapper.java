@@ -1,13 +1,13 @@
 package org.example.petstore.mapper;
 
-import org.example.petstore.dto.UserRegistrationDto;
+import org.example.petstore.dto.account.UserRegistrationDto;
 import org.example.petstore.enums.Role;
 import org.example.petstore.model.Account;
 import org.example.petstore.model.User;
 
 import java.util.Collections;
 
-public class UserMapper {
+public class UserRegistrationMapper {
     public static User toEntity(UserRegistrationDto dto, String encodedPassword) {
         if (dto == null) {
             return null;

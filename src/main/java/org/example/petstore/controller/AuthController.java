@@ -1,7 +1,7 @@
 package org.example.petstore.controller;
 
 import jakarta.validation.Valid;
-import org.example.petstore.dto.UserRegistrationDto;
+import org.example.petstore.dto.account.UserRegistrationDto;
 import org.example.petstore.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

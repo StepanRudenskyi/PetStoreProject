@@ -1,7 +1,7 @@
 package org.example.petstore.controller;
 
 import org.example.petstore.dto.AdminOrderDto;
-import org.example.petstore.dto.AdminUserDto;
+import org.example.petstore.dto.account.AdminUserDto;
 import org.example.petstore.dto.StatisticsDto;
 import org.example.petstore.model.Product;
 import org.example.petstore.service.admin.StatisticsService;

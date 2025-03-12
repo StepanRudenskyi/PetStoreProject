@@ -1,6 +1,6 @@
 package org.example.petstore.mapper;
 
-import org.example.petstore.dto.AdminUserDto;
+import org.example.petstore.dto.account.AdminUserDto;
 import org.example.petstore.model.User;
 import org.mapstruct.Mapper;
 

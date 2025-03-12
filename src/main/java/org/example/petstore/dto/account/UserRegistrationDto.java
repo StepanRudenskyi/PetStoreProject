@@ -1,4 +1,4 @@
-package org.example.petstore.dto;
+package org.example.petstore.dto.account;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

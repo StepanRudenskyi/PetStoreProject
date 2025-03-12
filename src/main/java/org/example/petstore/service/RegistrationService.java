@@ -1,7 +1,7 @@
 package org.example.petstore.service;
 
-import org.example.petstore.dto.UserRegistrationDto;
-import org.example.petstore.mapper.UserMapper;
+import org.example.petstore.dto.account.UserRegistrationDto;
+import org.example.petstore.mapper.UserRegistrationMapper;
 import org.example.petstore.model.Account;
 import org.example.petstore.model.User;
 import org.example.petstore.repository.AccountRepository;
@@ -36,10 +36,10 @@ public class RegistrationService {
     public void registerUser(UserRegistrationDto registrationDto) {
         try {
             String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
-            User user = UserMapper.toEntity(registrationDto, encodedPassword);
+            User user = UserRegistrationMapper.toEntity(registrationDto, encodedPassword);
             userRepository.save(user);
 
-            Account account = UserMapper.toAccountEntity(registrationDto, user);
+            Account account = UserRegistrationMapper.toAccountEntity(registrationDto, user);
             accountRepository.save(account);
         } catch (DataIntegrityViolationException e) {
             // throw exception if username is already in use

@@ -1,7 +1,7 @@
 package org.example.petstore.service.admin;
 
 import jakarta.persistence.NoResultException;
-import org.example.petstore.dto.AdminUserDto;
+import org.example.petstore.dto.account.AdminUserDto;
 import org.example.petstore.enums.Role;
 import org.example.petstore.mapper.AdminUserMapper;
 import org.example.petstore.model.User;
