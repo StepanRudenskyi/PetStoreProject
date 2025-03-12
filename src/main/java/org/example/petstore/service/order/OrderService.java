@@ -11,6 +11,9 @@ import org.example.petstore.mapper.OrderMapper;
 import org.example.petstore.model.Order;
 import org.example.petstore.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -100,14 +103,20 @@ public class OrderService {
      *
      * @return a list of {@link AdminOrderDto} representing order history
      */
-    public List<AdminOrderDto> getOrdersHistory() {
+    public Page<AdminOrderDto> getOrdersHistory(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Order> orderPage = orderRepository.findAll(pageable);
+        return orderPage.map(orderMapper::toDto);
+
+        /*
         List<Order> allOrders = orderRepository.findAll();
         List<AdminOrderDto> resultList = new ArrayList<>();
 
         for (Order order : allOrders) {
             resultList.add(orderMapper.toDto(order));
         }
-        return resultList;
+        return resultList;*/
     }
 
 }

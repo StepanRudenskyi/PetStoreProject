@@ -132,3 +132,29 @@ button {
     gap: 10px;
     margin-left: 320px;
 }
+
+
+.pagination-controls ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 0.5em;
+}
+
+.pagination-controls ul li {
+    display: inline;
+}
+
+.pagination-controls ul li a {
+    text-decoration: none;
+    padding: 0.5em 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+}
+
+.pagination-controls ul li a.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}

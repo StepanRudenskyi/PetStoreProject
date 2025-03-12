@@ -1,14 +1,15 @@
 package org.example.petstore.controller;
 
 import org.example.petstore.dto.AdminOrderDto;
-import org.example.petstore.dto.StatisticsDto;
 import org.example.petstore.dto.AdminUserDto;
+import org.example.petstore.dto.StatisticsDto;
 import org.example.petstore.model.Product;
 import org.example.petstore.service.admin.StatisticsService;
 import org.example.petstore.service.admin.UserManagementService;
 import org.example.petstore.service.order.OrderService;
 import org.example.petstore.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -110,9 +111,18 @@ public class AdminController {
      * @return the admin order history page
      */
     @GetMapping("/orders")
-    public String showManageOrdersPage(Model model) {
+    public String showManageOrdersPage(@RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size,
+                                       Model model) {
+        Page<AdminOrderDto> orderHistories = orderService.getOrdersHistory(page, size);
+        model.addAttribute("orderHistory", orderHistories.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", orderHistories.getTotalPages());
+        model.addAttribute("pageSize", size);
+        return "admin/orderHistory";
+        /*
         List<AdminOrderDto> orderHistories = orderService.getOrdersHistory();
         model.addAttribute("orderHistory", orderHistories);
-        return "admin/orderHistory";
+        return "admin/orderHistory";*/
     }
 }
