@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductValidator {
 
-    @Autowired
-    private InventoryService inventoryService;
+    private final InventoryService inventoryService;
+
+    public ProductValidator(InventoryService inventoryService) {
+        this.inventoryService = inventoryService;
+    }
+
     public void validateQuantity(Long productId, int requestedQuantity) {
         int availableQuantity = inventoryService.getStockByProduct(productId);
 

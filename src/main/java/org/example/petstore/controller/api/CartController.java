@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.petstore.dto.CartAddResponseDto;
 import org.example.petstore.dto.cart.CartViewDto;
 import org.example.petstore.service.cart.CartService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
