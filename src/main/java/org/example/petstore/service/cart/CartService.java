@@ -3,16 +3,15 @@ package org.example.petstore.service.cart;
 import jakarta.persistence.NoResultException;
 import org.example.petstore.dto.CartAddResponseDto;
 import org.example.petstore.dto.cart.CartViewDto;
+import org.example.petstore.mapper.ProductMapper;
 import org.example.petstore.mapper.cart.CartResponseMapper;
 import org.example.petstore.mapper.cart.CartViewMapper;
 import org.example.petstore.model.Cart;
 import org.example.petstore.model.Product;
-import org.example.petstore.model.ProductCategory;
 import org.example.petstore.model.User;
 import org.example.petstore.repository.CartRepository;
-import org.example.petstore.repository.ProductCategoryRepository;
-import org.example.petstore.repository.ProductRepository;
 import org.example.petstore.service.InventoryService;
+import org.example.petstore.service.product.ProductService;
 import org.example.petstore.service.product.ProductValidator;
 import org.example.petstore.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +28,10 @@ import java.util.Optional;
 @Service
 public class CartService {
 
-    private final ProductCategoryRepository productCategoryRepository;
-    private final ProductRepository productRepository;
     private final InventoryService inventoryService;
     private final ProductValidator productValidator;
+    private final ProductService productService;
+    private final ProductMapper productMapper;
     private final UserService userService;
     private final CartValidator cartValidator;
     private final CartRepository cartRepository;
@@ -40,13 +39,14 @@ public class CartService {
     private final CartResponseMapper cartResponseMapper;
 
     @Autowired
-    public CartService(ProductCategoryRepository productCategoryRepository, ProductRepository productRepository,
-                       InventoryService inventoryService, ProductValidator productValidator,
-                       UserService userService, CartValidator cartValidator, CartRepository cartRepository, CartViewMapper cartViewMapper, CartResponseMapper cartResponseMapper) {
-        this.productCategoryRepository = productCategoryRepository;
-        this.productRepository = productRepository;
+    public CartService(InventoryService inventoryService,
+                       ProductValidator productValidator, ProductService productService, ProductMapper productMapper,
+                       UserService userService, CartValidator cartValidator, CartRepository cartRepository,
+                       CartViewMapper cartViewMapper, CartResponseMapper cartResponseMapper) {
         this.inventoryService = inventoryService;
         this.productValidator = productValidator;
+        this.productService = productService;
+        this.productMapper = productMapper;
         this.userService = userService;
         this.cartValidator = cartValidator;
         this.cartRepository = cartRepository;
@@ -91,7 +91,7 @@ public class CartService {
      * @throws NoResultException if the product is not found in the database
      */
     public CartAddResponseDto addProductToCart(Long productId, int quantity) {
-        Product product = findProductById(productId);
+        Product product = productMapper.toEntity(productService.getProductById(productId));
 
         // quantity validation
         productValidator.validateQuantity(productId, quantity);
@@ -156,14 +156,6 @@ public class CartService {
 
     }
 
-    /**
-     * Retrieves all product categories along with their associated products.
-     *
-     * @return a list of product categories containing products
-     */
-    public List<ProductCategory> getAllCategoriesWithProducts() {
-        return productCategoryRepository.findAllWithProducts();
-    }
 
     /**
      * Validates if the user's cart is ready for checkout.
@@ -189,18 +181,6 @@ public class CartService {
             inventoryService.restoreStock(item.getProduct().getId(), item.getQuantity());
             cartRepository.delete(item);
         });
-    }
-
-    /**
-     * Utility method to find a product by its ID.
-     *
-     * @param productId the ID of the product to find
-     * @return the found product
-     * @throws NoResultException if the product is not found
-     */
-    private Product findProductById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new NoResultException("Product with ID: " + productId + " not found"));
     }
 
     /**
