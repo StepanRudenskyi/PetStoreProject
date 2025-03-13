@@ -1,6 +1,10 @@
 package org.example.petstore.service.cart;
 
 import jakarta.persistence.NoResultException;
+import org.example.petstore.dto.CartAddResponseDto;
+import org.example.petstore.dto.cart.CartViewDto;
+import org.example.petstore.mapper.cart.CartResponseMapper;
+import org.example.petstore.mapper.cart.CartViewMapper;
 import org.example.petstore.model.Cart;
 import org.example.petstore.model.Product;
 import org.example.petstore.model.ProductCategory;
@@ -32,11 +36,13 @@ public class CartService {
     private final UserService userService;
     private final CartValidator cartValidator;
     private final CartRepository cartRepository;
+    private final CartViewMapper cartViewMapper;
+    private final CartResponseMapper cartResponseMapper;
 
     @Autowired
     public CartService(ProductCategoryRepository productCategoryRepository, ProductRepository productRepository,
                        InventoryService inventoryService, ProductValidator productValidator,
-                       UserService userService, CartValidator cartValidator, CartRepository cartRepository) {
+                       UserService userService, CartValidator cartValidator, CartRepository cartRepository, CartViewMapper cartViewMapper, CartResponseMapper cartResponseMapper) {
         this.productCategoryRepository = productCategoryRepository;
         this.productRepository = productRepository;
         this.inventoryService = inventoryService;
@@ -44,6 +50,8 @@ public class CartService {
         this.userService = userService;
         this.cartValidator = cartValidator;
         this.cartRepository = cartRepository;
+        this.cartViewMapper = cartViewMapper;
+        this.cartResponseMapper = cartResponseMapper;
     }
 
     /**
@@ -54,6 +62,13 @@ public class CartService {
      */
     public List<Cart> getCartItemsByUser(User user) {
         return cartRepository.findByUser(user);
+    }
+
+    public CartViewDto getCartView() {
+        User currentUser = userService.getCurrentUser();
+        List<Cart> cartItemsByUser = getCartItemsByUser(currentUser);
+        BigDecimal totalPrice = calculateTotalPrice(cartItemsByUser);
+        return cartViewMapper.toCartViewDto(cartItemsByUser, totalPrice);
     }
 
     /**
@@ -75,7 +90,7 @@ public class CartService {
      * @param quantity  the quantity of the product to add
      * @throws NoResultException if the product is not found in the database
      */
-    public void addProductToCart(Long productId, int quantity) {
+    public CartAddResponseDto addProductToCart(Long productId, int quantity) {
         Product product = findProductById(productId);
 
         // quantity validation
@@ -88,7 +103,9 @@ public class CartService {
         User user = getCurrentUser();
 
         // update quantity, if such product is already in the cart
-        updateOrAddCartItem(user, product, quantity);
+        Cart cart = updateOrAddCartItem(user, product, quantity);
+        return cartResponseMapper.toDto(cart);
+
     }
 
     /**
@@ -98,19 +115,20 @@ public class CartService {
      * @param product  the product to add or update in the cart
      * @param quantity the quantity to add
      */
-    public void updateOrAddCartItem(User user, Product product, int quantity) {
+    public Cart updateOrAddCartItem(User user, Product product, int quantity) {
         Optional<Cart> cartItemOptional = cartRepository.findByUserAndProduct(user, product);
 
         // if item is already in the cart, increase quantity
         if (cartItemOptional.isPresent()) {
             Cart cartItem = cartItemOptional.get();
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
-            cartRepository.save(cartItem);
+            return cartRepository.save(cartItem);
         } else {
             // create and safe to cart
             Cart newCartItem = new Cart(user, product, quantity);
-            cartRepository.save(newCartItem);
+            return cartRepository.save(newCartItem);
         }
+
     }
 
     /**
@@ -181,7 +199,7 @@ public class CartService {
      * @throws NoResultException if the product is not found
      */
     private Product findProductById(Long productId) {
-        return productRepository.findById(productId.intValue())
+        return productRepository.findById(productId)
                 .orElseThrow(() -> new NoResultException("Product with ID: " + productId + " not found"));
     }
 
