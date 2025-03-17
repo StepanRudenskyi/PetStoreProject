@@ -1,8 +1,8 @@
 package org.example.petstore.controller.api;
 
 import lombok.SneakyThrows;
-import org.example.petstore.dto.CartAddResponseDto;
-import org.example.petstore.dto.cart.CartDto;
+import org.example.petstore.dto.cart.CartAddResponseDto;
+import org.example.petstore.dto.cart.CartProductDto;
 import org.example.petstore.dto.cart.CartViewDto;
 import org.example.petstore.service.cart.CartService;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,11 +64,11 @@ public class CartControllerTest {
     @Test
     @SneakyThrows
     void testViewCart() {
-        List<CartDto> cartDtos = List.of(
-                new CartDto(1L, 2, BigDecimal.valueOf(12)),
-                new CartDto(3L, 1, BigDecimal.valueOf(1.99))
+        List<CartProductDto> cartProductDtos = List.of(
+                new CartProductDto(1L, "Apples", 2, BigDecimal.valueOf(12)),
+                new CartProductDto(3L, "Eggs", 1, BigDecimal.valueOf(1.99))
         );
-        CartViewDto cartViewDto = new CartViewDto(BigDecimal.valueOf(13.99), cartDtos);
+        CartViewDto cartViewDto = new CartViewDto(BigDecimal.valueOf(13.99), cartProductDtos);
 
         when(cartService.getCartView()).thenReturn(cartViewDto);
 
