@@ -2,8 +2,9 @@ package org.example.petstore.service.cart;
 
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
-import org.example.petstore.dto.CartAddResponseDto;
+import org.example.petstore.dto.cart.CartAddResponseDto;
 import org.example.petstore.dto.cart.CartViewDto;
+import org.example.petstore.exception.EmptyCartException;
 import org.example.petstore.mapper.cart.CartResponseMapper;
 import org.example.petstore.mapper.cart.CartViewMapper;
 import org.example.petstore.model.Cart;
@@ -149,7 +150,7 @@ public class CartService {
      */
     public void validateCartForCheckout(User user) {
         if (cartValidator.isCartEmpty(user)) {
-            throw new IllegalArgumentException("Your cart is empty");
+            throw new EmptyCartException("Your cart is empty");
         }
     }
 
