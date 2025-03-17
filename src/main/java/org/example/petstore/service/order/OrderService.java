@@ -7,7 +7,7 @@ import org.example.petstore.dto.AdminOrderDto;
 import org.example.petstore.dto.ReceiptDto;
 import org.example.petstore.enums.OrderStatus;
 import org.example.petstore.mapper.AdminOrderMapper;
-import org.example.petstore.mapper.OrderMapper;
+import org.example.petstore.mapper.ReceiptMapper;
 import org.example.petstore.model.Order;
 import org.example.petstore.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -70,7 +68,7 @@ public class OrderService {
             // update status to completed
             updateOrderStatus(orderId, OrderStatus.COMPLETED);
 
-            return OrderMapper.toDto(existingOrder);
+            return ReceiptMapper.toDto(existingOrder);
         } else {
             throw new NoResultException("Order with ID: " + orderId + " not found");
         }

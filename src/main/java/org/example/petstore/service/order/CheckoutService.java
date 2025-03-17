@@ -1,9 +1,15 @@
 package org.example.petstore.service.order;
 
 import jakarta.persistence.NoResultException;
+import lombok.RequiredArgsConstructor;
 import org.example.petstore.dto.CheckoutDto;
+import org.example.petstore.dto.OrderDto;
+import org.example.petstore.dto.cart.CartProductDto;
 import org.example.petstore.enums.OrderStatus;
 import org.example.petstore.enums.PaymentMethod;
+import org.example.petstore.exception.EmptyCartException;
+import org.example.petstore.mapper.OrderMapper;
+import org.example.petstore.mapper.cart.CartViewMapper;
 import org.example.petstore.model.*;
 import org.example.petstore.repository.AccountRepository;
 import org.example.petstore.repository.OrderLineRepository;
@@ -11,6 +17,7 @@ import org.example.petstore.service.cart.CartService;
 import org.example.petstore.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -22,6 +29,7 @@ import java.util.stream.Collectors;
  * order line creation, cart validation, and payment method handling.
  */
 @Service
+@RequiredArgsConstructor
 public class CheckoutService {
 
     private final OrderService orderService;
@@ -29,16 +37,9 @@ public class CheckoutService {
     private final AccountRepository accountRepository;
     private final CartService cartService;
     private final UserService userService;
+    private final CartViewMapper cartViewMapper;
+    private final OrderMapper orderMapper;
 
-    @Autowired
-    public CheckoutService(OrderService orderService, OrderLineRepository orderLineRepository,
-                           AccountRepository accountRepository, CartService cartService, UserService userService) {
-        this.orderService = orderService;
-        this.orderLineRepository = orderLineRepository;
-        this.accountRepository = accountRepository;
-        this.cartService = cartService;
-        this.userService = userService;
-    }
 
     /**
      * Processes the checkout by creating an order, saving it, creating order lines from the cart,
@@ -48,39 +49,40 @@ public class CheckoutService {
      * @return the saved order
      * @throws RuntimeException if an error occurs during checkout processing
      */
-    public Order processCheckout(PaymentMethod paymentMethod) {
-        try {
-            User currentUser = userService.getCurrentUser();
-            List<Cart> cartItems = cartService.getCartItemsByUser(currentUser);
+    @Transactional
+    public OrderDto processCheckout(PaymentMethod paymentMethod) {
+        User currentUser = userService.getCurrentUser();
+        List<Cart> cartItems = cartService.getCartItemsByUser(currentUser);
 
-            if (cartItems.isEmpty()) {
-                throw new IllegalStateException("Cart is empty. Cannot proceed with checkout.");
-
-            }
-            // create order based on cart
-            Order order = buildOrder(paymentMethod, currentUser, cartItems);
-            Order savedOrder = orderService.saveOrder(order);
-
-            // create order line
-            List<OrderLine> orderLines = createOrderLines(cartItems, savedOrder);
-            orderLineRepository.saveAll(orderLines);
-
-            cartService.clearCart();
-            return savedOrder;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to process checkout", e);
-
+        if (cartItems.isEmpty()) {
+            throw new EmptyCartException("Cart is empty. Cannot proceed with checkout.");
         }
+        // create order based on cart
+        Order order = buildOrder(paymentMethod, currentUser, cartItems);
+
+        // fetch and set order lines
+        List<OrderLine> orderLines = createOrderLines(cartItems, order);
+        order.setOrderLineList(orderLines);
+
+        Order savedOrder = orderService.saveOrder(order);
+
+        // save order line
+        orderLineRepository.saveAll(orderLines);
+
+        cartService.clearCart();
+        return orderMapper.toDto(savedOrder);
+
     }
 
     /**
      * Builds an order based on the user's cart and the selected payment method.
      *
      * @param paymentMethod the payment method for the order
-     * @param currentUser the current user making the order
-     * @param cartItems the items in the user's cart
+     * @param currentUser   the current user making the order
+     * @param cartItems     the items in the user's cart
      * @return the constructed order
-     */    private Order buildOrder(PaymentMethod paymentMethod, User currentUser, List<Cart> cartItems) {
+     */
+    private Order buildOrder(PaymentMethod paymentMethod, User currentUser, List<Cart> cartItems) {
         Order order = new Order();
         order.setOrderDate(new Date());
         order.setPaymentMethod(paymentMethod);
@@ -100,7 +102,7 @@ public class CheckoutService {
      * Creates a list of order lines from the items in the cart.
      *
      * @param cartItems the items in the cart
-     * @param order the order to associate the order lines with
+     * @param order     the order to associate the order lines with
      * @return a list of created order lines
      */
     private List<OrderLine> createOrderLines(List<Cart> cartItems, Order order) {
@@ -112,9 +114,9 @@ public class CheckoutService {
     /**
      * Builds an order line for a specific product and quantity.
      *
-     * @param product the product being ordered
+     * @param product  the product being ordered
      * @param quantity the quantity of the product ordered
-     * @param order the order to associate this order line with
+     * @param order    the order to associate this order line with
      * @return the constructed order line
      */
     private OrderLine buildOrderLine(Product product, Integer quantity, Order order) {
@@ -130,17 +132,20 @@ public class CheckoutService {
      * Prepares the checkout page by validating the cart, calculating the total price,
      * and returning the information in a CheckoutDto.
      *
-     * @param currentUser the current user viewing the checkout page
      * @return the CheckoutDto containing cart items and total price
      */
-    public CheckoutDto prepareCheckoutPage(User currentUser) {
+    public CheckoutDto prepareCheckoutPage() {
+        User currentUser = userService.getCurrentUser();
         List<Cart> cartItems = cartService.getCartItemsByUser(currentUser);
+        BigDecimal totalPrice = cartService.calculateTotalPrice(cartItems);
+
+        List<CartProductDto> cartProductDtoList = cartItems.stream()
+                .map(cartViewMapper::toCartProductDto)
+                .toList();
 
         // check if cart is empty
         cartService.validateCartForCheckout(currentUser);
-        // Calculate total price
-        BigDecimal totalPrice = cartService.calculateTotalPrice(cartItems);
 
-        return new CheckoutDto(cartItems, totalPrice);
+        return new CheckoutDto(totalPrice, cartProductDtoList);
     }
 }
