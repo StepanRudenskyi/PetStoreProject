@@ -1,6 +1,6 @@
 package org.example.petstore.mapper.cart;
 
-import org.example.petstore.dto.CartAddResponseDto;
+import org.example.petstore.dto.cart.CartAddResponseDto;
 import org.example.petstore.model.Cart;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

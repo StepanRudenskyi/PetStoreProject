@@ -1,52 +1,35 @@
 package org.example.petstore.mapper;
 
+import org.example.petstore.dto.OrderDto;
 import org.example.petstore.dto.ReceiptDto;
-import org.example.petstore.dto.ReceiptDto.OrderLineDto;
-import org.example.petstore.model.Account;
 import org.example.petstore.model.Order;
 import org.example.petstore.model.OrderLine;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OrderMapper {
+@Mapper(componentModel = "spring")
+public interface OrderMapper {
 
-    public static ReceiptDto toDto(Order order) {
-        if (order == null) {
+    @Mapping(source = "customer.user.username", target = "accountUsername")
+    @Mapping(source = "orderId", target = "orderId")
+    @Mapping(source = "orderDate", target = "orderDate")
+    @Mapping(source = "paymentMethod", target = "paymentMethod")
+    @Mapping(source = "status", target = "status")
+    @Mapping(source = "totalAmount", target = "totalPrice")
+    @Mapping(target = "orderLines", expression = "java(mapOrderLineList(order.getOrderLineList()))")
+    OrderDto toDto(Order order);
+
+    default List<ReceiptDto.OrderLineDto> mapOrderLineList(List<OrderLine> orderLines) {
+        if (orderLines == null) {
             return null;
         }
-
-        ReceiptDto dto = new ReceiptDto();
-        Account account = order.getCustomer();
-
-        dto.setAccountFirstName(account.getFirstName());
-        dto.setAccountLastName(account.getLastName());
-        dto.setOrderId(order.getOrderId());
-        dto.setPaymentMethod(order.getPaymentMethod().name());
-        dto.setStatus(order.getStatus().name());
-        dto.setOrderDate(order.getOrderDate());
-        dto.setTotalAmount(order.getTotalAmount());
-
-        List<ReceiptDto.OrderLineDto> orderLines = order.getOrderLineList().stream()
-                .map(OrderMapper::toOrderLineDto)
+        return orderLines.stream()
+                .map(ReceiptMapper::toOrderLineDto)
                 .collect(Collectors.toList());
-
-        dto.setOrderLines(orderLines);
-
-        return dto;
     }
 
-    public static OrderLineDto toOrderLineDto(OrderLine orderLine) {
-        if (orderLine == null) {
-            return null;
-        }
-
-        OrderLineDto dto = new OrderLineDto();
-
-        dto.setProductName(orderLine.getProduct().getName());
-        dto.setPrice(orderLine.getProduct().getRetailPrice());
-        dto.setQuantity(orderLine.getQuantity());
-
-        return dto;
-    }
 }

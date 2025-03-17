@@ -9,5 +9,5 @@ import java.util.List;
 @AllArgsConstructor
 public class CartViewDto {
     BigDecimal totalPrice;
-    List<CartDto> cartItems;
+    List<CartProductDto> cartItems;
 }

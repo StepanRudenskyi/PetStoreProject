@@ -30,7 +30,7 @@ public class AdminOrderMapper {
         adminOrderDto.setTotalAmount(order.getTotalAmount());
 
         List<ReceiptDto.OrderLineDto> orderLines = order.getOrderLineList().stream()
-                .map(OrderMapper::toOrderLineDto)
+                .map(ReceiptMapper::toOrderLineDto)
                 .collect(Collectors.toList());
         adminOrderDto.setOrderLines(orderLines);
 
