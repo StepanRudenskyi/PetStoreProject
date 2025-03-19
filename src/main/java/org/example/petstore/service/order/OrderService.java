@@ -1,8 +1,7 @@
 package org.example.petstore.service.order;
 
 import jakarta.persistence.NoResultException;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.petstore.dto.AdminOrderDto;
 import org.example.petstore.dto.ReceiptDto;
 import org.example.petstore.enums.OrderStatus;
@@ -10,30 +9,19 @@ import org.example.petstore.mapper.AdminOrderMapper;
 import org.example.petstore.mapper.ReceiptMapper;
 import org.example.petstore.model.Order;
 import org.example.petstore.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class OrderService {
-    private OrderRepository orderRepository;
 
-    @Autowired
-    AdminOrderMapper orderMapper;
-
-    @Getter
-    private OrderProcessingService orderProcessingService;
-
-    @Autowired
-    public OrderService(OrderRepository orderRepository, OrderProcessingService orderProcessingService) {
-        this.orderRepository = orderRepository;
-        this.orderProcessingService = orderProcessingService;
-    }
+    private final OrderRepository orderRepository;
+    private final AdminOrderMapper orderMapper;
+    private final OrderProcessingService orderProcessingService;
 
     /**
      * Processes an order by applying any necessary discount logic.
@@ -55,7 +43,7 @@ public class OrderService {
     /**
      * Retrieves the receipt details for an order and marks it as completed.
      *
-     * @param orderId   the ID of the order
+     * @param orderId the ID of the order
      * @return a {@link ReceiptDto} containing order receipt details
      * @throws NoResultException if the order is not found
      */
@@ -101,20 +89,9 @@ public class OrderService {
      *
      * @return a list of {@link AdminOrderDto} representing order history
      */
-    public Page<AdminOrderDto> getOrdersHistory(int page, int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<AdminOrderDto> getOrdersHistory(Pageable pageable) {
         Page<Order> orderPage = orderRepository.findAll(pageable);
         return orderPage.map(orderMapper::toDto);
-
-        /*
-        List<Order> allOrders = orderRepository.findAll();
-        List<AdminOrderDto> resultList = new ArrayList<>();
-
-        for (Order order : allOrders) {
-            resultList.add(orderMapper.toDto(order));
-        }
-        return resultList;*/
     }
 
 }

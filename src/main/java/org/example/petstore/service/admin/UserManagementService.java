@@ -1,29 +1,29 @@
 package org.example.petstore.service.admin;
 
 import jakarta.persistence.NoResultException;
+import lombok.RequiredArgsConstructor;
 import org.example.petstore.dto.account.AdminUserDto;
 import org.example.petstore.enums.Role;
 import org.example.petstore.mapper.AdminUserMapper;
+import org.example.petstore.model.Account;
 import org.example.petstore.model.User;
+import org.example.petstore.repository.AccountRepository;
 import org.example.petstore.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 public class UserManagementService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
+    private final AdminUserMapper userMapper;
 
-    @Autowired
-    private AdminUserMapper userMapper;
-
-
-    public List<AdminUserDto> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return userMapper.toListDto(users);
+    public Page<AdminUserDto> getAllUsers(Pageable pageable) {
+        Page<Account> accounts = accountRepository.findAll(pageable);
+        return accounts.map(userMapper::toDto);
     }
 
     public void addAdmin(Long userId) {
