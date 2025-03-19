@@ -21,10 +21,4 @@ public class StatisticsDto {
     /**
      * ProductSalesDto represents data for a specific product and its sales count.
      */
-    @Data
-    @AllArgsConstructor
-    public static class ProductSalesDto {
-        private String productName;
-        private Long salesCount;
-    }
 }

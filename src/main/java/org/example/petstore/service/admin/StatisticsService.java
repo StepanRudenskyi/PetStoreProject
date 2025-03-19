@@ -1,5 +1,6 @@
 package org.example.petstore.service.admin;
 
+import org.example.petstore.dto.ProductSalesDto;
 import org.example.petstore.dto.StatisticsDto;
 import org.example.petstore.mapper.AdminStatisticsMapper;
 import org.example.petstore.repository.OrderLineRepository;
@@ -7,6 +8,7 @@ import org.example.petstore.repository.OrderRepository;
 import org.example.petstore.repository.UserRepository;
 import org.example.petstore.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -37,7 +39,7 @@ public class StatisticsService {
      *
      * @return a {@link StatisticsDto} containing the gathered statistics.
      */
-    public StatisticsDto getStatistics() {
+    public StatisticsDto getStatistics(Pageable pageable) {
         Long totalUsers = userRepository.count();
         Long totalOrders = orderRepository.count();
         BigDecimal totalRevenue = orderRepository.calculateTotalRevenue();
@@ -49,10 +51,8 @@ public class StatisticsService {
 
         Long totalProductsSold = orderLineRepository.countTotalProductsSold();
 
-        // Retrieve the list of most popular products from the repository.
-        List<Object[]> mostPopularProductsList = orderLineRepository.findMostPopularProducts();
-        // Map the raw data into a list of ProductSalesDto objects.
-        List<StatisticsDto.ProductSalesDto> mostPopularProducts = statisticsMapper.mapMostPopularProducts(mostPopularProductsList);
+        // Retrieve the list of most popular products from the repository based on pageable.
+        List<ProductSalesDto> mostPopularProducts = orderLineRepository.findFiveMostPopularProducts(pageable);
 
         return statisticsMapper.toDto(totalUsers, totalOrders, totalRevenue, averageOrderValue, totalProductsSold, mostPopularProducts);
     }
