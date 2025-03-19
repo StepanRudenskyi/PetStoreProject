@@ -1,24 +1,24 @@
 package org.example.petstore.controller;
 
 import jakarta.persistence.NoResultException;
+import lombok.RequiredArgsConstructor;
 import org.example.petstore.dto.ReceiptDto;
 import org.example.petstore.model.Order;
-import org.example.petstore.service.user.UserValidator;
+import org.example.petstore.service.order.OrderProcessingService;
 import org.example.petstore.service.order.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.petstore.service.user.UserValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
+@RequiredArgsConstructor
 public class ReceiptController {
 
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private UserValidator userValidator;
+    private final OrderService orderService;
+    private final OrderProcessingService orderProcessingService;
+    private final UserValidator userValidator;
 
 
     @GetMapping("/receipt/{orderId}")
@@ -45,8 +45,8 @@ public class ReceiptController {
             Order order = orderService.getOrderById(orderId);
 
             model.addAttribute("order", order);
-            model.addAttribute("discountApplied", orderService.getOrderProcessingService().isDiscountApplied());
-            model.addAttribute("validationMessage", orderService.getOrderProcessingService().getValidationMessage());
+            model.addAttribute("discountApplied", orderProcessingService.isDiscountApplied());
+            model.addAttribute("validationMessage", orderProcessingService.getValidationMessage());
 
             return "order/processedOrder";
         } catch (NoResultException e) {

@@ -1,6 +1,5 @@
 package org.example.petstore.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -18,7 +17,4 @@ public class StatisticsDto {
     private Long totalProductsSold;
     private List<ProductSalesDto> mostPopularProducts;
 
-    /**
-     * ProductSalesDto represents data for a specific product and its sales count.
-     */
 }
