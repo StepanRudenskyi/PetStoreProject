@@ -1,14 +1,16 @@
 package org.example.petstore.config;
 
+import lombok.RequiredArgsConstructor;
 import org.example.petstore.service.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,10 +23,11 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     /**
      * Configures the HTTP security settings such as which URLs require authentication
@@ -37,11 +40,15 @@ public class WebSecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/", "/products/**", "/back-to-landing", "/register", "/images/**", "/css/**", "/js/**").permitAll();
-                    registry.requestMatchers("/cart/**", "/checkout/**").hasAnyRole("USER", "ADMIN");
-                    registry.requestMatchers("/admin/**").hasRole("ADMIN");
+        return http
+                .csrf(AbstractHttpConfigurer::disable) // TODO: enable csrf when ready for prod
+//                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())) // Store CSRF token in a cookie
+                .authorizeHttpRequests(registry -> {
+                    registry.requestMatchers("/", "/api/products/**", "/back-to-landing", "/register", "/images/**", "/css/**", "/js/**").permitAll();
+                    registry.requestMatchers("/api/cart/**", "/api/checkout/**").hasAnyRole("USER", "ADMIN");
+                    registry.requestMatchers("/api/admin/**").hasRole("ADMIN");
                     registry.anyRequest().authenticated();
+//                    registry.anyRequest().permitAll();
                 })
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> {
