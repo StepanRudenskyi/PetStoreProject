@@ -15,6 +15,8 @@ public class OrderDto {
     private Date orderDate;
     private String paymentMethod;
     private String status;
+    private boolean isDiscountApplied;
+    private String validationMessage;
     private BigDecimal totalPrice;
     private List<ReceiptDto.OrderLineDto> orderLines;
 }

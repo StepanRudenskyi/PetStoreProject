@@ -15,7 +15,6 @@ import org.example.petstore.repository.AccountRepository;
 import org.example.petstore.repository.OrderLineRepository;
 import org.example.petstore.service.cart.CartService;
 import org.example.petstore.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +38,7 @@ public class CheckoutService {
     private final UserService userService;
     private final CartViewMapper cartViewMapper;
     private final OrderMapper orderMapper;
+    private final OrderProcessingService orderProcessingService;
 
 
     /**
@@ -64,13 +64,15 @@ public class CheckoutService {
         List<OrderLine> orderLines = createOrderLines(cartItems, order);
         order.setOrderLineList(orderLines);
 
+        orderProcessingService.applyDiscountLogic(order);
+
         Order savedOrder = orderService.saveOrder(order);
 
         // save order line
         orderLineRepository.saveAll(orderLines);
 
         cartService.clearCart();
-        return orderMapper.toDto(savedOrder);
+        return orderMapper.toDto(savedOrder, orderProcessingService);
 
     }
 

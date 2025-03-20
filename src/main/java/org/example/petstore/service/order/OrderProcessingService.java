@@ -16,8 +16,9 @@ public class OrderProcessingService {
 
     public void applyDiscountLogic(Order order) {
         if (order.getTotalAmount().compareTo(BigDecimal.valueOf(100)) > 0) {
+            order.setTotalAmount(order.getTotalAmount().multiply(BigDecimal.valueOf(0.9)));
             isDiscountApplied = true;
-            validationMessage = "Discount applied for orders over $100";
+            validationMessage = "10% discount applied for orders over $100";
         } else {
             isDiscountApplied = false;
             validationMessage = "No discount applied";

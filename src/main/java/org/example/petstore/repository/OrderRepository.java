@@ -12,13 +12,13 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o " +
             "JOIN FETCH o.customer a " +
             "JOIN FETCH o.orderLineList ol " +
             "JOIN FETCH ol.product " +
             "WHERE o.orderId = :orderId")
-    Optional<Order> findReceipt(@Param("orderId") int orderId);
+    Optional<Order> findReceipt(@Param("orderId") Long orderId);
 
     @Query("SELECT SUM(o.totalAmount) FROM Order o")
     BigDecimal calculateTotalRevenue();
