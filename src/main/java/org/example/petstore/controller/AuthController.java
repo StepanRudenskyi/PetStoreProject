@@ -1,21 +1,22 @@
 package org.example.petstore.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.example.petstore.dto.account.UserRegistrationDto;
 import org.example.petstore.service.RegistrationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    RegistrationService registrationService;
+    private final RegistrationService registrationService;
 
     @GetMapping("/login")
     public String showLoginPage() {
@@ -29,21 +30,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") @Valid UserRegistrationDto registrationDto,
-                               BindingResult result, Model model) {
-
-        // check validation errors
-        if (result.hasErrors()) {
-            return "user/register";
-        }
-        try {
-            registrationService.registerUser(registrationDto);
-            return "redirect:/login?success";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "user/register";
-        }
-
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto registrationDto) {
+        UserRegistrationDto userRegistrationDto = registrationService.registerUser(registrationDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userRegistrationDto);
     }
 
     @GetMapping("/logout-success")

@@ -33,14 +33,16 @@ public class RegistrationService {
      * @param registrationDto the data transfer object containing user registration details
      * @throws IllegalArgumentException if the username already exists in the system
      */
-    public void registerUser(UserRegistrationDto registrationDto) {
+    public UserRegistrationDto registerUser(UserRegistrationDto registrationDto) {
         try {
             String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
             User user = UserRegistrationMapper.toEntity(registrationDto, encodedPassword);
-            userRepository.save(user);
+            User userSaved = userRepository.save(user);
 
             Account account = UserRegistrationMapper.toAccountEntity(registrationDto, user);
-            accountRepository.save(account);
+            Account accSaved = accountRepository.save(account);
+
+            return UserRegistrationMapper.toDto(userSaved, accSaved);
         } catch (DataIntegrityViolationException e) {
             // throw exception if username is already in use
             throw new IllegalArgumentException("Username is already taken.");
