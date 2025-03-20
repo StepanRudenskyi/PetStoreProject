@@ -21,7 +21,7 @@ public class UserValidator {
     OrderRepository orderRepository;
 
 
-    public boolean canAccessOrder(int orderId) {
+    public boolean canAccessOrder(Long orderId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Account currentAccount = accountRepository.findByUserUsername(username)
