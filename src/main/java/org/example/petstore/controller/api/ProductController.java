@@ -57,4 +57,39 @@ public class ProductController {
         ProductDto responseProduct = productService.addProduct(productDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseProduct);
     }
+
+    /**
+     * Deletes the product with the specified ID.
+     *
+     * <p>This endpoint is accessible only to users with the ADMIN role.
+     * It will remove the product from the system.
+     *
+     * @param productId the ID of the product to be deleted
+     * @return a {@link ResponseEntity} with HTTP status 200 (OK) if deletion is successful
+     */
+    @DeleteMapping("/{productId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProductById(productId);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Updates the product with the specified ID using the provided data.
+     *
+     * <p>This endpoint supports PATCH behavior: only non-null fields in the provided
+     * {@link ProductDto} will be updated; any field that is not provided will remain unchanged.
+     * This operation is accessible only to users with the ADMIN role.
+     *
+     * @param productId         the ID of the product to be updated
+     * @param updatedProductDto the {@link ProductDto} containing the updated product data
+     * @return a {@link ResponseEntity} containing the updated {@link ProductDto} and HTTP status 200 (OK)
+     */
+    @PatchMapping("/{productId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long productId,
+                                                    @RequestBody ProductDto updatedProductDto) {
+        ProductDto productDto = productService.updateProduct(productId, updatedProductDto);
+        return ResponseEntity.ok(productDto);
+    }
 }

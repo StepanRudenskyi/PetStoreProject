@@ -1,5 +1,6 @@
 package org.example.petstore.service.product;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.example.petstore.dto.ProductDto;
@@ -31,7 +32,7 @@ public class ProductService {
 
     public ProductDto addProduct(ProductDto productDto) {
         ProductCategory productCategory = categoryRepository.findByCategoryName(productDto.getCategoryName())
-                .orElseThrow(() -> new NoResultException("Category with name: " +
+                .orElseThrow(() -> new EntityNotFoundException("Category with name: " +
                         productDto.getCategoryName() + " was not found"));
 
         Product product = productMapper.toEntity(productDto);
@@ -42,7 +43,31 @@ public class ProductService {
 
     public ProductDto getProductById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new NoResultException("Product with id: " + id + " was not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Product with id: " + id + " was not found"));
         return productMapper.toDto(product);
+    }
+
+    public void deleteProductById(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product with id" + productId + "was not found"));
+        productRepository.delete(product);
+    }
+
+    public ProductDto updateProduct(Long productId, ProductDto updatedProductDto) {
+        Product existingProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product with id: " + productId + " was not found"));
+
+        if (updatedProductDto.getCategoryName() != null) {
+            ProductCategory category = categoryRepository.findByCategoryName(updatedProductDto.getCategoryName())
+                    .orElseThrow(() -> new EntityNotFoundException("Product category with name: "
+                            + updatedProductDto.getCategoryName() + " was not found"));
+            existingProduct.setCategory(category);
+        }
+
+        productMapper.updateProductFromDto(updatedProductDto, existingProduct);
+
+        Product updatedProduct = productRepository.save(existingProduct);
+
+        return productMapper.toDto(updatedProduct);
     }
 }
