@@ -1,7 +1,7 @@
 package org.example.petstore.mapper;
 
-import org.example.petstore.dto.ProductSalesDto;
-import org.example.petstore.dto.StatisticsDto;
+import org.example.petstore.dto.stats.ProductSalesDto;
+import org.example.petstore.dto.stats.StatisticsDto;
 import org.mapstruct.Mapper;
 
 import java.math.BigDecimal;

@@ -1,6 +1,6 @@
 package org.example.petstore.repository;
 
-import org.example.petstore.dto.ProductSalesDto;
+import org.example.petstore.dto.stats.ProductSalesDto;
 import org.example.petstore.model.OrderLine;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

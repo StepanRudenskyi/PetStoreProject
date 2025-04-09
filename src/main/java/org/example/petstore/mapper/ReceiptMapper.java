@@ -1,7 +1,7 @@
 package org.example.petstore.mapper;
 
-import org.example.petstore.dto.ReceiptDto;
-import org.example.petstore.dto.ReceiptDto.OrderLineDto;
+import org.example.petstore.dto.order.ReceiptDto;
+import org.example.petstore.dto.order.ReceiptDto.OrderLineDto;
 import org.example.petstore.model.Account;
 import org.example.petstore.model.Order;
 import org.example.petstore.model.OrderLine;

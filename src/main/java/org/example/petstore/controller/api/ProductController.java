@@ -1,7 +1,7 @@
 package org.example.petstore.controller.api;
 
 import lombok.RequiredArgsConstructor;
-import org.example.petstore.dto.ProductDto;
+import org.example.petstore.dto.product.ProductDto;
 import org.example.petstore.service.product.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

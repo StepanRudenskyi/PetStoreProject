@@ -1,4 +1,4 @@
-package org.example.petstore.dto;
+package org.example.petstore.dto.product;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
 package org.example.petstore.mapper;
 
-import org.example.petstore.dto.AdminOrderDto;
-import org.example.petstore.dto.ReceiptDto;
+import org.example.petstore.dto.order.AdminOrderDto;
+import org.example.petstore.dto.order.ReceiptDto;
 import org.example.petstore.enums.OrderStatus;
 import org.example.petstore.model.Account;
 import org.example.petstore.model.Order;

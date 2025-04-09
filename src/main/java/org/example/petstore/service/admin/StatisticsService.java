@@ -1,7 +1,7 @@
 package org.example.petstore.service.admin;
 
-import org.example.petstore.dto.ProductSalesDto;
-import org.example.petstore.dto.StatisticsDto;
+import org.example.petstore.dto.stats.ProductSalesDto;
+import org.example.petstore.dto.stats.StatisticsDto;
 import org.example.petstore.mapper.AdminStatisticsMapper;
 import org.example.petstore.repository.OrderLineRepository;
 import org.example.petstore.repository.OrderRepository;

@@ -1,6 +1,6 @@
 package org.example.petstore.service;
 
-import org.example.petstore.dto.DepartmentDto;
+import org.example.petstore.dto.department.DepartmentDto;
 import org.example.petstore.mapper.DepartmentMapper;
 import org.example.petstore.repository.DepartmentRepository;
 import org.springframework.stereotype.Service;

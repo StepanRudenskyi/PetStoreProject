@@ -2,8 +2,8 @@ package org.example.petstore.service.order;
 
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
-import org.example.petstore.dto.CheckoutDto;
-import org.example.petstore.dto.OrderDto;
+import org.example.petstore.dto.order.CheckoutDto;
+import org.example.petstore.dto.order.OrderDto;
 import org.example.petstore.dto.cart.CartProductDto;
 import org.example.petstore.enums.OrderStatus;
 import org.example.petstore.enums.PaymentMethod;

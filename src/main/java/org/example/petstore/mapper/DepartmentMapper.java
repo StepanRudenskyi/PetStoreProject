@@ -1,6 +1,6 @@
 package org.example.petstore.mapper;
 
-import org.example.petstore.dto.DepartmentDto;
+import org.example.petstore.dto.department.DepartmentDto;
 import org.example.petstore.model.Department;
 import org.mapstruct.Mapper;
 

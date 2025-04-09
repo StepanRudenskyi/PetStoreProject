@@ -3,7 +3,7 @@ package org.example.petstore.service.product;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
-import org.example.petstore.dto.ProductDto;
+import org.example.petstore.dto.product.ProductDto;
 import org.example.petstore.mapper.ProductMapper;
 import org.example.petstore.model.Product;
 import org.example.petstore.model.ProductCategory;

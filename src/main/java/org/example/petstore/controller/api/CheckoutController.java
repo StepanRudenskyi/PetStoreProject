@@ -1,8 +1,8 @@
 package org.example.petstore.controller.api;
 
 import lombok.RequiredArgsConstructor;
-import org.example.petstore.dto.CheckoutDto;
-import org.example.petstore.dto.OrderDto;
+import org.example.petstore.dto.order.CheckoutDto;
+import org.example.petstore.dto.order.OrderDto;
 import org.example.petstore.enums.PaymentMethod;
 import org.example.petstore.service.order.CheckoutService;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package org.example.petstore.dto;
+package org.example.petstore.dto.order;
 
 import lombok.Data;
 

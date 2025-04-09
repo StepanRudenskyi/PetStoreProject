@@ -1,7 +1,7 @@
 package org.example.petstore.controller.api;
 
 import lombok.RequiredArgsConstructor;
-import org.example.petstore.dto.DepartmentDto;
+import org.example.petstore.dto.department.DepartmentDto;
 import org.example.petstore.service.DepartmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,8 +1,8 @@
 package org.example.petstore.controller.api;
 
 import lombok.RequiredArgsConstructor;
-import org.example.petstore.dto.AdminOrderDto;
-import org.example.petstore.dto.StatisticsDto;
+import org.example.petstore.dto.order.AdminOrderDto;
+import org.example.petstore.dto.stats.StatisticsDto;
 import org.example.petstore.dto.account.AdminUserDto;
 import org.example.petstore.service.admin.StatisticsService;
 import org.example.petstore.service.admin.UserManagementService;

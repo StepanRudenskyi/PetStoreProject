@@ -1,4 +1,4 @@
-package org.example.petstore.dto;
+package org.example.petstore.dto.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

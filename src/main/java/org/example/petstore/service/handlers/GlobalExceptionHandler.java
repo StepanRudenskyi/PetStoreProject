@@ -1,6 +1,6 @@
 package org.example.petstore.service.handlers;
 
-import org.example.petstore.dto.ApiErrorResponse;
+import org.example.petstore.dto.error.ApiErrorResponse;
 import org.example.petstore.exception.EmptyCartException;
 import org.example.petstore.exception.OrderAccessDeniedException;
 import org.springframework.http.HttpStatus;
