@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface OrderLineRepository extends JpaRepository<OrderLine, Integer> {
     @Query("""
-            SELECT new org.example.petstore.dto.ProductSalesDto(ol.product.name , COUNT(ol))
+            SELECT new org.example.petstore.dto.stats.ProductSalesDto(ol.product.name , COUNT(ol))
             FROM OrderLine ol
             GROUP BY ol.product
             ORDER BY COUNT(ol) DESC

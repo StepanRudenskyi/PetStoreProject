@@ -1,9 +1,15 @@
 package org.example.petstore.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
+import lombok.RequiredArgsConstructor;
+import org.example.petstore.dto.inventory.InventoryDto;
+import org.example.petstore.dto.inventory.UpdateQuantityRequest;
+import org.example.petstore.mapper.inventory.InventoryMapper;
 import org.example.petstore.model.Inventory;
+import org.example.petstore.model.Product;
 import org.example.petstore.repository.InventoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.petstore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,10 +17,12 @@ import org.springframework.stereotype.Service;
  * checking stock, reducing stock, and restoring stock for products.
  */
 @Service
+@RequiredArgsConstructor
 public class InventoryService {
 
-    @Autowired
-    private InventoryRepository inventoryRepository;
+    private final InventoryRepository inventoryRepository;
+    private final InventoryMapper inventoryMapper;
+    private final ProductRepository productRepository;
 
     /**
      * Retrieves the current stock quantity of a specific product.
@@ -64,5 +72,41 @@ public class InventoryService {
         int newQuantity = inventory.getQuantity() + quantity;
         inventory.setQuantity(newQuantity);
         inventoryRepository.save(inventory);
+    }
+
+    public InventoryDto createInventory(InventoryDto inventoryDto) {
+        Inventory inventory = inventoryMapper.toEntity(inventoryDto);
+
+        Product product = productRepository.findById(inventoryDto.getProductId())
+                .orElseThrow(() -> new EntityNotFoundException("Product with id: " + inventoryDto.getProductId() +
+                        " was not found"));
+
+        inventory.setProduct(product);
+
+        return inventoryMapper.toDto(inventoryRepository.save(inventory));
+    }
+
+    public InventoryDto getInventory(Long productId) {
+        Inventory inventory = inventoryRepository.findByProduct_Id(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Inventory with product id: " + productId +
+                        " was not found"));
+
+        return inventoryMapper.toDto(inventory);
+    }
+
+    public InventoryDto updateInventoryQuantity(Long productId, UpdateQuantityRequest dto) {
+        Inventory inventory = inventoryRepository.findByProduct_Id(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Inventory with product id: " + productId +
+                        " was not found"));
+
+        int newQuantity = inventory.getQuantity() + dto.getDeltaAsInteger();
+        if (newQuantity < 0) {
+            throw new IllegalArgumentException("New quantity cannot be less than 0");
+        }
+
+        inventory.setQuantity(newQuantity);
+        Inventory updated = inventoryRepository.save(inventory);
+        return inventoryMapper.toDto(updated);
+
     }
 }
