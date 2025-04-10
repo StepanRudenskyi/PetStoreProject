@@ -1,5 +1,6 @@
 package org.example.petstore.service.handlers;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.petstore.dto.error.ApiErrorResponse;
 import org.example.petstore.exception.EmptyCartException;
 import org.example.petstore.exception.OrderAccessDeniedException;
@@ -37,6 +38,12 @@ public class GlobalExceptionHandler {
                 })
                 .toList();
         return new ResponseEntity<>(Map.of("errors", errors), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleEntityNotFoundException(EntityNotFoundException e) {
+        ApiErrorResponse errorResponse = new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
