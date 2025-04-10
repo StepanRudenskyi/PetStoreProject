@@ -3,13 +3,18 @@ package org.example.petstore.service.product;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
+import org.example.petstore.dto.inventory.InventoryDto;
+import org.example.petstore.dto.inventory.ProductInventoryDto;
 import org.example.petstore.dto.product.ProductDto;
 import org.example.petstore.mapper.ProductMapper;
+import org.example.petstore.mapper.inventory.InventoryMapper;
 import org.example.petstore.model.Product;
 import org.example.petstore.model.ProductCategory;
 import org.example.petstore.repository.ProductCategoryRepository;
 import org.example.petstore.repository.ProductRepository;
+import org.example.petstore.service.InventoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,7 +24,9 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final InventoryMapper inventoryMapper;
     private final ProductCategoryRepository categoryRepository;
+    private final InventoryService inventoryService;
 
     public List<ProductDto> getProductsByCategory(Long categoryId) {
         List<Product> products = productRepository.findByCategory_CategoryId(categoryId)
@@ -30,7 +37,7 @@ public class ProductService {
                 .toList();
     }
 
-    public ProductDto addProduct(ProductDto productDto) {
+    public ProductDto createProduct(ProductDto productDto) {
         ProductCategory productCategory = categoryRepository.findByCategoryName(productDto.getCategoryName())
                 .orElseThrow(() -> new EntityNotFoundException("Category with name: " +
                         productDto.getCategoryName() + " was not found"));
@@ -69,5 +76,17 @@ public class ProductService {
         Product updatedProduct = productRepository.save(existingProduct);
 
         return productMapper.toDto(updatedProduct);
+    }
+
+    @Transactional
+    public ProductInventoryDto createProductWithInventory(ProductInventoryDto productInventoryDto) {
+        ProductDto resultProductDto = createProduct(productInventoryDto.getProduct());
+
+        InventoryDto inventoryDto = productInventoryDto.getInventory();
+        inventoryDto.setProductId(resultProductDto.getId());
+
+        InventoryDto resultInventoryDto = inventoryService.createInventory(inventoryDto);
+
+        return new ProductInventoryDto(resultProductDto, resultInventoryDto);
     }
 }

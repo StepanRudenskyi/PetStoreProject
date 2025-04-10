@@ -1,6 +1,8 @@
 package org.example.petstore.controller.api;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.petstore.dto.inventory.ProductInventoryDto;
 import org.example.petstore.dto.product.ProductDto;
 import org.example.petstore.service.product.ProductService;
 import org.springframework.http.HttpStatus;
@@ -54,7 +56,7 @@ public class ProductController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto) {
-        ProductDto responseProduct = productService.addProduct(productDto);
+        ProductDto responseProduct = productService.createProduct(productDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseProduct);
     }
 
@@ -91,5 +93,12 @@ public class ProductController {
                                                     @RequestBody ProductDto updatedProductDto) {
         ProductDto productDto = productService.updateProduct(productId, updatedProductDto);
         return ResponseEntity.ok(productDto);
+    }
+
+    @PostMapping("/full")
+    public ResponseEntity<ProductInventoryDto> createProductWithInventory(
+            @Valid @RequestBody ProductInventoryDto productInventoryDto) {
+        ProductInventoryDto dto =  productService.createProductWithInventory(productInventoryDto);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 }
