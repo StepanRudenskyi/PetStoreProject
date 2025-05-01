@@ -1,0 +1,25 @@
+{
+  "short_name": "Pomodorio",
+  "name": "Pomodorio Fresh Food Delivery",
+  "icons": [
+    {
+      "src": "images/pomodorio-icon.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "images/logo256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "images/logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

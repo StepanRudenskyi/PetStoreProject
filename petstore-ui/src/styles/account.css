@@ -1,0 +1,73 @@
+.account-section {
+  padding: 5rem 0;
+  min-height: 60vh;
+  background-color: #f4f8f9; /* A light, airy background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.account-section h2 {
+  padding-top: 2rem;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #2c3e50; /* A professional dark blue */
+}
+
+.account-details {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  width: 80%;
+  max-width: 600px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.75rem;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.info-row .label {
+  font-weight: bold;
+  color: #3498db;
+  margin-right: 1rem;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.info-row .value {
+  text-align: right;
+  flex-shrink: 0;
+  width: 60%;
+}
+
+.loading,
+.error,
+.unauthenticated {
+  font-size: 1.1rem;
+  color: #777;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.error {
+  color: #c0392b;
+}
+
+.unauthenticated {
+  color: #f39c12;
+}
