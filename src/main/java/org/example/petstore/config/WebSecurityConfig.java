@@ -1,20 +1,31 @@
 package org.example.petstore.config;
 
 import lombok.RequiredArgsConstructor;
+import org.example.petstore.config.jwt.JwtAuthFilter;
+import org.example.petstore.config.jwt.JwtUtils;
 import org.example.petstore.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 /**
  * WebSecurityConfig is a configuration class that sets up the security mechanisms for the application.
@@ -28,6 +39,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final JwtUtils jwtUtils;
 
     /**
      * Configures the HTTP security settings such as which URLs require authentication
@@ -40,27 +52,21 @@ public class WebSecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        JwtAuthFilter jwtAuthFilter = new JwtAuthFilter(jwtUtils, userDetailsService);
         return http
-                .csrf(AbstractHttpConfigurer::disable) // TODO: enable csrf when ready for prod
-//                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())) // Store CSRF token in a cookie
+                .csrf(AbstractHttpConfigurer::disable) // temp
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/", "/api/products/**", "/back-to-landing", "/register", "/images/**", "/css/**", "/js/**").permitAll();
+                    registry.requestMatchers("/api/auth/**").permitAll();
+                    registry.requestMatchers("/", "/api/products/**", "/api/categories", "/back-to-landing", "/images/**", "/css/**", "/js/**").permitAll();
                     registry.requestMatchers("/api/cart/**", "/api/checkout/**").hasAnyRole("USER", "ADMIN");
                     registry.requestMatchers("/api/admin/**").hasRole("ADMIN");
                     registry.anyRequest().authenticated();
-//                    registry.anyRequest().permitAll();
                 })
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(form -> {
-                    form.loginPage("/login");
-                    form.successHandler(new CustomAuthenticationSuccessHandler());
-                    form.permitAll();
-                })
-                .logout(logout -> {
-                    logout.logoutUrl("/logout");
-                    logout.logoutSuccessUrl("/logout-success");
-                    logout.permitAll();
-                })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .build();
     }
 
@@ -97,5 +103,22 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://localhost:3000"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedHeader("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }

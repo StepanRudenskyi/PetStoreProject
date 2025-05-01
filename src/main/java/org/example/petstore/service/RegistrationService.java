@@ -1,30 +1,28 @@
 package org.example.petstore.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.petstore.dto.account.UserRegistrationDto;
 import org.example.petstore.mapper.UserRegistrationMapper;
 import org.example.petstore.model.Account;
 import org.example.petstore.model.User;
 import org.example.petstore.repository.AccountRepository;
 import org.example.petstore.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service class responsible for user registration and account management.
  */
 @Service
+@RequiredArgsConstructor
 public class RegistrationService {
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AccountRepository accountRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AccountRepository accountRepository;
 
     /**
      * Registers a new user by encoding their password and saving the user and account information.
@@ -33,6 +31,7 @@ public class RegistrationService {
      * @param registrationDto the data transfer object containing user registration details
      * @throws IllegalArgumentException if the username already exists in the system
      */
+    @Transactional
     public UserRegistrationDto registerUser(UserRegistrationDto registrationDto) {
         try {
             String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
