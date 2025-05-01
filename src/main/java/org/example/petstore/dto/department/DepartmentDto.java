@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class DepartmentDto {
-    private Long departmentId;
+    private Long id;
     private String name;
-    private String imagePath;
+    private String imageUrl;
 }
