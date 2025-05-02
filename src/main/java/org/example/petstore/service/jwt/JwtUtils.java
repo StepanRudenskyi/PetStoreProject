@@ -1,4 +1,4 @@
-package org.example.petstore.config.jwt;
+package org.example.petstore.service.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

@@ -1,4 +1,4 @@
-package org.example.petstore.config.jwt;
+package org.example.petstore.service.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

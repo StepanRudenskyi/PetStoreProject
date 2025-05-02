@@ -2,7 +2,7 @@ package org.example.petstore.controller.api;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.petstore.config.jwt.JwtUtils;
+import org.example.petstore.service.jwt.JwtUtils;
 import org.example.petstore.dto.auth.AuthenticationRequest;
 import org.example.petstore.dto.auth.AuthenticationResponse;
 import org.example.petstore.dto.account.UserRegistrationDto;
