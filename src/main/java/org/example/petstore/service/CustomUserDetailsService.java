@@ -1,8 +1,11 @@
 package org.example.petstore.service;
 
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.example.petstore.model.Account;
 import org.example.petstore.model.User;
+import org.example.petstore.repository.AccountRepository;
 import org.example.petstore.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,14 +18,12 @@ import java.util.Optional;
  * user authentication by loading user details from the database.
  */
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
 
-    @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     /**
      * Loads user details by the given username. This method is used during authentication
@@ -54,5 +55,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         } else {
             throw new UsernameNotFoundException("User with username: " + username  + " not found");
         }
+    }
+
+    public UserDetails loadUserByEmail(String email) throws EntityNotFoundException {
+        Account account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Account with email: " + email + " was not found"));
+
+        return loadUserByUsername(account.getUser().getUsername());
     }
 }

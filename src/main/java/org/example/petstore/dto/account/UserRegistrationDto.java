@@ -2,12 +2,16 @@ package org.example.petstore.dto.account;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * UserRegistrationDto is a data transfer object used for user registration.
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegistrationDto {
 
     @NotBlank(message = "Username cannot be empty")
