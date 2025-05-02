@@ -65,8 +65,27 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAdmin = () => {
-    console.log("Current user roles: ", currentUser.roles);
     return currentUser?.roles?.includes("ROLE_ADMIN") || false;
+  };
+
+  const loginWithToken = async (token) => {
+    try {
+      const userData = decodeJwtToken(token);
+
+      setCurrentUser(userData);
+      setToken(token);
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", token);
+      return { success: true };
+    } catch (error) {
+      console.error("Error during token login:", error);
+      // clean current state
+      setCurrentUser(null);
+      setToken(null);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      return { success: false, error: "Invalid Token" };
+    }
   };
 
   const value = {
@@ -77,6 +96,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     loading,
+    loginWithToken,
   };
 
   return (
@@ -85,3 +105,23 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+function decodeJwtToken(token) {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
+
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error("Error decoding JWT token:", error);
+    return null;
+  }
+}

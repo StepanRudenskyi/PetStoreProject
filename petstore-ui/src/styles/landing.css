@@ -19,9 +19,22 @@ body {
   color: #85baa1;
 }
 
-.header {
+/* .header {
   position: absolute;
   width: 90%;
+  color: #d6d6d6;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} */
+
+.header {
+  position: fixed; /* Changed from absolute to fixed */
+  top: 0;
+  left: 0;
+  width: 90%;
+  z-index: 100; /* Ensures header stays on top */
   color: #d6d6d6;
   padding: 20px;
   display: flex;
@@ -88,7 +101,7 @@ body {
   fill: #85baa1;
 }
 
-.header-dark {
+/* .header-dark {
   position: absolute;
   width: 90%;
   color: #2c2b2b;
@@ -96,6 +109,20 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 7rem;
+} */
+.header-dark {
+  position: fixed; /* Changed from absolute to fixed */
+  top: 0;
+  left: 0;
+  width: 90%;
+  z-index: 100; /* Ensures header stays on top */
+  color: #2c2b2b;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
 }
 
 .header-dark .logo h1,
@@ -116,6 +143,9 @@ body {
   fill: #6e6e6e;
 }
 
+body.has-fixed-header {
+  padding-top: 80px; /* Adjust this value based on your header height */
+}
 /* Style for Section 1 */
 .section1 {
   background: rgba(0, 0, 0, 0.7);

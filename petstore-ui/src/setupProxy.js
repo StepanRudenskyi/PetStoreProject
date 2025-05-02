@@ -9,4 +9,13 @@ module.exports = function (app) {
       secure: false,
     })
   );
+
+  app.use(
+    "/oauth2/authorization",
+    createProxyMiddleware({
+      target: "https://localhost:8443",
+      changeOrigin: true,
+      secure: false,
+    })
+  );
 };

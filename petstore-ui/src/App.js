@@ -20,6 +20,7 @@ import "./styles/landing.css";
 import AccountPage from "./pages/user/AccountPage";
 import RegisterPage from "./components/auth/RegisterPage";
 import CheckoutPage from "./pages/order/CheckoutPage";
+import OAuth2RedirectPage from "./components/auth/OAuth2RedirectPage";
 
 const AppRoutes = () => {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -51,6 +52,7 @@ const AppRoutes = () => {
           )
         }
       />
+      <Route path="/oauth2/redirect" element={<OAuth2RedirectPage />} />
       <Route path="/logout" element={<LogoutPage />} />
 
       {/* Product routes - accessible to everyone */}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/layout/Header";
-import "../../styles/auth.css";
+import "../../styles/RegisterPageNew.css"; // Import the new CSS file
 import { apiService } from "../../services/api";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -16,7 +16,7 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth(); // Assuming you have a login function in your AuthContext
+  const { login, isAuthenticated } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,13 +34,13 @@ const RegisterPage = () => {
     try {
       const response = await apiService.register(formData);
       if (response.success) {
-        // Registration successful, you might want to log the user in immediately
-        // or redirect them to a success page.
         console.log("Registration successful:", response);
         setErrorMessage("Registration successful! Redirecting to login...");
-        // Optionally log in the user after registration
-        await login(formData.username, formData.password);
-        navigate("/products"); // Or wherever you want to redirect after registration/login
+        await login({
+          username: formData.username,
+          password: formData.password,
+        });
+        navigate("/products");
       } else if (response.message) {
         setErrorMessage(response.message);
       } else {
@@ -60,38 +60,43 @@ const RegisterPage = () => {
 
   return (
     <>
-      <div className="auth-container">
-        <div className="auth-form">
-          <h2>Register now</h2>
-
+      <Header
+        isAuthenticated={isAuthenticated()}
+        isAdmin={false}
+        variant="dark"
+      />
+      <div className="register-container">
+        <div className="register-form">
+          <h2>Create Your Account</h2>
+          {errorMessage && <div className="register-error">{errorMessage}</div>}
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              {errorMessage && <div className="auth-error">{errorMessage}</div>}
-              <label htmlFor="firstName">First Name:</label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-              />
-              {errors.firstName && (
-                <div className="auth-error">{errors.firstName}</div>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="lastName">Last Name:</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-              />
-              {errors.lastName && (
-                <div className="auth-error">{errors.lastName}</div>
-              )}
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="firstName">First Name:</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                />
+                {errors.firstName && (
+                  <div className="register-error">{errors.firstName}</div>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="lastName">Last Name:</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                />
+                {errors.lastName && (
+                  <div className="register-error">{errors.lastName}</div>
+                )}
+              </div>
             </div>
 
             <div className="form-group">
@@ -103,7 +108,9 @@ const RegisterPage = () => {
                 value={formData.email}
                 onChange={handleChange}
               />
-              {errors.email && <div className="auth-error">{errors.email}</div>}
+              {errors.email && (
+                <div className="register-error">{errors.email}</div>
+              )}
             </div>
 
             <div className="form-group">
@@ -116,7 +123,7 @@ const RegisterPage = () => {
                 onChange={handleChange}
               />
               {errors.username && (
-                <div className="auth-error">{errors.username}</div>
+                <div className="register-error">{errors.username}</div>
               )}
             </div>
 
@@ -130,17 +137,23 @@ const RegisterPage = () => {
                 onChange={handleChange}
               />
               {errors.password && (
-                <div className="auth-error">{errors.password}</div>
+                <div className="register-error">{errors.password}</div>
               )}
             </div>
 
-            <button type="submit" className="auth-button">
+            <button type="submit" className="register-button">
               Register
             </button>
           </form>
-          <div className="auth-links">
+          <div className="register-links">
             <p>
-              Already registered? <Link to="/login">Log in here</Link>
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                style={{ color: "#85baa1", textDecoration: "underline" }}
+              >
+                Log in here
+              </Link>
             </p>
           </div>
         </div>
