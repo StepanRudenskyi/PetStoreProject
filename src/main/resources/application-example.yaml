@@ -39,3 +39,14 @@ logging:
 jwt:
   secret: ${JWT_SECRET}
   expiration: 3600000
+
+frontend:
+  redirect:
+    url: https://localhost:3000/oauth2/redirect
+  login:
+    url: https://localhost:3000/login
+
+app:
+  security:
+    cors:
+      allowed-origins: http://localhost:3000,https://localhost:3000
