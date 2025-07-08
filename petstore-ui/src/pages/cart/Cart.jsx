@@ -98,7 +98,7 @@ const CartPage = () => {
         <section className="cart-section">
           <h2>Your Cart</h2>
           <p className="empty-cart">Your cart is empty.</p>
-          <Link to="/products" className="back-to-shop">
+          <Link to="/products/categories" className="back-to-shop">
             Back to Shopping
           </Link>
         </section>

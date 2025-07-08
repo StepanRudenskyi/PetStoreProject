@@ -1,0 +1,272 @@
+.user-management-page {
+  padding: 2rem 4rem;
+  background-color: #f8fafc;
+  min-height: calc(
+    100vh - var(--admin-header-height, 80px)
+  ); /* Fills remaining viewport height below header */
+  box-sizing: border-box;
+}
+
+/* Welcome Section - ensures text is left-aligned */
+.welcome-section {
+  margin-bottom: 2rem;
+  text-align: left; /* Explicitly left-align the welcome text */
+}
+
+.welcome-section h1 {
+  font-size: 2.2rem; /* Slightly larger for prominence */
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-section p {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+/* Loading and Error States */
+.loading-indicator,
+.error-message,
+.no-users-found {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.loading-indicator .spinner {
+  animation: spin 1s linear infinite;
+  color: #85baa1;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-message {
+  color: #ef4444;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: left; /* Ensure error messages are left-aligned */
+}
+
+/* Alert/Message styling */
+.alert-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-align: left; /* Ensure alert messages are left-aligned */
+}
+
+.alert-success {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.alert-error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+/* User Table Wrapper and Table */
+.user-table-wrapper {
+  overflow-x: auto; /* Enables horizontal scrolling on small screens if content overflows */
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  width: 100%; /* Makes the wrapper take full available width of its parent (.user-management-page) */
+}
+
+.user-table {
+  width: 100%; /* Makes the table fill its wrapper, making it wider */
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 1rem 1.5rem; /* Increased padding for more space around text */
+  text-align: left; /* Explicitly left-align table header and cell text */
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.user-table th {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.user-table tbody tr:hover {
+  background-color: #fbfcfd;
+}
+
+.user-table td {
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+/* User Actions Cell */
+.user-actions-cell {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-start; /* Align action buttons to the left within their cell */
+}
+
+.action-button {
+  background-color: #e2e8f0;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centers icon/text within the button */
+  transition: all 0.2s ease;
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 0.9rem; /* Slightly adjusts button text size if combined with icon */
+  white-space: nowrap; /* Prevents button text from wrapping */
+}
+
+.action-button:hover {
+  background-color: #d1d9e2;
+  transform: translateY(-1px);
+}
+
+.action-button svg {
+  stroke-width: 2.2;
+}
+
+.edit-button {
+  color: #2563eb;
+}
+.edit-button:hover {
+  background-color: #dbeafe;
+}
+
+.promote-button {
+  color: #10b981;
+}
+.promote-button:hover {
+  background-color: #d1fae5;
+}
+
+.demote-button {
+  color: #f59e0b;
+}
+.demote-button:hover {
+  background-color: #fef3c7;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: flex-start; /* Align pagination controls to the left */
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.pagination-button {
+  background-color: #85baa1;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background-color: #6a9584;
+  transform: translateY(-1px);
+}
+
+.pagination-button:disabled {
+  background-color: #d1d9e2;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.pagination-info {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .user-management-page {
+    padding: 2rem; /* Reduce padding on slightly smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .user-management-page {
+    padding: 1.5rem;
+  }
+  .welcome-section h1 {
+    font-size: 1.8rem;
+  }
+  .welcome-section p {
+    font-size: 1rem;
+  }
+  .user-table th,
+  .user-table td {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+  .action-button {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .action-button span {
+    display: none; /* Hide text on small screens for action buttons to save space */
+  }
+  .pagination-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-management-page {
+    padding: 1rem;
+  }
+  .user-table-wrapper {
+    overflow-x: scroll; /* Ensures horizontal scroll for the table on very small screens */
+  }
+  .user-table {
+    min-width: 500px; /* Maintains readability even when scrolling */
+  }
+  .action-button {
+    padding: 0.4rem;
+  }
+  .pagination-controls {
+    flex-wrap: wrap; /* Allow pagination buttons to wrap on tiny screens */
+    justify-content: center;
+  }
+}

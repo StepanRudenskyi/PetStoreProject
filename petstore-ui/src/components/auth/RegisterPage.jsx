@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/layout/Header";
-import "../../styles/RegisterPageNew.css"; // Import the new CSS file
+import "../../styles/RegisterPageNew.css";
 import { apiService } from "../../services/api";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -30,7 +30,6 @@ const RegisterPage = () => {
     e.preventDefault();
     setErrors({});
     setErrorMessage("");
-
     try {
       const response = await apiService.register(formData);
       if (response.success) {
@@ -67,92 +66,123 @@ const RegisterPage = () => {
       />
       <div className="register-container">
         <div className="register-form">
-          <h2>Create Your Account</h2>
-          {errorMessage && <div className="register-error">{errorMessage}</div>}
-          <form onSubmit={handleSubmit}>
+          <div className="register-header">
+            <h1>Create Account</h1>
+            <p className="register-subtitle">Join us to get started</p>
+          </div>
+
+          {errorMessage && (
+            <div
+              className={`register-message ${
+                errorMessage.includes("successful") ? "success" : "error"
+              }`}
+            >
+              {errorMessage}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="register-form-content">
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="firstName">First Name:</label>
                 <input
                   type="text"
                   id="firstName"
                   name="firstName"
+                  placeholder="First Name"
                   value={formData.firstName}
                   onChange={handleChange}
+                  className={errors.firstName ? "error" : ""}
                 />
                 {errors.firstName && (
-                  <div className="register-error">{errors.firstName}</div>
+                  <span className="field-error">{errors.firstName}</span>
                 )}
               </div>
               <div className="form-group">
-                <label htmlFor="lastName">Last Name:</label>
                 <input
                   type="text"
                   id="lastName"
                   name="lastName"
+                  placeholder="Last Name"
                   value={formData.lastName}
                   onChange={handleChange}
+                  className={errors.lastName ? "error" : ""}
                 />
                 {errors.lastName && (
-                  <div className="register-error">{errors.lastName}</div>
+                  <span className="field-error">{errors.lastName}</span>
                 )}
               </div>
             </div>
 
             <div className="form-group">
-              <label htmlFor="email">Email:</label>
               <input
                 type="email"
                 id="email"
                 name="email"
+                placeholder="Email Address"
                 value={formData.email}
                 onChange={handleChange}
+                className={errors.email ? "error" : ""}
               />
+              <div className="email-notice">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                Your email cannot be changed after registration
+              </div>
               {errors.email && (
-                <div className="register-error">{errors.email}</div>
+                <span className="field-error">{errors.email}</span>
               )}
             </div>
 
             <div className="form-group">
-              <label htmlFor="username">Username:</label>
               <input
                 type="text"
                 id="username"
                 name="username"
+                placeholder="Username"
                 value={formData.username}
                 onChange={handleChange}
+                className={errors.username ? "error" : ""}
               />
               {errors.username && (
-                <div className="register-error">{errors.username}</div>
+                <span className="field-error">{errors.username}</span>
               )}
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password:</label>
               <input
                 type="password"
                 id="password"
                 name="password"
+                placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
+                className={errors.password ? "error" : ""}
               />
               {errors.password && (
-                <div className="register-error">{errors.password}</div>
+                <span className="field-error">{errors.password}</span>
               )}
             </div>
 
             <button type="submit" className="register-button">
-              Register
+              Create Account
             </button>
           </form>
-          <div className="register-links">
+
+          <div className="register-footer">
             <p>
               Already have an account?{" "}
-              <Link
-                to="/login"
-                style={{ color: "#85baa1", textDecoration: "underline" }}
-              >
-                Log in here
+              <Link to="/login" className="login-link">
+                Sign in
               </Link>
             </p>
           </div>

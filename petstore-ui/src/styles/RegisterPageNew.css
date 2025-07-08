@@ -1,135 +1,292 @@
+/* Premium Registration Page Styles */
 .register-container {
+  /* min-height: 100vh; */
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 80px);
-  background-color: #cce3de;
-  padding: 2rem;
-  /* Add top padding to prevent overlap with header */
-  padding-top: 120px; /* This value should be adjusted based on your header height */
+  justify-content: center;
+  background: linear-gradient(135deg, #f8fffe 0%, #e8f5f3 100%);
+  padding: 7rem;
   box-sizing: border-box;
 }
 
 .register-form {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2.5rem;
   width: 100%;
-  max-width: 600px;
+  max-width: 520px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
 }
 
-.register-form h2 {
+.register-form:hover {
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12), 0 10px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.register-header {
   text-align: center;
-  color: #1e1e24;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.register-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.register-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 400;
+}
+
+.register-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .form-row {
   display: flex;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
 .form-group {
-  margin-bottom: 1rem;
-  flex: 1; /* Distribute space evenly in a row */
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-  color: #1e1e24;
+  position: relative;
+  flex: 1;
 }
 
 .form-group input {
   width: 100%;
-  box-sizing: border-box;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
   font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #fafafa;
+  box-sizing: border-box;
+  font-weight: 400;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #85baa1;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(133, 186, 161, 0.1);
+}
+
+.form-group input.error {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.form-group input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.email-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #f0f9ff;
+  border: 1px solid #e0f2fe;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #0369a1;
+}
+
+.email-notice svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.field-error {
+  display: block;
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  padding-left: 0.25rem;
+  font-weight: 500;
+}
+
+.register-message {
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.register-message.error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.register-message.success {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
 }
 
 .register-button {
-  box-sizing: border-box;
   width: 100%;
-  padding: 0.75rem;
-  background-color: #85baa1;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #85baa1, #6a9584);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 1.5rem;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+  box-shadow: 0 4px 12px rgba(133, 186, 161, 0.3);
 }
 
 .register-button:hover {
-  background-color: #6a9480;
+  background: linear-gradient(135deg, #6a9584, #5a7f6c);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(133, 186, 161, 0.4);
 }
 
-.register-error {
-  background-color: #ffebee;
-  color: #c62828;
-  padding: 0.75rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
+.register-button:active {
+  transform: translateY(0);
 }
 
-.register-links {
+.register-footer {
   text-align: center;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f3f4f6;
 }
 
-.register-links p {
-  margin-bottom: 0;
+.register-footer p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.95rem;
 }
 
-.register-links a {
+.login-link {
   color: #85baa1;
   text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
-.register-links a:hover {
+.login-link:hover {
+  color: #6a9584;
   text-decoration: underline;
 }
 
-/* Media query for larger screens - improved layout */
-@media (min-width: 768px) {
-  .register-form {
-    max-width: 600px; /* Maintain the same max-width */
-  }
-
-  /* Keep the name fields in a row, everything else in a single column */
-  .form-row {
-    display: flex;
-    gap: 1rem;
-  }
-
-  /* All individual fields maintain the same width */
-  .form-group {
-    width: 100%;
-  }
-}
-
-/* Additional media query to adjust padding on different screen sizes */
+/* Responsive Design */
 @media (max-width: 768px) {
   .register-container {
-    padding-top: 150px; /* Increased padding for mobile as header might be taller */
-  }
-}
-
-/* For very small screens */
-@media (max-width: 480px) {
-  .register-container {
     padding: 1rem;
-    padding-top: 170px; /* Even more padding for very small screens */
+    min-height: calc(100vh - 80px);
+    padding-top: 120px;
+  }
+
+  .register-form {
+    padding: 2rem;
+    border-radius: 16px;
+  }
+
+  .register-header h1 {
+    font-size: 1.75rem;
   }
 
   .form-row {
     flex-direction: column;
-    gap: 0;
+    gap: 1.5rem;
   }
+}
+
+@media (max-width: 480px) {
+  .register-container {
+    padding: 1rem;
+    padding-top: 140px;
+  }
+
+  .register-form {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .register-header {
+    margin-bottom: 2rem;
+  }
+
+  .register-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-group input {
+    padding: 0.875rem 1rem;
+  }
+
+  .register-button {
+    padding: 0.875rem 1rem;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Styles for the Google Login Button */
+.google-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: white;
+  color: black;
+  border-color: #85baa1;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 12px;
+  padding: 0.3rem 0.75rem;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.google-button:hover {
+  background-color: whitesmoke;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.google-icon {
+  height: 2rem;
+  margin-right: 0.5rem;
 }

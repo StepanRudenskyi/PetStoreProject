@@ -1,0 +1,47 @@
+.pending-orders-page {
+  padding: 2rem; /* p-8 */
+  background-color: #f9fafb; /* bg-gray-50 */
+  min-height: calc(100vh - 76px); /* Adjust based on navigation height */
+  font-family: "Inter", sans-serif; /* font-sans */
+}
+
+.action-cards-section {
+  margin-bottom: 3rem; /* mb-12 */
+}
+
+.action-cards-section > div {
+  /* targeting the grid container within this section */
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 */
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .action-cards-section > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .action-cards-section > div {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.orders-table-section {
+  margin-bottom: 2rem; /* mb-8 */
+}
+
+.page-title {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700; /* font-bold */
+  color: #111827; /* text-gray-900 */
+  margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.page-description {
+  color: #4b5563; /* text-gray-600 */
+}

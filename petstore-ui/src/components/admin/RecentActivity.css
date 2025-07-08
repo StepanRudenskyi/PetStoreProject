@@ -1,0 +1,32 @@
+.recent-activity {
+  margin-bottom: 3rem;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activity-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.activity-action {
+  font-weight: 600;
+}
+
+.activity-details {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}

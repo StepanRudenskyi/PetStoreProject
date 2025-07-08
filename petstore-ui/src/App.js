@@ -6,21 +6,24 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
-import LandingUnauthorized from "./pages/landing/LandingUnauthorized";
-import LandingUser from "./pages/landing/LandingUser";
+import LandingUnauthorized from "./pages/landing/LandingUnauthorized.jsx";
+import LandingUser from "./pages/landing/LandingUser.jsx";
 import LandingAdmin from "./pages/landing/LandingAdmin";
 import LoginPage from "./components/auth/LoginPage";
 import LogoutPage from "./components/auth/LogoutPage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
-import ProductCategories from "./pages/products/ProductCategories";
-import ProductsByCategory from "./pages/products/ProductsByCategory";
-import Cart from "./pages/cart/Cart";
+import ProductCategories from "./pages/products/ProductCategories.jsx";
+import ProductsByCategory from "./pages/products/ProductsByCategory.jsx";
+import Cart from "./pages/cart/Cart.jsx";
 import { useAuth } from "./contexts/AuthContext";
 import "./styles/landing.css";
-import AccountPage from "./pages/user/AccountPage";
+import AccountPage from "./pages/user/AccountPage.jsx";
 import RegisterPage from "./components/auth/RegisterPage";
-import CheckoutPage from "./pages/order/CheckoutPage";
+import CheckoutPage from "./pages/order/CheckoutPage.jsx";
+import AllOrdersPage from "./pages/order/AllOrdersPage.jsx";
 import OAuth2RedirectPage from "./components/auth/OAuth2RedirectPage";
+import UserManagementPage from "./pages/user/UserManagementPage";
+import PendingOrdersPage from "./pages/order/PendingOrdersPage.jsx";
 
 const AppRoutes = () => {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -78,14 +81,9 @@ const AppRoutes = () => {
           path="/admin/statistics"
           element={<div>Admin Statistics (Coming Soon)</div>}
         />
-        <Route
-          path="/admin/users"
-          element={<div>Admin Users Management (Coming Soon)</div>}
-        />
-        <Route
-          path="/admin/orders"
-          element={<div>Admin Orders Management (Coming Soon)</div>}
-        />
+        <Route path="/admin/users" element={<UserManagementPage />} />
+        <Route path="/admin/orders" element={<AllOrdersPage />} />
+        <Route path="/admin/orders/pendings" element={<PendingOrdersPage />} />
       </Route>
 
       {/* Catch-all route */}

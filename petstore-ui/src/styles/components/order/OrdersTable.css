@@ -1,0 +1,141 @@
+.orders-table-container {
+  overflow-x: auto;
+  margin-bottom: 2rem; /* Add some margin below the table */
+}
+
+.orders-table {
+  min-width: 100%;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden; /* Ensures rounded corners clip content */
+  border-collapse: collapse; /* Remove space between cells */
+}
+
+.orders-table__head {
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+.orders-table__header {
+  padding: 0.75rem 1.5rem; /* px-6 py-3 */
+  text-align: left;
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 600; /* font-semibold */
+  color: #374151; /* text-gray-700 */
+  text-transform: uppercase;
+  letter-spacing: 0.05em; /* tracking-wider */
+}
+
+.orders-table__row {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.15s ease-in-out; /* hover:bg-gray-50 */
+}
+
+.orders-table__row:hover {
+  background-color: #f9fafb; /* hover:bg-gray-50 */
+}
+
+.orders-table__row:last-child {
+  border-bottom: none; /* No border for the last row */
+}
+
+.orders-table__data {
+  padding: 1rem 1.5rem; /* px-6 py-4 */
+  white-space: nowrap;
+  font-size: 0.875rem; /* text-sm */
+  color: #4b5563; /* text-gray-700 */
+}
+
+.orders-table__data:first-child {
+  font-weight: 500; /* font-medium */
+  color: #1f2937; /* text-gray-900 */
+}
+
+.orders-table__actions {
+  font-weight: 500;
+  display: flex; /* Make it a flex container */
+  align-items: center; /* Align items vertically in the center */
+  gap: 0.5rem; /* Add space between buttons */
+  white-space: nowrap; /* Prevent buttons from wrapping */
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  border-radius: 0.375rem;
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500;
+  color: white;
+  transition: background-color 0.2s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  outline: none; /* Removed the default browser outline */
+  /* margin-right: 0.5rem; Removed as gap is used on parent */
+}
+
+/* Removed specific margin-right as gap on parent handles spacing */
+/* .action-btn:last-child {
+  margin-right: 0;
+} */
+
+.action-btn:focus {
+  outline: none; /* Ensure no outline on focus */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Keep the blue glow for focus */
+}
+
+.action-btn--view {
+  background-color: #3b82f6;
+}
+.action-btn--view:hover {
+  background-color: #2563eb; /* hover:bg-blue-600 */
+}
+
+.action-btn--approve {
+  background-color: #10b981;
+}
+.action-btn--approve:hover {
+  background-color: #059669;
+}
+
+.action-btn--reject {
+  background-color: #ef4444; /* bg-red-500 */
+}
+.action-btn--reject:hover {
+  background-color: #dc2626; /* hover:bg-red-600 */
+}
+
+.action-btn__icon {
+  margin-right: 0.25rem;
+}
+
+.orders-table-empty-state {
+  text-align: center;
+  padding: 3rem 0;
+  color: #6b7280;
+}
+
+.orders-table-empty-state__icon {
+  margin: 0 auto 1rem; /* mx-auto mb-4 */
+  color: #d1d5db; /* text-gray-300 */
+}
+
+.orders-table-empty-state__title {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 600; /* font-semibold */
+  margin-bottom: 0.5rem; /* mb-2 */
+  color: #374151; /* text-gray-700 */
+}
+
+.orders-table-empty-state__description {
+  color: #4b5563; /* text-gray-600 */
+  margin-bottom: 0;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+}

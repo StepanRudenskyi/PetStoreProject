@@ -1,0 +1,36 @@
+.action-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.action-card__icon-wrapper {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.icon-bg-blue {
+  background-color: #eff6ff;
+}
+
+.icon-bg-amber {
+  background-color: #fffbeb;
+}
+
+.action-card__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.action-card__description {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0;
+}

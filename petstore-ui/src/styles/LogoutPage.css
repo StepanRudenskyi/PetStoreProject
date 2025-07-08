@@ -1,0 +1,94 @@
+.logout-container {
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    #e0f2f7 0%,
+    #c1d9e2 100%
+  ); /* Soft background */
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.logout-content {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
+  width: 100%;
+}
+
+.logout-title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.logout-message {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.login-again-button {
+  display: inline-block;
+  padding: 0.8rem 1.8rem;
+  background: linear-gradient(135deg, #85baa1, #6a9584);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 10px rgba(133, 186, 161, 0.3);
+}
+
+.login-again-button:hover {
+  background: linear-gradient(135deg, #6a9584, #5a7f6c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(133, 186, 161, 0.4);
+}
+
+.redirect-note {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.back-to-landing {
+  text-align: center;
+  margin-top: 1rem;
+  color: #85baa1;
+  text-decoration: none;
+}
+
+.back-to-landing:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .logout-content {
+    padding: 2rem 1.5rem;
+  }
+
+  .logout-title {
+    font-size: 2rem;
+  }
+
+  .logout-message {
+    font-size: 1rem;
+  }
+
+  .login-again-button {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}

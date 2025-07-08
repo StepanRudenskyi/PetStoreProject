@@ -9,6 +9,7 @@ body {
 
 /* container for the background image */
 .background-image {
+  /* top: 60px; */
   position: relative;
   background: url("../../public/images/landing-background.png") center;
   background-size: cover;
@@ -19,41 +20,31 @@ body {
   color: #85baa1;
 }
 
-/* .header {
-  position: absolute;
-  width: 90%;
-  color: #d6d6d6;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-} */
-
 .header {
-  position: fixed; /* Changed from absolute to fixed */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 90%;
-  z-index: 100; /* Ensures header stays on top */
-  color: #d6d6d6;
-  padding: 20px;
+  width: 100%;
+  z-index: 100;
+  background-color: rgba(32, 31, 31, 0.85);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .header .logo {
+  margin: 20px 0 20px 3%;
   flex: 1;
 }
 
 .header .nav-container {
   display: flex;
   justify-content: center;
-  flex: 2;
+  flex: 3;
 }
 
 .header nav {
-  margin-left: 100px;
   display: flex;
   gap: 20px;
 }
@@ -61,7 +52,7 @@ body {
 .header .cart-button {
   flex: 1;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .header .logo h1 {
@@ -101,28 +92,18 @@ body {
   fill: #85baa1;
 }
 
-/* .header-dark {
-  position: absolute;
-  width: 90%;
-  color: #2c2b2b;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 7rem;
-} */
 .header-dark {
-  position: fixed; /* Changed from absolute to fixed */
+  position: fixed;
+
   top: 0;
   left: 0;
-  width: 90%;
-  z-index: 100; /* Ensures header stays on top */
-  color: #2c2b2b;
-  padding: 20px;
+  width: 100%;
+  z-index: 100;
+  background-color: rgba(248, 255, 254, 0.85);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 1rem;
 }
 
 .header-dark .logo h1,

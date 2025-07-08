@@ -1,6 +1,10 @@
 import axios from "axios";
 
-const API_BASE_URL = "/api";
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL || "https://localhost:8443/api";
+
+// const API_BASE_URL = "/api";
+
 // const getAuthToken = () => localStorage.getItem("token");
 
 // Create an axios instance with a base URL
@@ -181,5 +185,69 @@ export const apiService = {
       console.error("Registration API error:", error);
       throw error;
     }
+  },
+
+  updateAccountInfo: async (userData) => {
+    try {
+      const response = await api.put(`/account`, userData);
+      return response.data;
+    } catch (error) {
+      console.error("Error updating account info: ", error);
+      throw error;
+    }
+  },
+
+  deleteAccount: async (accountId) => {
+    try {
+      const response = await api.delete(`/account/${accountId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting account: ", error);
+      throw error;
+    }
+  },
+
+  // User Management
+  getUsers: async (page = 0, size = 5) => {
+    const response = await api.get(`/admin/users`, {
+      params: { page, size },
+    });
+    return response.data; // Backend returns Page object directly
+  },
+
+  addAdmin: async (userId) => {
+    const response = await api.post(`/admin/add-admin/${userId}`);
+    return response.data;
+  },
+
+  removeAdmin: async (userId) => {
+    const response = await api.delete(`/admin/remove-admin/${userId}`);
+    return response.data;
+  },
+
+  // Manage Orders
+  getOrders: async (page = 0, size = 10) => {
+    const response = await api.get(`/admin/orders`, {
+      params: { page, size },
+    });
+    return response.data;
+  },
+
+  getOrdersByStatus: async (status, page = 0, size = 10) => {
+    const response = await api.get(`/admin/orders`, {
+      params: { status, page, size },
+    });
+    return response.data;
+  },
+
+  updateOrderStatus: async (orderId, status) => {
+    console.log("entered updateOrderStatus in api.js");
+    await api.patch(`/admin/orders/${orderId}/status`, status);
+  },
+
+  getQuickStats: async () => {
+    const response = await api.get(`/admin/stats`);
+    console.log(response.data);
+    return response.data;
   },
 };

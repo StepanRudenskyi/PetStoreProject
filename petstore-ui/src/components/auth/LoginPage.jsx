@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import "../../styles/auth.css";
+import "../../styles/RegisterPageNew.css";
 import GoogleSignInButton from "./GoogleSignInButton ";
 import Header from "../layout/Header";
 
@@ -19,7 +19,6 @@ const LoginPage = () => {
     try {
       const result = await login({ username, password });
       if (result.success) {
-        console.log("------- Is Admin?: ", isAdmin());
         if (isAdmin()) {
           navigate("/admin");
         } else {
@@ -40,44 +39,47 @@ const LoginPage = () => {
         isAdmin={false}
         variant="dark"
       />
-      <div className="auth-container">
-        <div className="auth-form">
-          <h2>Login to Pomodorio</h2>
+      <div className="register-container">
+        <div className="register-form">
+          <div className="register-header">
+            <h2>Login to Pomodorio</h2>
+            <p className="register-subtitle">Log in to start shopping</p>
+          </div>
+
           {error && <div className="auth-error">{error}</div>}
-          <form onSubmit={handleSubmit}>
+
+          <form onSubmit={handleSubmit} className="register-form-content">
             <div className="form-group">
-              <label htmlFor="username">Username</label>
               <input
                 type="text"
                 id="username"
+                placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 id="password"
+                name="password"
+                placeholder="Passwors"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-            <button type="submit" className="auth-button">
+            <button type="submit" className="register-button">
               Login
             </button>
-          </form>
-          <div className="auth-links">
-            <p>Or</p>
             <GoogleSignInButton />
+          </form>
+
+          <div className="register-footer">
             <p>
               Don't have an account?{" "}
-              <Link
-                to="/register"
-                style={{ color: "#85baa1", textDecoration: "underline" }}
-              >
+              <Link to="/register" className="login-link">
                 Register
               </Link>
             </p>
