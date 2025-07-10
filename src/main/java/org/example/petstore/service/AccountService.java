@@ -13,6 +13,7 @@ import org.example.petstore.service.user.UserService;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service for managing user accounts.
@@ -45,7 +46,7 @@ public class AccountService {
      */
     public Account getAccountByUser(User user) {
         return accountRepository.findByUser(user)
-                .orElseThrow(() -> new EntityNotFoundException("Account not found"));
+                .orElseThrow(() -> new IllegalStateException("Account not found for user with ID: " + user.getId()));
     }
 
     /**
@@ -95,6 +96,29 @@ public class AccountService {
 
         throw new AccessDeniedException("Access Denied");
 
+    }
+
+    @Transactional
+    public AccountInfoDto updateAccountInfo(AccountInfoDto newAccountDto) {
+        User currentUser = userService.getCurrentUser();
+        Account currentAccount = getAccountByUser(currentUser);
+
+        if (!currentUser.getUsername().equals(newAccountDto.getUsername())) {
+            userRepository.findByUsername(newAccountDto.getUsername()).ifPresent(existingUser -> {
+                if (!existingUser.getId().equals(currentUser.getId())) {
+                    throw new IllegalArgumentException("Username '" + newAccountDto.getUsername() + "' is already taken.");
+                }
+            });
+        }
+
+        currentUser.setUsername(newAccountDto.getUsername());
+        currentAccount.setFirstName(newAccountDto.getFirstName());
+        currentAccount.setLastName(newAccountDto.getLastName());
+
+        User savedUser = userRepository.save(currentUser);
+        Account savedAccount = accountRepository.save(currentAccount);
+
+        return accountInfoMapper.toDto(savedAccount, savedUser);
     }
 
     /**
