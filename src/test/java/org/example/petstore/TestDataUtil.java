@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -92,7 +93,7 @@ public class TestDataUtil {
 
         // create order
         Order order = new Order();
-        order.setOrderDate(new Date());
+        order.setOrderDate(LocalDateTime.now());
         order.setTotalAmount(totalAmount);
         order.setPaymentMethod(PaymentMethod.CREDIT_CARD);
         order.setStatus(OrderStatus.COMPLETED);

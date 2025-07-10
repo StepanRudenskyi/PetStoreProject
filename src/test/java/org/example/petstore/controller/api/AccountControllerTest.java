@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.*;
@@ -17,12 +19,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AccountController.class)
+@SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
 class AccountControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private AuthenticationManager authenticationManager;
 
     @MockBean
     AccountService accountService;
@@ -37,7 +43,7 @@ class AccountControllerTest {
     void testGetAccountInfo() {
         AccountInfoDto mockResult = new AccountInfoDto("John", "Doe",
                 "testUser", "john@example.com");
-        when(accountService.getAccountInfo()).thenReturn(mockResult);
+        when(accountService.getAccountInfoConsideringAccess(null)).thenReturn(mockResult);
 
         mockMvc.perform(get("/api/account/info"))
                 .andExpect(status().isOk())
@@ -46,6 +52,6 @@ class AccountControllerTest {
                 .andExpect(jsonPath("$.username").value("testUser"))
                 .andExpect(jsonPath("$.email").value("john@example.com"));
 
-        verify(accountService, times(1)).getAccountInfo();
+        verify(accountService, times(1)).getAccountInfoConsideringAccess(null);
     }
 }

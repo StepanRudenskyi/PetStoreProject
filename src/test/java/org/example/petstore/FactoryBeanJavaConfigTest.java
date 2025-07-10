@@ -25,7 +25,7 @@ public class FactoryBeanJavaConfigTest {
         orderProcessingService.applyDiscountLogic(order);
 
         assertTrue(orderProcessingService.isDiscountApplied());
-        assertEquals("Discount applied for orders over $100", orderProcessingService.getValidationMessage());
+        assertEquals("10% discount applied for orders over $100", orderProcessingService.getValidationMessage());
 
 
         order.setTotalAmount(BigDecimal.valueOf(90.0));
