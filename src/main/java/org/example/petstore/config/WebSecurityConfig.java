@@ -26,7 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * and password encoding mechanisms.
  */
 @Configuration
-@Profile("!dev")
+@Profile({"!test & !dev"})
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
