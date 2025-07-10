@@ -3,10 +3,7 @@ package org.example.petstore.controller.api;
 import org.example.petstore.dto.account.AccountInfoDto;
 import org.example.petstore.service.AccountService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller for managing user accounts.
@@ -37,5 +34,10 @@ public class AccountController {
     @GetMapping("/info")
     public ResponseEntity<AccountInfoDto> getCurrentUserInfo(@RequestParam(required = false) Long userId) {
         return ResponseEntity.ok(accountService.getAccountInfoConsideringAccess(userId));
+    }
+
+    @PutMapping
+    public ResponseEntity<AccountInfoDto> updateAccountInfo(@RequestBody AccountInfoDto accountInfoDto) {
+        return ResponseEntity.ok(accountService.updateAccountInfo(accountInfoDto));
     }
 }
