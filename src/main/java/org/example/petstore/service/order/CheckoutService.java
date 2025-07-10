@@ -2,9 +2,9 @@ package org.example.petstore.service.order;
 
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
+import org.example.petstore.dto.cart.CartProductDto;
 import org.example.petstore.dto.order.CheckoutDto;
 import org.example.petstore.dto.order.OrderDto;
-import org.example.petstore.dto.cart.CartProductDto;
 import org.example.petstore.enums.OrderStatus;
 import org.example.petstore.enums.PaymentMethod;
 import org.example.petstore.exception.EmptyCartException;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,7 +86,7 @@ public class CheckoutService {
      */
     private Order buildOrder(PaymentMethod paymentMethod, User currentUser, List<Cart> cartItems) {
         Order order = new Order();
-        order.setOrderDate(new Date());
+        order.setOrderDate(LocalDateTime.now()); // TODO: replace to spring JPA auditing
         order.setPaymentMethod(paymentMethod);
         order.setStatus(OrderStatus.PROCESSING);
 

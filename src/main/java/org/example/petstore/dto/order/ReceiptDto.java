@@ -3,7 +3,7 @@ package org.example.petstore.dto.order;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -14,7 +14,7 @@ public class ReceiptDto {
     private String accountFirstName;
     private String accountLastName;
     private Long orderId;
-    private Date orderDate;
+    private LocalDateTime orderDate;
     private String paymentMethod;
     private String status;
     private List<OrderLineDto> orderLines;

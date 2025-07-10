@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.petstore.enums.Role;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +16,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Table(name = "USER")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
@@ -29,6 +34,13 @@ public class User {
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     private Set<Role> roles = new HashSet<>();
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     public void addRole(Role role) {
         this.roles.add(role);

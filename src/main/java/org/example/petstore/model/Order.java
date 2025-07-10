@@ -8,7 +8,7 @@ import org.example.petstore.enums.OrderStatus;
 import org.example.petstore.enums.PaymentMethod;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -23,7 +23,7 @@ public class Order {
     private Long orderId;
 
     @Column(name = "order_date")
-    private Date orderDate;
+    private LocalDateTime orderDate;
 
     @Column(name = "total_amount")
     private BigDecimal totalAmount;

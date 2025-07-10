@@ -1,12 +1,13 @@
 package org.example.petstore.controller.api;
 
 import lombok.RequiredArgsConstructor;
-import org.example.petstore.dto.order.AdminOrderDto;
-import org.example.petstore.dto.stats.StatisticsDto;
+import org.example.petstore.dto.OrderStatusUpdateRequest;
 import org.example.petstore.dto.account.AdminUserDto;
-import org.example.petstore.service.admin.StatisticsService;
+import org.example.petstore.dto.order.AdminOrderDto;
+import org.example.petstore.dto.stats.SummaryStatDto;
 import org.example.petstore.service.admin.UserManagementService;
 import org.example.petstore.service.order.OrderService;
+import org.example.petstore.service.statistics.StatisticsService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -28,19 +29,6 @@ public class AdminController {
     private final StatisticsService statisticsService;
     private final UserManagementService userManagementService;
     private final OrderService orderService;
-
-    /**
-     * Retrieves statistical data about the platform. The statistics include various metrics and
-     * are pageable for efficient handling of large amounts of data.
-     *
-     * @param pageable the pagination details (page size, sorting, etc.).
-     * @return a ResponseEntity containing a StatisticsDto with the statistical data.
-     */
-    @GetMapping("/statistics")
-    public ResponseEntity<StatisticsDto> showStatistics(@PageableDefault(size = 5) Pageable pageable) {
-        StatisticsDto statistics = statisticsService.getStatistics(pageable);
-        return ResponseEntity.ok(statistics);
-    }
 
     /**
      * Retrieves a paginated list of all users in the system. The list is displayed with
@@ -76,7 +64,7 @@ public class AdminController {
     @DeleteMapping("/remove-admin/{userId}")
     public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long userId) {
         userManagementService.removeAdmin(userId);
-        return ResponseEntity.ok(Map.of("message","User with ID: " + userId + " is no longer an admin"));
+        return ResponseEntity.ok(Map.of("message", "User with ID: " + userId + " is no longer an admin"));
     }
 
     /**
@@ -87,8 +75,22 @@ public class AdminController {
      * @return a ResponseEntity containing a Page of AdminOrderDto objects representing orders.
      */
     @GetMapping("/orders")
-    public ResponseEntity<Page<AdminOrderDto>> showManageOrdersPage(@PageableDefault() Pageable pageable) {
-        Page<AdminOrderDto> orderHistories = orderService.getOrdersHistory(pageable);
+    public ResponseEntity<Page<AdminOrderDto>> getOrders(@RequestParam(required = false) String status,
+                                                         @PageableDefault() Pageable pageable) {
+        Page<AdminOrderDto> orderHistories = orderService.getOrdersHistory(status, pageable);
         return ResponseEntity.ok(orderHistories);
+    }
+
+    @PatchMapping("/orders/{orderId}/status")
+    public ResponseEntity<Void> updateOrderStatus(@PathVariable Long orderId,
+                                                  @RequestBody OrderStatusUpdateRequest request
+    ) {
+        orderService.updateOrderStatus(orderId, request.getStatus());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<SummaryStatDto> getQuickStats() {
+        return ResponseEntity.ok(statisticsService.buildStatistics());
     }
 }

@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -13,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a")
 @ToString(exclude = "orders")
+@EntityListeners(AuditingEntityListener.class)
 public class Account {
 
     @Id
@@ -34,5 +39,12 @@ public class Account {
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Order> orders;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
 }

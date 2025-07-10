@@ -4,17 +4,19 @@ import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.example.petstore.dto.order.AdminOrderDto;
 import org.example.petstore.dto.order.ReceiptDto;
+import org.example.petstore.dto.stats.StatDto;
 import org.example.petstore.enums.OrderStatus;
-import org.example.petstore.exception.OrderAccessDeniedException;
 import org.example.petstore.mapper.AdminOrderMapper;
-import org.example.petstore.mapper.ReceiptMapper;
 import org.example.petstore.model.Order;
 import org.example.petstore.repository.OrderRepository;
-import org.example.petstore.service.user.UserValidator;
+import org.example.petstore.utils.StatUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -24,7 +26,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final AdminOrderMapper orderMapper;
     private final OrderProcessingService orderProcessingService;
-    private final UserValidator userValidator;
+    private final StatUtils statUtils;
 
     /**
      * Processes an order by applying any necessary discount logic.
@@ -44,27 +46,6 @@ public class OrderService {
     }
 
     /**
-     * Retrieves the receipt details for an order and marks it as completed.
-     *
-     * @param orderId the ID of the order
-     * @return a {@link ReceiptDto} containing order receipt details
-     * @throws NoResultException if the order is not found
-     */
-    public ReceiptDto getReceipt(Long orderId) {
-        Order order = orderRepository.findReceipt(orderId)
-                .orElseThrow(() -> new NoResultException("Order with ID: " + orderId + " not found"));
-
-        // update status to completed
-        updateOrderStatus(orderId, OrderStatus.COMPLETED);
-
-        if (!userValidator.canAccessOrder(orderId)) {
-            throw new OrderAccessDeniedException("You can access your receipts only");
-        }
-
-        return ReceiptMapper.toDto(order);
-    }
-
-    /**
      * Retrieves an order by its ID.
      *
      * @param orderId the ID of the order
@@ -76,10 +57,15 @@ public class OrderService {
                 .orElseThrow(() -> new NoResultException("Order with ID: " + orderId + " not found"));
     }
 
-    public void updateOrderStatus(Long orderId, OrderStatus status) {
-        Order order = getOrderById(orderId);
-        order.setStatus(status);
-        orderRepository.save(order);
+    public void updateOrderStatus(Long orderId, String newStatus) {
+        Optional<OrderStatus> optionalStatus = OrderStatus.fromString(newStatus);
+        if (optionalStatus.isPresent()) {
+            Order order = getOrderById(orderId);
+            order.setStatus(optionalStatus.get());
+            orderRepository.save(order);
+        } else {
+            throw new IllegalArgumentException("Invalid order status: " + newStatus);
+        }
     }
 
     public Order saveOrder(Order order) {
@@ -91,9 +77,74 @@ public class OrderService {
      *
      * @return a list of {@link AdminOrderDto} representing order history
      */
-    public Page<AdminOrderDto> getOrdersHistory(Pageable pageable) {
-        Page<Order> orderPage = orderRepository.findAll(pageable);
+    public Page<AdminOrderDto> getOrdersHistory(String status, Pageable pageable) {
+        Page<Order> orderPage;
+
+        if (status != null) {
+            Optional<OrderStatus> optionalStatus = OrderStatus.fromString(status);
+            if (optionalStatus.isPresent()) {
+                orderPage = orderRepository.findByStatus(optionalStatus.get(), pageable);
+            } else {
+                throw new IllegalArgumentException("Invalid order status: " + status);
+            }
+        } else {
+            orderPage = orderRepository.findAll(pageable);
+        }
         return orderPage.map(orderMapper::toDto);
     }
 
+    public StatDto getOrderStats() {
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
+
+        StatUtils.DateRange todayRange = statUtils.getDayRange(today);
+        StatUtils.DateRange yesterdayRange = statUtils.getDayRange(yesterday);
+
+        long todayCount = orderRepository.countByOrderDateBetween(todayRange.start(), todayRange.end());
+        long yesterdayCount = orderRepository.countByOrderDateBetween(yesterdayRange.start(), yesterdayRange.end());
+
+        int changePercent = statUtils.calculatePercentageChange(todayCount, yesterdayCount);
+
+        return new StatDto("Orders Today", (int) todayCount, changePercent, "percent", null);
+    }
+
+
+    public StatDto getPendingOrdersStats() {
+        LocalDate today = LocalDate.now();
+
+        LocalDateTime todayStart = statUtils.getStartOfDay(today);
+        LocalDateTime todayEnd = statUtils.getEndOfDayExclusive(today);
+
+        long pendingToday = orderRepository.countByStatusAndOrderDateBefore(OrderStatus.PROCESSING, todayEnd);
+        long pendingYesterday = orderRepository.countByStatusAndOrderDateBefore(OrderStatus.PROCESSING, todayStart);
+
+        int changePercent = statUtils.calculatePercentageChange(pendingToday, pendingYesterday);
+
+        return new StatDto("Pending Orders", (int) pendingToday, changePercent, "percent", null);
+    }
+
+
+    /**
+     * represents weekly revenue
+     * */
+    public StatDto getRevenueStats() {
+        // calc revenue this week: monday -> today
+        // calc revenue last week: monday -> same day of week
+        // compare + calc persent change
+
+        LocalDate today = LocalDate.now();
+        StatUtils.ComparisonRange range = statUtils.getSameWeekdayRevenueRange(today);
+
+        BigDecimal revenueThisWeek = orderRepository.sumRevenueByStatusAndDateRange(
+                OrderStatus.COMPLETED, range.thisWeek().start(), range.thisWeek().end()
+        );
+
+        BigDecimal revenueLastWeek = orderRepository.sumRevenueByStatusAndDateRange(
+                OrderStatus.COMPLETED, range.lastWeek().start(), range.lastWeek().end()
+        );
+
+        int changePercent = statUtils.calculatePercentageChange(revenueThisWeek, revenueLastWeek);
+
+        return new StatDto("Revenue", revenueThisWeek.intValue(), changePercent, "percent", "USD");
+    }
 }
