@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS petstore;
 
 USE petstore;
 
--- Create table for product categories
+-- Table for product categories
 CREATE TABLE IF NOT EXISTS product_category
 (
     category_id        BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -11,8 +11,7 @@ CREATE TABLE IF NOT EXISTS product_category
     storage_conditions VARCHAR(255)
 );
 
-
--- Create table for departments
+-- Table for departments
 CREATE TABLE IF NOT EXISTS department
 (
     department_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -20,7 +19,38 @@ CREATE TABLE IF NOT EXISTS department
     image_path    VARCHAR(255)
 );
 
--- Create table for products
+-- Table for users
+CREATE TABLE IF NOT EXISTS user
+(
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username   VARCHAR(255) NOT NULL UNIQUE,
+    password   VARCHAR(255) NOT NULL,
+    created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
+    updated_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
+);
+
+-- Table for user roles (Many-to-Many style)
+CREATE TABLE IF NOT EXISTS user_roles
+(
+    user_id BIGINT NOT NULL,
+    role    VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE
+);
+
+-- Table for accounts
+CREATE TABLE IF NOT EXISTS account
+(
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email      VARCHAR(255) NOT NULL UNIQUE,
+    first_name VARCHAR(255),
+    last_name  VARCHAR(255),
+    user_id    BIGINT       NOT NULL,
+    created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
+    updated_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE
+);
+
+-- Table for products
 CREATE TABLE IF NOT EXISTS product
 (
     product_id   BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -32,7 +62,7 @@ CREATE TABLE IF NOT EXISTS product
     FOREIGN KEY (category_id) REFERENCES product_category (category_id) ON DELETE SET NULL
 );
 
--- Create table for inventory
+-- Table for inventory
 CREATE TABLE IF NOT EXISTS inventory
 (
     inventory_id     BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -44,17 +74,17 @@ CREATE TABLE IF NOT EXISTS inventory
     FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE
 );
 
--- Create table for accounts
-CREATE TABLE IF NOT EXISTS account
+-- Table for product allocations
+CREATE TABLE IF NOT EXISTS product_allocation
 (
-    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    email      VARCHAR(255) NOT NULL UNIQUE,
-    first_name VARCHAR(255),
-    last_name  VARCHAR(255),
-    user_id    BIGINT       NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE
+    department_id BIGINT NOT NULL,
+    product_id    BIGINT NOT NULL,
+    PRIMARY KEY (department_id, product_id),
+    FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE,
+    FOREIGN KEY (department_id) REFERENCES department (department_id) ON DELETE CASCADE
 );
--- Create table for customer orders
+
+-- Table for customer orders
 CREATE TABLE IF NOT EXISTS customer_order
 (
     order_id       BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -66,7 +96,7 @@ CREATE TABLE IF NOT EXISTS customer_order
     FOREIGN KEY (customer_id) REFERENCES account (id) ON DELETE CASCADE
 );
 
--- Create table for order lines
+-- Table for order lines
 CREATE TABLE IF NOT EXISTS order_line
 (
     order_line_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -77,32 +107,7 @@ CREATE TABLE IF NOT EXISTS order_line
     FOREIGN KEY (allocation_id) REFERENCES product (product_id) ON DELETE CASCADE
 );
 
--- Create table for product allocations
-CREATE TABLE IF NOT EXISTS product_allocation
-(
-    department_id BIGINT NOT NULL,
-    product_id    BIGINT NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE,
-    FOREIGN KEY (department_id) REFERENCES department (department_id) ON DELETE CASCADE
-);
-
--- Create table for users
-CREATE TABLE IF NOT EXISTS user
-(
-    id       BIGINT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
-);
-
--- Create table for user roles
-CREATE TABLE IF NOT EXISTS user_roles
-(
-    user_id BIGINT NOT NULL,
-    role    VARCHAR(255),
-    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE
-);
-
--- Create table for cart
+-- Table for cart
 CREATE TABLE IF NOT EXISTS cart
 (
     cart_id       BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -110,6 +115,6 @@ CREATE TABLE IF NOT EXISTS cart
     product_id    BIGINT      NOT NULL,
     quantity      INT         NOT NULL,
     addition_date DATETIME(6) NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE
 );
