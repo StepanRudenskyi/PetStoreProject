@@ -24,6 +24,7 @@ import AllOrdersPage from "./pages/order/AllOrdersPage.jsx";
 import OAuth2RedirectPage from "./components/auth/OAuth2RedirectPage";
 import UserManagementPage from "./pages/user/UserManagementPage";
 import PendingOrdersPage from "./pages/order/PendingOrdersPage.jsx";
+import ProductManagement from "./pages/products/ProductManagement.jsx";
 
 const AppRoutes = () => {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -83,6 +84,7 @@ const AppRoutes = () => {
         />
         <Route path="/admin/users" element={<UserManagementPage />} />
         <Route path="/admin/orders" element={<AllOrdersPage />} />
+        <Route path="/admin/products" element={<ProductManagement />} />
         <Route path="/admin/orders/pendings" element={<PendingOrdersPage />} />
       </Route>
 

@@ -3,8 +3,6 @@ import axios from "axios";
 const API_BASE_URL =
   process.env.REACT_APP_API_URL || "https://localhost:8443/api";
 
-// const API_BASE_URL = "/api";
-
 // const getAuthToken = () => localStorage.getItem("token");
 
 // Create an axios instance with a base URL
@@ -249,5 +247,103 @@ export const apiService = {
     const response = await api.get(`/admin/stats`);
     console.log(response.data);
     return response.data;
+  },
+
+  products: {
+    getById: async (productId) => {
+      try {
+        const response = await api.get(`/products/${productId}`);
+        return response.data;
+      } catch (error) {
+        console.error("Get product by ID error:", error);
+        throw error;
+      }
+    },
+
+    // Create new product
+    create: async (productDto) => {
+      try {
+        const response = await api.post("/products", productDto);
+        return response.data;
+      } catch (error) {
+        console.error("Create product error:", error);
+        throw error;
+      }
+    },
+
+    // Create product with inventory
+    createWithInventory: async (productInventoryDto) => {
+      try {
+        const response = await api.post("/products/full", productInventoryDto);
+        return response.data;
+      } catch (error) {
+        console.error("Create product with inventory error:", error);
+        throw error;
+      }
+    },
+
+    // Update product
+    update: async (productId, productDto) => {
+      try {
+        const response = await api.patch(`/products/${productId}`, productDto);
+        return response.data;
+      } catch (error) {
+        console.error("Update product error:", error);
+        throw error;
+      }
+    },
+
+    // Delete product
+    delete: async (productId) => {
+      try {
+        const response = await api.delete(`/products/${productId}`);
+        return response.data;
+      } catch (error) {
+        console.error("Delete product error:", error);
+        throw error;
+      }
+    },
+
+    // Upload product image
+    uploadImage: async (file) => {
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const response = await api.post("/products/upload-image", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        return response.data; // Should return { imageUrl: "..." }
+      } catch (error) {
+        console.error("Upload image error:", error);
+        throw error;
+      }
+    },
+  },
+
+  inventory: {
+    getByProductId: async (productId) => {
+      try {
+        const response = await api.get(`/inventory/product/${productId}`);
+        return response.data;
+      } catch (error) {
+        console.error("Get inventory error:", error);
+        throw error;
+      }
+    },
+
+    update: async (productId, inventoryDto) => {
+      try {
+        const response = await api.patch(
+          `/inventory/${productId}`,
+          inventoryDto
+        );
+        return response.data;
+      } catch (error) {
+        console.error("Update inventory error:", error);
+        throw error;
+      }
+    },
   },
 };

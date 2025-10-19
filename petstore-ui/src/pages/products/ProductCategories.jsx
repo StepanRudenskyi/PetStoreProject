@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { apiService } from "../../services/api";
 import Header from "../../components/layout/Header";
-import "../../styles/products.css";
+import styles from "./ProductsByCategory.module.css";
 import { useAuth } from "../../contexts/AuthContext";
 
 const ProductCategories = () => {
@@ -37,14 +37,14 @@ const ProductCategories = () => {
         variant="dark"
       />
 
-      <section className="products-section">
+      <section className={styles.productsSection}>
         <h2>Product Categories</h2>
-        {loading && <p className="loading">Loading categories...</p>}
-        {error && <p className="error">{error}</p>}
+        {loading && <p className={styles.loading}>Loading categories...</p>}
+        {error && <p className={styles.error}>{error}</p>}
 
-        <div className="category-grid">
+        <div className={styles.categoryGrid}>
           {categories.map((category) => (
-            <div key={category.id} className="category-item">
+            <div key={category.id} className={styles.categoryItem}>
               <Link to={`/products/category/${category.id}`}>
                 <img src={category.imageUrl} alt={category.name} />
                 <p>{category.name}</p>
