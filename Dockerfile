@@ -1,9 +1,9 @@
-FROM maven:3.8.5-openjdk-17-slim AS builder
+FROM maven:3.9.9-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
 COPY pom.xml .
-COPY src /app/src
+COPY src ./src
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17-jdk-slim
@@ -11,6 +11,9 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=builder /app/target/petstore-1.0-SNAPSHOT.jar /app/petstore-app.jar
 
-EXPOSE 8080
+RUN mkdir -p /app/uploads/images/products \
+    && mkdir -p /app/uploads/images/categories
+VOLUME ["/app/certs"]
 
-ENTRYPOINT ["java", "-jar", "/app/petstore-app.jar"]
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "petstore-app.jar"]

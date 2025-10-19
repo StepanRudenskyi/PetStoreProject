@@ -1,25 +1,11 @@
-version: '3.8'
+version: "3.9"
 
 services:
-  app:
-    image: petstore
-    build:
-      context: .
-    container_name: petstore-app
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/PETSTORE
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: password
-    depends_on:
-      - mariadb
-
   mariadb:
-    image: mariadb:latest
+    image: mariadb:11
     container_name: petstore-db
+    restart: always
     environment:
-
       MARIADB_ROOT_PASSWORD: password
       MARIADB_DATABASE: PETSTORE
       MARIADB_USER: root
@@ -28,6 +14,92 @@ services:
       - "3303:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - petnet
+
+  petstore-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: petstore-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadb
+    volumes:
+      - uploads:/app/uploads
+      - ./certs:/app/certs
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/PETSTORE
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_PROFILES_ACTIVE: prod
+    networks:
+      - petnet
+
+  petstore-frontend:
+    build:
+      context: ./petstore-ui
+      dockerfile: Dockerfile
+    container_name: petstore-frontend
+    ports:
+      - "443:443"
+    depends_on:
+      - petstore-backend
+    networks:
+      - petnet
 
 volumes:
   mariadb_data:
+  uploads:
+
+networks:
+  petnet:
+    driver: bridge
+
+
+#version: '3.8'
+#
+#services:
+#  backend:
+#    build:
+#      context: .
+#    image: petstore-backend
+#    container_name: petstore-backend
+#    ports:
+#      - "8443:8443"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/PETSTORE
+#      SPRING_DATASOURCE_USERNAME: root
+#      SPRING_DATASOURCE_PASSWORD: password
+#      SPRING_PROFILES_ACTIVE: prod
+#    depends_on:
+#      - mariadb
+#
+#  frontend:
+#    build:
+#      context: ./petstore-ui
+#    image: petstore-frontend
+#    container_name: petstore-frontend
+#    ports:
+#       - "443:443"
+#    depends_on:
+#      - backend
+#
+#  mariadb:
+#    image: mariadb:latest
+#    container_name: petstore-db
+#    environment:
+#      MARIADB_ROOT_PASSWORD: password
+#      MARIADB_DATABASE: PETSTORE
+#      MARIADB_USER: root
+#      MARIADB_PASSWORD: password
+#    ports:
+#      - "3303:3306"
+#    volumes:
+#      - mariadb_data:/var/lib/mysql
+#      - ./init:/docker-entrypoint-initdb.d:ro
+#
+#volumes:
+#  mariadb_data:
