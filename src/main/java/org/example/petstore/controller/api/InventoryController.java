@@ -21,7 +21,7 @@ public class InventoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(inventory);
     }
 
-    @GetMapping("/{productId}")
+    @GetMapping("/product/{productId}")
     public ResponseEntity<InventoryDto> getInventory(@PathVariable Long productId) {
         InventoryDto inventoryDto = inventoryService.getInventory(productId);
         return ResponseEntity.ok(inventoryDto);

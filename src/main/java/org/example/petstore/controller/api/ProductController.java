@@ -4,13 +4,18 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.petstore.dto.inventory.ProductInventoryDto;
 import org.example.petstore.dto.product.ProductDto;
+import org.example.petstore.service.image.ImageStorageService;
 import org.example.petstore.service.product.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ProductController is a RESTful controller responsible for handling API requests related to products.
@@ -22,6 +27,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final ImageStorageService imageStorageService;
 
     /**
      * Retrieves a list of products within a specific category.
@@ -100,5 +106,20 @@ public class ProductController {
             @Valid @RequestBody ProductInventoryDto productInventoryDto) {
         ProductInventoryDto dto =  productService.createProductWithInventory(productInventoryDto);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/upload-image")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            String imageUrl = imageStorageService.saveProductImage(file);
+            Map<String, String> response = new HashMap<>();
+            response.put("imageUrl", imageUrl);
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed to upload image: " + e.getMessage()));
+        }
     }
 }

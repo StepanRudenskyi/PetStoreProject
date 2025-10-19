@@ -7,7 +7,6 @@ import org.example.petstore.dto.inventory.InventoryDto;
 import org.example.petstore.dto.inventory.ProductInventoryDto;
 import org.example.petstore.dto.product.ProductDto;
 import org.example.petstore.mapper.ProductMapper;
-import org.example.petstore.mapper.inventory.InventoryMapper;
 import org.example.petstore.model.Product;
 import org.example.petstore.model.ProductCategory;
 import org.example.petstore.repository.ProductCategoryRepository;
