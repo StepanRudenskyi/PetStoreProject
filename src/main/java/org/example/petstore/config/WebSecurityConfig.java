@@ -58,6 +58,8 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/api/auth/**").permitAll();
+                    registry.requestMatchers("/oauth2/authorization/**").permitAll();
+                    registry.requestMatchers("/login/oauth2/**").permitAll();
                     registry.requestMatchers(
                             "/", "/api/products/**", "/api/categories", "/back-to-landing",
                             "/images/**", "/css/**", "/js/**"
