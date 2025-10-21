@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "https://localhost:8443",
+      target: "http://localhost:8080/",
       changeOrigin: true,
       secure: false,
     })
@@ -13,7 +13,7 @@ module.exports = function (app) {
   app.use(
     "/oauth2/authorization",
     createProxyMiddleware({
-      target: "https://localhost:8443",
+      target: "http://localhost:8080/",
       changeOrigin: true,
       secure: false,
     })

@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const response = await apiService.login(credentials);
-      console.log("---- Login Response: ", response);
 
       if (response && response.token && response.roles) {
         const { token: newToken, roles } = response;
