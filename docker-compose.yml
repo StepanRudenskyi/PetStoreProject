@@ -17,38 +17,52 @@ services:
       - ./init:/docker-entrypoint-initdb.d:ro
     networks:
       - petnet
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   petstore-backend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: petstore-backend
+    container_name: backend
     ports:
       - "8080:8080"
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     volumes:
       - uploads:/app/uploads
-      - ./certs:/app/certs
+      - ./secrets/pomodorio-gcs-key.json:/app/secrets/pomodorio-gcs-key.json:ro
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/PETSTORE
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_PROFILES_ACTIVE: prod
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      GCP_BUCKET_URL: ${GCP_BUCKET_URL}
+      GCP_BUCKET_NAME: ${GCP_BUCKET_NAME}
+      GOOGLE_APPLICATION_CREDENTIALS: /app/secrets/pomodorio-gcs-key.json
     networks:
       - petnet
+    restart: unless-stopped
 
   petstore-frontend:
     build:
       context: ./petstore-ui
       dockerfile: Dockerfile
-    container_name: petstore-frontend
+    container_name: frontend
     ports:
       - "443:443"
     depends_on:
       - petstore-backend
     networks:
       - petnet
+    restart: unless-stopped
 
 volumes:
   mariadb_data:
@@ -59,37 +73,13 @@ networks:
     driver: bridge
 
 
-#version: '3.8'
+#version: "3.9"
 #
 #services:
-#  backend:
-#    build:
-#      context: .
-#    image: petstore-backend
-#    container_name: petstore-backend
-#    ports:
-#      - "8443:8443"
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/PETSTORE
-#      SPRING_DATASOURCE_USERNAME: root
-#      SPRING_DATASOURCE_PASSWORD: password
-#      SPRING_PROFILES_ACTIVE: prod
-#    depends_on:
-#      - mariadb
-#
-#  frontend:
-#    build:
-#      context: ./petstore-ui
-#    image: petstore-frontend
-#    container_name: petstore-frontend
-#    ports:
-#       - "443:443"
-#    depends_on:
-#      - backend
-#
 #  mariadb:
-#    image: mariadb:latest
+#    image: mariadb:11
 #    container_name: petstore-db
+#    restart: always
 #    environment:
 #      MARIADB_ROOT_PASSWORD: password
 #      MARIADB_DATABASE: PETSTORE
@@ -100,6 +90,45 @@ networks:
 #    volumes:
 #      - mariadb_data:/var/lib/mysql
 #      - ./init:/docker-entrypoint-initdb.d:ro
+#    networks:
+#      - petnet
+#
+#  petstore-backend:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: backend
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - mariadb
+#    volumes:
+#      - uploads:/app/uploads
+#      - ./certs:/app/certs
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/PETSTORE
+#      SPRING_DATASOURCE_USERNAME: root
+#      SPRING_DATASOURCE_PASSWORD: password
+#      SPRING_PROFILES_ACTIVE: prod
+#    networks:
+#      - petnet
+#
+#  petstore-frontend:
+#    build:
+#      context: ./petstore-ui
+#      dockerfile: Dockerfile
+#    container_name: frontend
+#    ports:
+#      - "443:443"
+#    depends_on:
+#      - petstore-backend
+#    networks:
+#      - petnet
 #
 #volumes:
 #  mariadb_data:
+#  uploads:
+#
+#networks:
+#  petnet:
+#    driver: bridge

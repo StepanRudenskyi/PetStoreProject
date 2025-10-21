@@ -1,28 +1,66 @@
 server:
-  port: 8443
-  ssl:
-    key-alias: https-pomodorio
-    key-store: classpath:keystore.p12
-    key-store-type: PKCS12
-    key-store-password: password
+  port: 8080
+  forward-headers-strategy: framework
+  tomcat:
+    remoteip:
+      remote-ip-header: X-Forwarded-For
+      protocol-header: X-Forwarded-Proto
+      protocol-header-https-value: https
+      host-header: X-Forwarded-Host
+      port-header: X-Forwarded-Port
 
 spring:
   datasource:
-    url: jdbc:mariadb://localhost:3306/PETSTORE
+    url: ${SPRING_DATASOURCE_URL}
     driverClassName: org.mariadb.jdbc.Driver
-    username: root
-    password: password
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
   security:
     oauth2:
       client:
         registration:
           google:
             provider: google
-            client-id: CLIENT_ID
-            client-secret: CLIENT_SECRET
-            redirect-uri: "https://localhost:8443/login/oauth2/code/google"
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
             scope: openid,profile,email
             authorization-grant-type: authorization_code
         provider:
           google:
             issuer-uri: https://accounts.google.com
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 36000000
+
+frontend:
+  redirect:
+    url: https://localhost/oauth2/redirect
+  login:
+    url: https://localhost/login
+
+app:
+  security:
+    cors:
+      allowed-origins: https://localhost,https://localhost:3000,http://frontend,https://frontend
+
+gcp:
+  bucket:
+    name: ${GCP_BUCKET_NAME}
+    path: images/
+    url: ${GCP_BUCKET_URL}
+
+logging:
+  level:
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+    org.apache.catalina.valves: INFO
